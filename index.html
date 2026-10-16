@@ -1,0 +1,1111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="EDGE Clubhouse elevation review: nine design options, 3D models, comparison and source drawings.">
+<title>EDGE Clubhouse Elevation Review</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Palette: Hyderabad dusk, refined — twilight ink ground, champagne light, pearl-blue sky; Poppins headings over Inter body; restrained motion */
+/* Layout: a scroll-driven sky-to-elevation landing scene, then five chapters of frosted-glass panels floating over a slow fluid gradient field */
+:root{
+  --bg:#121019; --fg:#f6f1ea; --muted:#d2cbd3; --gold:#d9b58e; --gold-ink:#21170f; --sky:#bccfd6; --line:rgba(255,255,255,.16);
+  --glass:rgba(255,246,238,.05); --glass-hi:rgba(255,244,234,.1); --glass-edge:rgba(255,236,222,.13);
+  --teal:#3f3570; --amber:#7a4632; --indigo:#1f4253;
+  --sans:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif; --serif:"Poppins","Inter",ui-sans-serif,system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:40;background:var(--bg)}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+/* fluid field */
+.fluid{position:fixed;inset:0;z-index:-1;overflow:hidden;background:radial-gradient(120% 90% at 50% 0%,var(--bg2,#2c2044) 0%,var(--bg) 62%)}
+.fluid i{position:absolute;width:62vmax;height:62vmax;border-radius:50%;filter:blur(100px);opacity:.42;mix-blend-mode:screen}
+.fluid i:nth-child(1){background:radial-gradient(circle,var(--teal),transparent 65%);left:-15vmax;top:10vh;animation:f1 44s ease-in-out infinite alternate}
+.fluid i:nth-child(2){background:radial-gradient(circle,var(--amber),transparent 65%);right:-18vmax;top:40vh;animation:f2 52s ease-in-out infinite alternate}
+.fluid i:nth-child(3){background:radial-gradient(circle,var(--indigo),transparent 65%);left:25vw;bottom:-30vmax;animation:f3 60s ease-in-out infinite alternate}
+.fluid i:nth-child(4){background:radial-gradient(circle,rgba(217,181,142,.35),transparent 60%);left:45vw;top:-25vmax;width:40vmax;height:40vmax;animation:f1 48s ease-in-out infinite alternate-reverse}
+@keyframes f1{to{transform:translate(18vw,22vh) scale(1.15)}}
+@keyframes f2{to{transform:translate(-22vw,-18vh) scale(.9)}}
+@keyframes f3{to{transform:translate(-10vw,-25vh) scale(1.2)}}
+/* glass */
+.glass,.stat,.chhead,.detail,.opt,.plan,.step,.tblwrap,.notice,.optbar,.two>div,.cmpbar{position:relative;background:linear-gradient(140deg,var(--glass-hi),var(--glass) 45%,rgba(255,255,255,.035));
+  -webkit-backdrop-filter:blur(22px) saturate(160%);backdrop-filter:blur(22px) saturate(160%);border:1px solid var(--glass-edge);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 18px 48px rgba(0,0,0,.22);border-radius:18px}
+.lit{--mx:50%;--my:0%}
+.lit::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(380px circle at var(--mx) var(--my),rgba(255,244,232,.07),transparent 45%);opacity:0;transition:opacity .3s}
+.lit:hover::after{opacity:1}
+.in{max-width:1360px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+/* floating nav */
+header.top{position:fixed;left:0;right:0;top:calc(env(safe-area-inset-top,0px) + 12px);z-index:35;pointer-events:none}
+.nav{pointer-events:auto;display:flex;align-items:center;gap:8px 22px;flex-wrap:wrap;padding:10px 18px;max-width:980px;margin:0 auto;border-radius:999px}
+.brand{font-family:var(--serif);font-weight:600;font-size:16px;letter-spacing:.24em;line-height:1.1;text-shadow:0 1px 6px rgba(0,0,0,.25)}
+.brand small{display:block;font-family:var(--sans);font-weight:500;font-size:9.5px;letter-spacing:.22em;color:var(--sky);margin-top:3px}
+.links{display:flex;gap:2px 16px;flex-wrap:wrap;flex:1;justify-content:flex-end}
+.links a{color:#f3eee8;text-decoration:none;font-size:13.5px;font-weight:500;letter-spacing:.04em;text-shadow:0 1px 6px rgba(0,0,0,.3)}
+.links a:hover{color:var(--gold)}
+.links a b{font-family:var(--sans);font-weight:600;color:var(--gold);font-size:11.5px;margin-right:4px}
+@media (max-width:640px){.links a b{display:none}.links{gap:2px 12px}.nav{border-radius:20px}}
+/* progress rail */
+.rail{position:fixed;right:max(14px,env(safe-area-inset-right,0px));top:50%;transform:translateY(-50%);z-index:30;display:flex;flex-direction:column;gap:12px;padding:12px 8px;border-radius:999px}
+.rail a{display:block;width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.28);transition:transform .3s,background .3s}
+.rail a[aria-current="true"]{background:var(--gold);transform:scale(1.3)}
+@media (max-width:760px){.rail{display:none}}
+/* intro scene */
+.intro{position:relative;height:340vh}
+.scene{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:#7fb0e4}
+#sky{position:absolute;inset:0;width:100%;height:100%;display:block}
+.elevw .swap{position:absolute;inset:0;transition:opacity .42s ease}
+.elevw img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 62%}
+.elevw{position:absolute;left:0;right:0;bottom:0;width:100%;height:max(calc(100vw / 3.05),48vh);
+  -webkit-mask-image:linear-gradient(to bottom,transparent 0%,rgba(0,0,0,.4) 16%,#000 38%);mask-image:linear-gradient(to bottom,transparent 0%,rgba(0,0,0,.4) 16%,#000 38%);
+  transform-origin:50% 100%;will-change:transform,opacity}
+#fore{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.title{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);text-align:center;width:min(92vw,980px);will-change:transform,opacity}
+.title .eyebrow{color:#fff;text-shadow:0 1px 12px rgba(20,40,80,.6)}
+.title h1{margin:16px 0 12px;font-family:var(--serif);font-weight:600;font-size:clamp(46px,9.5vw,150px);letter-spacing:-.02em;line-height:.92;color:#fff;text-shadow:0 6px 40px rgba(20,50,100,.35)}
+.title h1 em{font-style:normal;font-weight:400}
+.title p{margin:0 auto;max-width:56ch;color:#fff;font-weight:500;font-size:clamp(15px,1.7vw,18px);text-shadow:0 1px 14px rgba(20,40,80,.6)}
+.cue{position:absolute;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 26px);transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;color:#fff;font-size:12px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;text-shadow:0 1px 8px rgba(0,0,0,.3)}
+.cue i{width:22px;height:36px;border:1.5px solid rgba(255,255,255,.8);border-radius:12px;position:relative}
+.cue i::after{content:"";position:absolute;left:50%;top:7px;width:3px;height:7px;border-radius:2px;background:#fff;transform:translateX(-50%);animation:cue 1.8s ease-in-out infinite}
+@keyframes cue{50%{transform:translate(-50%,10px);opacity:.3}}
+.caption{background:rgba(18,16,25,.55)!important;position:absolute;left:max(16px,env(safe-area-inset-left,0px));bottom:calc(env(safe-area-inset-bottom,0px) + 22px);max-width:min(560px,calc(100vw - 32px));padding:18px 20px;will-change:opacity,transform}
+.caption .eyebrow{margin-bottom:6px}
+.caption h2{margin:0 0 6px;font-family:var(--serif);font-weight:600;font-size:clamp(22px,2.8vw,30px);letter-spacing:-.01em;line-height:1.1}
+.caption h2 em{font-style:normal;color:var(--gold)}
+.caption p{margin:0 0 12px;color:#f6efec;font-size:14.5px}
+.eyebrow{text-transform:uppercase;letter-spacing:.2em;font-size:12px;font-weight:600;color:var(--sky)}
+.heronav{display:inline-flex;align-items:center;gap:6px;margin-left:auto}
+.heronav span{font-size:13px;font-weight:600;min-width:42px;text-align:center;font-variant-numeric:tabular-nums}
+.heronav button{padding:8px 12px}
+.caption{max-width:min(620px,calc(100vw - 32px))!important}
+@media (max-width:760px){.heronav{margin-left:0;width:100%}}
+/* time of day control */
+.clock{position:absolute;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(env(safe-area-inset-bottom,0px) + 22px);width:300px;max-width:calc(100vw - 32px);padding:12px 14px;border-radius:18px;background:rgba(14,14,24,.42)!important;z-index:5}
+.clk{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.clk span{font-family:var(--serif);font-weight:500;font-size:16px;color:#fff}
+.clk small{font-size:12.5px;font-weight:600;letter-spacing:.08em;color:var(--sky)}
+.clock input[type=range]{margin:8px 0 10px}
+.clock .row{gap:6px}
+.clock button{padding:7px 10px;font-size:12px}
+@media (max-width:760px){.clock{top:calc(env(safe-area-inset-top,0px) + 96px);bottom:auto;right:50%;transform:translateX(50%);width:calc(100vw - 32px)}.clock button{flex:1;padding:7px 4px}}
+/* overview */
+.overview{padding-top:70px;display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:24px;align-items:end}
+@media (max-width:900px){.overview{grid-template-columns:1fr}}
+.overview h2{font-family:var(--serif);font-weight:500;font-size:clamp(34px,5vw,64px);letter-spacing:-.02em;line-height:1.02;margin:12px 0 14px;text-wrap:balance}
+.overview h2 em{font-style:normal;color:var(--gold)}
+.overview p{color:var(--muted);margin:0;max-width:62ch;font-size:16px}
+.notice{padding:18px 20px;font-size:14px;line-height:1.6;color:#e6dde6}
+.notice b{color:var(--gold);font-weight:500;letter-spacing:.14em;font-size:11px;display:block;margin-bottom:6px}
+.stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:26px}
+@media (max-width:800px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.stat{padding:16px 18px;border-radius:18px}
+.stat b{display:block;font-family:var(--serif);font-weight:500;font-size:28px;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+.stat span{color:var(--muted);font-size:13px}
+/* chapters */
+section.ch{padding-top:120px;scroll-margin-top:90px}
+.chhead{display:flex;justify-content:space-between;align-items:flex-end;gap:10px 40px;flex-wrap:wrap;margin-bottom:22px;padding:28px 30px}
+.chhead h2{font-family:var(--serif);font-weight:500;font-size:clamp(26px,3.4vw,42px);letter-spacing:-.015em;margin:6px 0 0;line-height:1.08}
+.chhead p{color:var(--muted);font-size:15px;max-width:58ch;margin:0}
+button,.btn{font:inherit;font-size:13px;font-weight:500;letter-spacing:.02em;text-transform:none;cursor:pointer;border:1px solid var(--glass-edge);border-radius:999px;padding:11px 18px;color:var(--fg);line-height:1;
+  background:rgba(255,248,240,.05);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);transition:border-color .2s,background .2s,transform .2s}
+button:hover{border-color:rgba(217,181,142,.6)}
+button:focus-visible,a:focus-visible,select:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+button[aria-pressed="true"],.primary{background:linear-gradient(180deg,#e7cba8,var(--gold));border-color:var(--gold);color:var(--gold-ink)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.sep{width:1px;height:22px;background:var(--line);margin:0 4px}
+.optbar{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;align-items:center;padding:12px 14px 12px 20px;border-radius:999px}
+@media (max-width:700px){.optbar{border-radius:20px}}
+.optbar h3{margin:0;font-family:var(--serif);font-weight:500;font-size:19px;letter-spacing:-.01em}
+.optbar h3 span:first-child{color:var(--gold)}
+.stage{position:relative;width:100%;aspect-ratio:16/9;max-width:100%;border-radius:24px;overflow:hidden;touch-action:none;margin-block:14px 12px;border:1px solid var(--glass-edge);box-shadow:0 24px 64px rgba(0,0,0,.35);background:#2a2238}
+@media (max-width:640px){.stage{aspect-ratio:4/5}}
+canvas{display:block}
+.stage canvas{width:100%;height:100%}
+.vlabel{position:absolute;left:16px;top:14px;font-size:12.5px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:#fff;pointer-events:none;padding:6px 10px;border-radius:999px;background:rgba(10,20,20,.35);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.hint{position:absolute;right:16px;bottom:12px;font-family:var(--mono);font-size:11px;color:#fff;opacity:.9;text-shadow:0 1px 3px rgba(0,0,0,.6);pointer-events:none}
+.levels{position:absolute;inset:0;pointer-events:none}
+.lv{position:absolute;left:0;right:0;border-top:1px dashed rgba(255,255,255,.5);font-family:var(--mono);font-size:10.5px;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.7)}
+.lv span{position:absolute;left:10px;top:-15px;white-space:nowrap}
+.load{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--mono);font-size:12px;color:var(--muted)}
+.two{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:16px;margin-top:16px}
+.two>div{padding:20px 22px}
+@media (max-width:900px){.two{grid-template-columns:1fr}}
+h4{margin:0 0 10px;font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+.note{color:var(--muted);font-size:15px;max-width:68ch;margin:0}
+.mats{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin:0;padding:0;list-style:none}
+.mats li{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:rgba(255,255,255,.05)}
+.mats img{display:block;width:100%;height:76px;object-fit:cover}
+.mats div{padding:9px 10px;font-size:13.5px;line-height:1.35}
+.mats small{display:block;color:var(--muted);font-size:12.5px;margin-top:2px}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+td,th{padding:7px 8px 7px 0;border-bottom:1px solid var(--line);vertical-align:top;text-align:left}
+td.n{font-family:var(--mono);color:var(--gold);white-space:nowrap;font-variant-numeric:tabular-nums}
+td.u{color:var(--muted)}
+/* concepts */
+.grid9{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;perspective:1200px}
+.opt{display:flex;flex-direction:column;text-align:left;padding:8px;overflow:hidden;color:inherit;cursor:pointer;transform-style:preserve-3d;transition:transform .35s cubic-bezier(.2,.8,.2,1),border-color .3s;border-radius:22px}
+.opt img{display:block;width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:12px}
+.opt .t{padding:10px 8px 6px;display:flex;flex-direction:column;gap:3px}
+.opt .t span{font-family:var(--sans);font-weight:600;font-size:11.5px;color:var(--sky);letter-spacing:.08em}
+.opt .t b{font-family:var(--serif);font-weight:500;font-size:16.5px;line-height:1.3}
+.opt .t small{color:var(--muted);font-size:13.5px;line-height:1.35}
+.opt[aria-pressed="true"]{border-color:var(--gold);color:var(--fg);background:linear-gradient(140deg,rgba(217,181,142,.14),rgba(255,255,255,.03))}
+.badge3d{align-self:flex-start;margin-top:6px;font-family:var(--sans);font-weight:600;font-size:11px;letter-spacing:.08em;color:var(--gold);border:1px solid rgba(217,181,142,.5);padding:3px 8px;border-radius:999px}
+.detail{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:24px;margin-top:20px;padding:16px}
+@media (max-width:900px){.detail{grid-template-columns:1fr}}
+.detail .im{cursor:zoom-in;border-radius:16px;overflow:hidden;background:#000;min-width:0}
+.detail .im img{display:block;width:100%;height:auto;transition:transform .6s ease}
+.detail .im:hover img{transform:scale(1.02)}
+.detail .tx{min-width:0;display:flex;flex-direction:column;gap:16px;padding:6px}
+.detail h3{margin:0;font-family:var(--serif);font-weight:500;font-size:26px;letter-spacing:-.01em;line-height:1.12}
+.detail .sub{color:var(--gold);font-size:13px;margin-top:4px}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font-size:13px;letter-spacing:.02em;border:1px solid var(--line);border-radius:999px;padding:4px 10px;color:#efe6ea;background:rgba(255,255,255,.05)}
+.pal{display:flex;gap:6px}
+.pal div{flex:1;min-width:0}
+.pal i{display:block;height:34px;border-radius:10px;border:1px solid rgba(255,255,255,.12)}
+.pal small{display:block;font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:4px}
+.warn{border-left:2px solid var(--gold);padding-left:10px;color:var(--muted);font-size:14px;margin:0}
+.samples{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:8px}
+.samples div{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:rgba(255,255,255,.05)}
+.samples img{display:block;width:100%;height:64px;object-fit:cover}
+.samples span{display:block;padding:7px 9px;font-size:12.5px;line-height:1.3}
+/* compare */
+.cmpbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:12px;padding:10px 14px;border-radius:999px;width:fit-content;max-width:100%}
+@media (max-width:600px){.cmpbar{border-radius:20px}}
+.cmpbar label{display:flex;gap:8px;align-items:center;color:var(--muted);font-size:13px}
+select{font:inherit;font-size:14px;padding:8px 10px;border-radius:12px;border:1px solid var(--glass-edge);background:rgba(30,22,44,.75);color:var(--fg);max-width:100%}
+.ab{position:relative;aspect-ratio:3/2;max-width:100%;border-radius:24px;overflow:hidden;background:#000;user-select:none;touch-action:pan-y;cursor:ew-resize;border:1px solid var(--glass-edge);box-shadow:0 30px 80px rgba(0,0,0,.4)}
+.ab img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
+.ab .top{clip-path:inset(0 calc(100% - var(--x,50%)) 0 0)}
+.ab .hd{position:absolute;top:0;bottom:0;left:var(--x,50%);width:2px;background:rgba(255,255,255,.9);transform:translateX(-1px);box-shadow:0 0 10px rgba(0,0,0,.6)}
+.ab .hd::after{content:"⇆";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-size:18px;color:#fff;
+  background:rgba(255,255,255,.18);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.5)}
+.ab .lab{position:absolute;bottom:12px;font-size:13px;color:#fff;padding:5px 10px;border-radius:999px;max-width:45%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:rgba(10,20,20,.45);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+input[type=range]{width:100%;accent-color:var(--gold);margin-top:12px}
+.tblwrap{overflow-x:auto;margin-top:16px;padding:6px 18px 12px}
+.ctable{min-width:620px}
+.ctable th{color:var(--gold);font-weight:500;font-size:12.5px;width:18%}
+.ctable thead th{color:var(--fg);font-size:14px}
+/* plans */
+.plans{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.plan{padding:8px;text-align:left;color:inherit;cursor:zoom-in;transition:transform .3s}
+.plan:hover{transform:translateY(-3px)}
+.plan img{display:block;width:100%;aspect-ratio:1.7;object-fit:contain;background:#fff;border-radius:14px}
+.plan span{display:block;padding:10px 6px 4px;font-family:var(--serif);font-weight:500;font-size:16px}
+.plan small{display:block;color:var(--muted);font-weight:400;font-family:var(--sans);font-size:13.5px;margin-top:3px}
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+@media (max-width:860px){.steps{grid-template-columns:1fr}}
+.step{padding:22px}
+.step span{font-family:var(--sans);font-weight:600;letter-spacing:.12em;font-size:12px;color:var(--sky)}
+.step b{display:block;font-family:var(--serif);font-weight:500;font-size:19px;margin:8px 0 6px;letter-spacing:-.01em}
+.step p{margin:0;color:var(--muted);font-size:14.5px}
+footer{margin-top:70px;border-top:1px solid var(--line);padding-block:22px 40px;color:var(--muted);font-size:12.5px}
+/* reveal: from a visible resting state */
+.rv{transform:translateY(18px);opacity:.6;transition:transform .9s cubic-bezier(.2,.8,.2,1),opacity .9s}
+.rv.on{transform:none;opacity:1}
+/* viewer */
+.ov{position:fixed;inset:0;z-index:60;background:rgba(16,12,26,.84);-webkit-backdrop-filter:blur(24px);backdrop-filter:blur(24px);display:flex;flex-direction:column;
+  padding:calc(env(safe-area-inset-top,0px) + 10px) max(12px,env(safe-area-inset-right,0px)) calc(env(safe-area-inset-bottom,0px) + 10px) max(12px,env(safe-area-inset-left,0px))}
+.ovbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding-bottom:10px}
+.ovbar strong{flex:1;min-width:0;font-weight:400;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vp{flex:1;min-height:0;overflow:auto;border-radius:18px;background:rgba(0,0,0,.3)}
+.vp img{display:block;margin:auto;max-width:none;user-select:none}
+</style>
+</head>
+<body>
+
+
+<div class="fluid" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+
+<header class="top"><div class="nav glass">
+  <div class="brand">EDGE<small>CLUBHOUSE · ELEVATION REVIEW</small></div>
+  <nav class="links" aria-label="Chapters">
+    <a href="#models"><b>01</b>3D models</a><a href="#concepts"><b>02</b>Concepts</a><a href="#compare"><b>03</b>Compare</a><a href="#plans"><b>04</b>Plans</a><a href="#next"><b>05</b>Next steps</a>
+  </nav>
+</div></header>
+
+<nav class="rail glass" aria-label="Progress">
+  <a href="#top" title="Opening" aria-label="Opening"></a><a href="#overview" title="Overview" aria-label="Overview"></a><a href="#models" title="3D models" aria-label="3D models"></a><a href="#concepts" title="Concepts" aria-label="Concepts"></a><a href="#compare" title="Compare" aria-label="Compare"></a><a href="#plans" title="Plans" aria-label="Plans"></a><a href="#next" title="Next steps" aria-label="Next steps"></a>
+</nav>
+
+<section class="intro" id="top" aria-label="Opening">
+  <div class="scene" id="scene">
+    <canvas id="sky" aria-hidden="true"></canvas>
+    <div class="elevw" id="elevw"><div class="swap" id="swap">
+      <img id="elevDusk" src="img/front_01.jpg" alt="">
+      <img id="elevDay" src="img/front_01_day.jpg" alt="" style="opacity:0">
+      <img id="elevNight" src="img/front_01_night.jpg" alt="" style="opacity:0">
+    </div></div>
+    <canvas id="fore" aria-hidden="true"></canvas>
+    <div class="title" id="title">
+      <div class="eyebrow">Ankura Homes · Shankarpalli, Hyderabad</div>
+      <h1>EDGE <em>Clubhouse</em></h1>
+      <p>Elevation review for the founders. Every visit opens a different design option. Today: <b id="titleOpt" style="font-weight:600"></b>. Scroll down to arrive at the building.</p>
+    </div>
+    <div class="clock glass" id="clock" role="group" aria-label="Time of day">
+      <div class="clk"><span id="clkLabel">Live</span><small id="clkPhase"></small></div>
+      <input type="range" id="clkR" min="0" max="24" step="0.05" aria-label="Preview time of day">
+      <div class="row">
+        <button type="button" data-h="live" aria-pressed="true">Live</button><button type="button" data-h="6.7">Sunrise</button><button type="button" data-h="12.5">Noon</button><button type="button" data-h="17.5">Sunset</button><button type="button" data-h="21.5">Night</button>
+      </div>
+    </div>
+    <div class="cue" id="cue"><i></i>Scroll</div>
+    <div class="caption glass" id="caption">
+      <div class="eyebrow">Front elevation · <span id="capTime">golden hour</span></div>
+      <h2 id="capTitle">Option 01 · <em>Original Luxury</em></h2>
+      <p id="capSub">Original contemporary concept</p>
+      <div class="row">
+        <a class="btn primary" href="#concepts" id="capView">View this option</a>
+        <a class="btn" href="#models" id="go3d">Explore in 3D</a>
+        <span class="heronav"><button type="button" id="hPrev" aria-label="Previous option">‹</button><span id="hCount">1 / 9</span><button type="button" id="hNext" aria-label="Next option">›</button><button type="button" id="hShuf">Shuffle</button></span>
+      </div>
+    </div>
+    <script>
+    (function(){
+      var H=[{"id": "01", "name": "Original Luxury", "sub": "Original contemporary concept"}, {"id": "02", "name": "Tropical Contemporary", "sub": "Landscape-led layered architecture"}, {"id": "03", "name": "Alternative Expression", "sub": "Distinct façade treatment"}, {"id": "04", "name": "Clean Minimal", "sub": "Simple, clean architecture · no stone"}, {"id": "05", "name": "Curved Second Skin", "sub": "Lower-glass façade with planted pockets"}, {"id": "06", "name": "Curves + Glass", "sub": "Fluid glazed architecture"}, {"id": "07", "name": "Plan-Referenced Curves", "sub": "Curved-glass concept revised around planning"}, {"id": "08", "name": "Combined Signature", "sub": "Option 01 + curved architectural language"}, {"id": "09", "name": "Curves Without Cutouts", "sub": "Curved edges with continuous slab surfaces"}];
+      var last=null;try{last=localStorage.getItem('edgeHero');}catch(e){}
+      var pool=H.map(function(o,i){return i;}).filter(function(i){return H[i].id!==last;});
+      var idx=pool[Math.floor(Math.random()*pool.length)];
+      function esc(t){return String(t).replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c];});}
+      function paint(i){var o=H[i];window.__heroId=o.id;window.__heroIdx=i;
+        document.getElementById('elevDusk').src='img/front_'+o.id+'.jpg';
+        document.getElementById('elevDay').src='img/front_'+o.id+'_day.jpg';
+        document.getElementById('elevNight').src='img/front_'+o.id+'_night.jpg';
+        document.getElementById('elevDusk').alt='Front elevation of the EDGE Clubhouse, option '+o.id+': '+o.name;
+        document.getElementById('capTitle').innerHTML='Option '+o.id+' · <em>'+esc(o.name)+'</em>';
+        document.getElementById('capSub').textContent=o.sub;
+        document.getElementById('hCount').textContent=(i+1)+' / '+H.length;
+        document.getElementById('go3d').hidden=o.id!=='01';
+        var tl=document.getElementById('titleOpt');if(tl)tl.textContent='Option '+o.id+' · '+o.name;
+        try{localStorage.setItem('edgeHero',o.id);}catch(e){}
+        if(window.__detail)window.__detail(o.id);}
+      paint(idx);
+      var sw=document.getElementById('swap'),busy=false;
+      function go(i){if(busy)return;busy=true;sw.style.opacity=0;setTimeout(function(){paint((i+H.length)%H.length);
+        var im=document.getElementById('elevDusk');var done=function(){sw.style.opacity=1;busy=false;};if(im.complete)done();else{im.onload=done;im.onerror=done;}},420);}
+      document.getElementById('hPrev').onclick=function(){go(window.__heroIdx-1);};
+      document.getElementById('hNext').onclick=function(){go(window.__heroIdx+1);};
+      document.getElementById('hShuf').onclick=function(){var j;do{j=Math.floor(Math.random()*H.length);}while(j===window.__heroIdx);go(j);};
+      document.getElementById('capView').onclick=function(){if(window.__detail)window.__detail(window.__heroId);};
+    })();
+    </script>
+</div>
+  </div>
+</section>
+
+<main class="in">
+  <div class="overview rv" id="overview">
+    <div>
+      <div class="eyebrow">Design exploration · October 2026</div>
+      <h2>One clubhouse. <em>Nine directions.</em> Two built in 3D.</h2>
+      <p>Start with the two 3D models built on the approved floor plates and section levels, then review the nine concept boards, compare them side by side and check the source drawings.</p>
+    </div>
+    <div class="notice"><b>DESIGN STATUS · CONCEPT</b>The 3D models follow the Studio Infinite LLP plans (For Approval, 19-08-2026) and Section S01 levels. The concept boards are illustrative visualisations and are not dimensionally checked. Palettes and materials are concept notes, not approved specifications.</div>
+  </div>
+  <div class="stats rv">
+    <div class="stat lit"><b>09</b><span>Concept directions</span></div>
+    <div class="stat lit"><b>02</b><span>3D models from plans</span></div>
+    <div class="stat lit"><b>G + 3</b><span>Floors plus terrace</span></div>
+    <div class="stat lit"><b>42,158</b><span>Sft grand total, incl. terrace</span></div>
+    <div class="stat lit"><b>+14.99 m</b><span>Terrace floor level</span></div>
+  </div>
+
+<section class="ch" id="models">
+    <div class="chhead"><div><div class="eyebrow">01 · Built from the plans</div><h2>3D elevation models</h2></div>
+      <p>Both options sit on the real footprint and floor levels. Switch options, pick a view, and turn on Dusk to see the evening lighting. Elevations are true orthographic views with levels marked.</p></div>
+    <div class="optbar">
+      <h3><span id="optname">Option A</span> · <span style="color:var(--fg)" id="optsub">Sandstone portal</span></h3>
+      <div class="row" id="opts" role="group" aria-label="Design option">
+        <button id="o-a" data-o="A" aria-pressed="true">Option A · Sandstone portal</button>
+        <button id="o-01" data-o="01" aria-pressed="false">Option 01 · Original Luxury</button>
+      </div>
+    </div>
+    <div class="stage" id="stage">
+      <div class="load" id="load">Loading model…</div>
+      <div class="levels" id="levels"></div>
+      <div class="vlabel" id="vlabel">North elevation</div>
+      <div class="hint" id="hint">Drag to orbit · pinch or scroll to zoom</div>
+    </div>
+    <div class="row" id="views" role="group" aria-label="Views">
+      <button id="v-front" data-v="front" aria-pressed="true">North elevation</button>
+      <button id="v-nw" data-v="nw">North-west corner</button>
+      <button id="v-ne" data-v="ne">North-east corner</button>
+      <button id="v-entry" data-v="entry">Entrance, eye level</button>
+      <button id="v-east" data-v="east">East elevation</button>
+      <button id="v-west" data-v="west">West elevation</button>
+      <button id="v-south" data-v="south">South elevation</button>
+      <button id="v-aerial" data-v="aerial">Aerial</button>
+      <span class="sep" aria-hidden="true"></span>
+      <button id="t-day" data-t="day" aria-pressed="true">Day</button>
+      <button id="t-dusk" data-t="dusk">Dusk</button>
+    </div>
+    <div class="two">
+      <div>
+        <div data-for="A">
+          <h4>Facade concept</h4>
+          <p class="note">The road front is split into three parts that follow the plan. The left wing sits in a white frame with a two-storey open loggia at its west end, where the first-floor outdoor dining sits under the gym. The core is a sandstone portal holding the double-height reception glazing, the recessed meditation lawn and the entrance canopy, with the name on its head beam. The right wing wraps the double-height badminton and squash hall in a perforated bronze screen that glows at night, above a banquet hall behind vertical fins.</p>
+          <h4 style="margin-top:20px">Materials</h4>
+          <ul class="mats">
+            <li><img src="img/mat_stone.jpg" alt=""><div>Sandstone cladding<small>Core portal, 600 mm courses</small></div></li>
+            <li><img src="img/mat_paint.jpg" alt=""><div>White textured plaster<small>Floor bands, wing frame</small></div></li>
+            <li><img src="img/mat_screen.jpg" alt=""><div>Perforated bronze screen<small>Sports hall wrap</small></div></li>
+            <li><img src="img/mat_glass.jpg" alt=""><div>Low-E glazing<small>Bronze mullions</small></div></li>
+            <li><img src="img/mat_wood.jpg" alt=""><div>Timber-finish louvres<small>Soffit, sunshade, pergola</small></div></li>
+            <li><img src="img/mat_metal.jpg" alt=""><div>Bronze metal<small>Fins, door surround</small></div></li>
+          </ul>
+        </div>
+        <div data-for="01" hidden>
+          <h4>Facade concept</h4>
+          <p class="note">Concept board 01 translated onto the actual plan massing and levels. The left wing's upper floors sit in a charcoal-framed box wrapped in warm-lit timber battens, cantilevered 2.2 m over a fully glazed ground floor with a timber soffit and linear lights. A deep timber canopy runs across the double-height atrium to a full-height textured white stone wall. The right wing is a limestone frame around a large glazed box with timber fins and greenery hanging from the roof edge. Planted ledges, a terrace pergola and a circular drop-off complete it. The board shows roughly G+2; the model follows the plans at G+3, so both boxes read taller.</p>
+          <h4 style="margin-top:20px">Materials</h4>
+          <ul class="mats">
+            <li><img src="img/mat_stone.jpg" alt=""><div>Warm limestone (stone-look)<small>Right-wing frame, ledges</small></div></li>
+            <li><img src="img/mat_concrete.jpg" alt=""><div>Textured white stone<small>Feature wall, entry pier</small></div></li>
+            <li><img src="img/mat_wood.jpg" alt=""><div>Timber-tone aluminium<small>Battens, fins, soffits</small></div></li>
+            <li><img src="img/mat_glass.jpg" alt=""><div>Clear glazing<small>Atrium, glazed box</small></div></li>
+            <li><img src="img/mat_metal.jpg" alt=""><div>Champagne metal<small>Mullions, trims</small></div></li>
+            <li><img src="img/mat_plant.jpg" alt=""><div>Landscape planters<small>Ledges, hanging greenery</small></div></li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <h4>Level schedule · Section S01</h4>
+        <table>
+          <tr><td class="n">+18.40</td><td>Terrace amenity block top</td><td class="u">assumed</td></tr>
+          <tr><td class="n">+16.20</td><td>Terrace parapet</td><td class="u">1.2 m</td></tr>
+          <tr><td class="n">+14.99</td><td>Terrace floor</td><td class="u">party lawn, pickleball</td></tr>
+          <tr><td class="n">+11.80</td><td>Third floor</td><td class="u">gym, spa, office</td></tr>
+          <tr><td class="n">+8.20</td><td>Second floor</td><td class="u">games, courts</td></tr>
+          <tr><td class="n">+4.60</td><td>First floor</td><td class="u">party hall, guest rooms</td></tr>
+          <tr><td class="n">+0.60</td><td>Ground floor</td><td class="u">reception, banquet</td></tr>
+          <tr><td class="n">±0.00</td><td>Ground level</td><td class="u"></td></tr>
+        </table>
+        <p class="note" style="margin-top:10px;font-size:13px">Frontage of about 49 m and wing depths were read off the drawing scale. Material photos are illustrative texture references, not approved finishes.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="ch" id="concepts">
+    <div class="chhead"><div><div class="eyebrow">02 · Design exploration</div><h2>Nine concept directions</h2></div>
+      <p>Select a board to see its full presentation, facade vocabulary, materials and palette below. Boards marked 3D have a model in chapter 01.</p></div>
+    <div class="grid9" id="grid9" role="group" aria-label="Concept options"></div>
+    <div class="detail" id="detail">
+      <div class="im" id="dimg" role="button" tabindex="0" aria-label="Open board full size"><img id="dimgi" alt=""></div>
+      <div class="tx">
+        <div><h3 id="dtitle"></h3><div class="sub" id="dsub"></div></div>
+        <p class="note" id="ddesc" style="font-size:14.5px"></p>
+        <div><h4>Facade vocabulary</h4><div class="tags" id="dels"></div></div>
+        <div><h4>Proposed materials</h4><div class="samples" id="dmats"></div></div>
+        <div><h4>Colour palette</h4><div class="pal" id="dpal"></div></div>
+        <div><h4>Glazing expression</h4><p class="note" id="dglass"></p></div>
+        <p class="warn" id="dcav"></p>
+        <div class="row" id="dact"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ch" id="compare">
+    <div class="chhead"><div><div class="eyebrow">03 · Side by side</div><h2>Compare two options</h2></div>
+      <p>Drag across the image to wipe between two boards, then read the differences in the table. The boards use different camera angles, so compare the overall treatment rather than exact geometry.</p></div>
+    <div class="cmpbar">
+      <label for="ca">A <select id="ca"></select></label>
+      <label for="cb">B <select id="cb"></select></label>
+      <button id="cswap" type="button">⇄ Swap</button>
+    </div>
+    <div class="ab" id="ab"><img id="ib" alt=""><img id="ia" class="top" alt=""><div class="hd"></div><span class="lab" id="la" style="left:10px"></span><span class="lab" id="lb" style="right:10px"></span></div>
+    <input type="range" id="cx" min="0" max="100" value="50" aria-label="Wipe position">
+    <div class="tblwrap"><table class="ctable" id="ctable"></table></div>
+  </section>
+
+  <section class="ch" id="plans">
+    <div class="chhead"><div><div class="eyebrow">04 · Source drawings</div><h2>Floor plans and section</h2></div>
+      <p>Studio Infinite LLP sheets, issued for approval on 19 August 2026. Tap a sheet to open it, then zoom and scroll around the drawing.</p></div>
+    <div class="plans" id="planGrid"></div>
+  </section>
+
+  <section class="ch" id="next">
+    <div class="chhead"><div><div class="eyebrow">05 · Decision path</div><h2>From concept to coordinated elevation</h2></div>
+      <p>What happens once the founders pick a direction.</p></div>
+    <div class="steps">
+      <div class="step"><span>01 · PLAN</span><b>Respect the floor plates</b><p>Keep the retail and clinic wing, central reception and circulation, banquet wing and the documented upper-floor uses. Check the road frontage and entry against the ground-floor drawing.</p></div>
+      <div class="step"><span>02 · SECTION</span><b>Resolve real heights</b><p>Verify floor-to-floor levels, sports hall clear heights, parapets, terrace access, structural edges and service screens against Section S01 and consultant drawings.</p></div>
+      <div class="step"><span>03 · FACADE</span><b>Coordinate the materials</b><p>Choose one design language, then prepare measured elevations, glazing schedules, a shading and daylight study, material mock-ups, a maintenance strategy and a costed facade package.</p></div>
+    </div>
+  </section>
+
+  <footer>EDGE Clubhouse · Concept design comparison for internal review · Ankura Homes. Render imagery is illustrative; the architect's drawings take precedence over render geometry.</footer>
+</main>
+
+<div class="ov" id="ov" hidden role="dialog" aria-modal="true" aria-labelledby="ovt">
+  <div class="ovbar">
+    <strong id="ovt"></strong>
+    <button id="ovprev" type="button" aria-label="Previous">‹</button>
+    <button id="ovnext" type="button" aria-label="Next">›</button>
+    <button id="zout" type="button">− Zoom</button><button id="zin" type="button">+ Zoom</button><button id="zfit" type="button">Fit</button>
+    <button id="ovc" type="button">Close</button>
+  </div>
+  <div class="vp" id="vp"><img id="ovi" alt=""></div>
+</div>
+
+<script>
+(function(){
+const O=[{"id": "01", "name": "Original Luxury", "subtitle": "Original contemporary concept", "img": "img/option_01.webp", "description": "Stone-textured accents, warm timber screens and large glazed panels define the original premium architectural direction.", "elements": "Strong horizontal canopies;vertical timber fins;glazed activity zones;terrace greenery;feature cladding.", "materials": ["Warm limestone / stone-look", "Timber-tone aluminium fins", "Clear glazing", "Champagne metal", "Landscape planters"], "colors": ["#D5C5AE", "#876447", "#9AAEAC", "#B59C73", "#5E7047"], "glass": "Higher", "caveat": "Stone / stone-look cladding shown in concept"}, {"id": "02", "name": "Tropical Contemporary", "subtitle": "Landscape-led layered architecture", "img": "img/option_02.webp", "description": "Tropical-modern interpretation with layered canopy edges, screens and garden terraces.", "elements": "Horizontal layers;warm screening;roof gardens;generous entrance canopy;illuminated glazing.", "materials": ["Textured neutral panels", "Timber fins", "Bronze aluminium", "Glass", "Planter greenery"], "colors": ["#CFC6B8", "#946C47", "#9C8465", "#8CABA7", "#536C43"], "glass": "Medium–high", "caveat": "Concept materials; verify façade buildability"}, {"id": "03", "name": "Alternative Expression", "subtitle": "Distinct façade treatment", "img": "img/option_03.webp", "description": "An alternative luxury clubhouse expression explored during design iteration.", "elements": "Layered volumes;entrance emphasis;mixed solid and transparent façade zones;integrated planting.", "materials": ["Light neutral exterior finish", "Timber / metal accents", "Glass", "Warm metal trim", "Landscape planting"], "colors": ["#D6D0C4", "#997757", "#A5B6B5", "#AA8A5B", "#496B4A"], "glass": "Medium", "caveat": "Visual estimate only; exact material specification not issued"}, {"id": "04", "name": "Clean Minimal", "subtitle": "Simple, clean architecture · no stone", "img": "img/option_04.webp", "description": "Reduced visual complexity using smooth panels, slender screens and transparent activity areas; stone cladding excluded.", "elements": "Straight clean roof edges;modular vertical fins;simple wall planes;terrace planters.", "materials": ["Smooth plaster / GRC", "Timber-look aluminium", "Low-iron glass", "Powder-coated metal", "Planters"], "colors": ["#DDD8CE", "#A77B54", "#A9B9B6", "#4F4C46", "#6A8252"], "glass": "Medium–high", "caveat": "No stone cladding intended"}, {"id": "05", "name": "Curved Second Skin", "subtitle": "Lower-glass façade with planted pockets", "img": "img/option_05.webp", "description": "Parametric second-skin screens, curved patterns and planted openings reduce the amount of exposed glass.", "elements": "Perforated curved screens;fins;screen recesses;planted pockets;rounded canopies.", "materials": ["GRC / GFRC curved panels", "Perforated aluminium screens", "Timber-look fins", "Selective glass", "Landscape pockets"], "colors": ["#D5C9B6", "#B58D67", "#806C57", "#9BB4AA", "#668050"], "glass": "Low–medium", "caveat": "No stone cladding intended; screening requires daylight/ventilation study"}, {"id": "06", "name": "Curves + Glass", "subtitle": "Fluid glazed architecture", "img": "img/option_06.webp", "description": "Expressive curved edges combined with larger glass areas and planted terraces.", "elements": "Soft radiused slab edges;continuous glazing;layered balcony gardens;warm lighting.", "materials": ["Smooth light GRC", "Curved glazing concept", "Bronze fins", "Wood-look soffits", "Greenery"], "colors": ["#E2D7C8", "#A6C2C2", "#A87952", "#B59A76", "#5B7A53"], "glass": "High", "caveat": "Curved glass and geometry are conceptual"}, {"id": "07", "name": "Plan-Referenced Curves", "subtitle": "Curved-glass concept revised around planning", "img": "img/option_07.webp", "description": "A curved architectural direction referencing the clubhouse planning and differentiated wings, not a measured elevation.", "elements": "Central entrance emphasis;varied wing treatments;fins;selective curves;roof landscaping.", "materials": ["Smooth neutral render", "Aluminium / timber-look fins", "Glazing", "Metal trims", "Landscape planters"], "colors": ["#D8CCBA", "#92704D", "#A6B8B8", "#7A624C", "#54734C"], "glass": "Medium–high", "caveat": "Plan-referenced, not dimensionally verified"}, {"id": "08", "name": "Combined Signature", "subtitle": "Option 01 + curved architectural language", "img": "img/option_08.webp", "description": "The original horizontal luxury vocabulary blended with selective curved slab edges, glazed activity areas and planted screen pockets.", "elements": "Rounded canopy corners;timber fins;layered terraces;screened solid walls;landscape pockets.", "materials": ["Smooth plaster / GRC", "Timber-look aluminium", "Bronze metal screens", "Selective clear glazing", "Planted ledges"], "colors": ["#D7CCBC", "#916B49", "#8D755C", "#9EB4B0", "#57744C"], "glass": "Medium–high", "caveat": "Concept synthesis; no dimensionally checked façade schedule"}, {"id": "09", "name": "Curves Without Cutouts", "subtitle": "Curved edges with continuous slab surfaces", "img": "img/option_09.webp", "description": "A refinement of the curved-glass direction that removes large slab openings and emphasizes continuous roof and canopy surfaces.", "elements": "Continuous curved roof edges;large glazing;vertical fins;planted terraces;uninterrupted canopies.", "materials": ["Smooth neutral GRC", "Clear glazing", "Timber-look fins", "Bronze metal trim", "Landscape ledges"], "colors": ["#D8CCBA", "#A7BCB9", "#947153", "#C5A47D", "#577B58"], "glass": "High", "caveat": "No slab cutouts shown; massing remains conceptual"}];
+const IN3D={'01':'01'};
+const MS={wood:'img/mat_wood.jpg',glass:'img/mat_glass.jpg',stone:'img/mat_stone.jpg',plant:'img/mat_plant.jpg',metal:'img/mat_metal.jpg',screen:'img/mat_screen.jpg',concrete:'img/mat_concrete.jpg',paint:'img/mat_paint.jpg',other:'img/mat_other.jpg'};
+function mtype(n){const x=n.toLowerCase();if(/stone|travertine|marble|granite|cladding/.test(x))return'stone';if(/wood|timber|teak|oak|wpc/.test(x))return'wood';if(/glass|glazing|glazed/.test(x))return'glass';if(/plant|green|landscape|creeper/.test(x))return'plant';if(/screen|jaali|jali|perforated|parametric|mesh/.test(x))return'screen';if(/metal|bronze|aluminium|aluminum|steel|fin/.test(x))return'metal';if(/concrete|grc|microcement|cement/.test(x))return'concrete';if(/paint|plaster|stucco|render/.test(x))return'paint';return'other';}
+const PL=[['plan_ground','Ground floor','9 m road, supermarket, reception, banquet'],['plan_basement','Basement','Parking, ramps, circulation'],['plan_first','First floor','Party hall, guest rooms, spa'],['plan_second','Second floor','Indoor games, multipurpose, courts'],['plan_third','Third floor','Gym, offices, badminton volume'],['plan_terrace','Terrace','Party lawn, pickleball courts'],['plan_section','Section S01','Levels and height relationships']];
+const $=id=>document.getElementById(id);
+const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const cap=t=>t.trim().replace(/\.$/,'').replace(/^./,c=>c.toUpperCase());
+const byId=id=>O.find(o=>o.id===id);
+/* concept grid + detail */
+$('grid9').innerHTML=O.map(o=>'<button class="opt" type="button" data-id="'+o.id+'" aria-pressed="false"><img src="'+o.img+'" alt="Concept board, option '+o.id+'" loading="lazy"><div class="t"><span>OPTION '+o.id+'</span><b>'+esc(o.name)+'</b><small>'+esc(o.subtitle)+'</small>'+(IN3D[o.id]?'<em class="badge3d" style="font-style:normal">3D MODEL</em>':'')+'</div></button>').join('');
+let sel='01';
+function detail(id){sel=id;const o=byId(id);
+  document.querySelectorAll('.opt').forEach(b=>b.setAttribute('aria-pressed',b.dataset.id===id));
+  $('dimgi').src=o.img;$('dimgi').alt='Concept board, option '+o.id+': '+o.name;
+  $('dtitle').textContent='Option '+o.id+' · '+o.name;$('dsub').textContent=o.subtitle;$('ddesc').textContent=o.description;
+  $('dels').innerHTML=o.elements.split(';').filter(x=>x.trim()).map(x=>'<span class="tag">'+esc(cap(x))+'</span>').join('');
+  $('dmats').innerHTML=o.materials.map(m=>'<div><img src="'+MS[mtype(m)]+'" alt=""><span>'+esc(m)+'</span></div>').join('');
+  $('dpal').innerHTML=o.colors.map(c=>'<div><i style="background:'+c+'"></i><small>'+c+'</small></div>').join('');
+  $('dglass').textContent=o.glass+' visible glazing (qualitative assessment).';$('dcav').textContent=o.caveat;
+  $('dact').innerHTML='<button type="button" id="dfull">Open board full size</button>'+(IN3D[o.id]?'<button type="button" id="d3d" aria-pressed="true">View this option in 3D</button>':'');
+  $('dfull').onclick=()=>openBoard(id);if($('d3d'))$('d3d').onclick=()=>{window.__setOpt&&window.__setOpt(IN3D[o.id]);$('models').scrollIntoView();};}
+$('grid9').addEventListener('click',e=>{const b=e.target.closest('.opt');if(b){detail(b.dataset.id);$('detail').scrollIntoView({block:'nearest'});}});
+$('dimg').onclick=()=>openBoard(sel);$('dimg').onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openBoard(sel);}};
+window.__detail=detail;window.__O=O;detail(window.__heroId||'01');
+/* compare */
+const opt=O.map(o=>'<option value="'+o.id+'">'+o.id+' · '+esc(o.name)+'</option>').join('');$('ca').innerHTML=opt;$('cb').innerHTML=opt;$('ca').value='01';$('cb').value='08';
+function cmp(){const a=byId($('ca').value),b=byId($('cb').value);$('ia').src=a.img;$('ib').src=b.img;$('la').textContent='A · '+a.name;$('lb').textContent='B · '+b.name;
+  const rows=[['Architectural idea',a.subtitle,b.subtitle],['Key elements',a.elements.split(';').map(cap).join(', '),b.elements.split(';').map(cap).join(', ')],['Proposed materials',a.materials.join(' · '),b.materials.join(' · ')],['Glazing',a.glass,b.glass],['Palette',a.colors,b.colors],['Review caveat',a.caveat,b.caveat]];
+  $('ctable').innerHTML='<thead><tr><th></th><th>A · Option '+a.id+' '+esc(a.name)+'</th><th>B · Option '+b.id+' '+esc(b.name)+'</th></tr></thead><tbody>'+rows.map(r=>'<tr><th>'+r[0]+'</th>'+[r[1],r[2]].map(v=>'<td>'+(Array.isArray(v)?'<div class="pal">'+v.map(c=>'<div><i style="background:'+c+';height:20px"></i></div>').join('')+'</div>':esc(v))+'</td>').join('')+'</tr>').join('')+'</tbody>';}
+function setX(v){$('ab').style.setProperty('--x',v+'%');$('cx').value=v;}
+$('ca').onchange=cmp;$('cb').onchange=cmp;$('cswap').onclick=()=>{const t=$('ca').value;$('ca').value=$('cb').value;$('cb').value=t;cmp();};
+$('cx').oninput=e=>setX(e.target.value);
+let drag=false;const ab=$('ab');const mv=e=>{const r=ab.getBoundingClientRect();setX(Math.max(0,Math.min(100,(e.clientX-r.left)/r.width*100)).toFixed(1));};
+ab.addEventListener('pointerdown',e=>{drag=true;mv(e);});addEventListener('pointermove',e=>{if(drag)mv(e);});addEventListener('pointerup',()=>drag=false);
+cmp();setX(50);
+/* plans */
+$('planGrid').innerHTML=PL.map((p,i)=>'<button class="plan" type="button" data-i="'+i+'"><img src="img/'+p[0]+'.jpg" alt="'+p[1]+' drawing" loading="lazy"><span>'+p[1]+'<small>'+p[2]+'</small></span></button>').join('');
+$('planGrid').addEventListener('click',e=>{const b=e.target.closest('.plan');if(b)openPlan(+b.dataset.i);});
+/* viewer */
+let list=[],idx=0,z=1,last=null;
+function natural(){const im=$('ovi'),vp=$('vp');const fit=Math.min(vp.clientWidth/im.naturalWidth,vp.clientHeight/im.naturalHeight)||1;im.style.width=(im.naturalWidth*fit*z)+'px';}
+function showItem(){const it=list[idx];$('ovt').textContent=it.t;z=1;$('ovi').onload=natural;$('ovi').src=it.src;$('ovi').alt=it.t;if($('ovi').complete)natural();$('vp').scrollTo(0,0);}
+function openList(l,i){list=l;idx=i;last=document.activeElement;$('ov').hidden=false;document.body.style.overflow='hidden';showItem();$('ovc').focus();}
+function openBoard(id){openList(O.map(o=>({src:o.img,t:'Option '+o.id+' · '+o.name})),O.findIndex(o=>o.id===id));}
+function openPlan(i){openList(PL.map(p=>({src:'img/'+p[0]+'.jpg',t:p[1]})),i);}
+function closeOv(){$('ov').hidden=true;document.body.style.overflow='';if(last)last.focus();}
+$('ovc').onclick=closeOv;$('ovprev').onclick=()=>{idx=(idx-1+list.length)%list.length;showItem();};$('ovnext').onclick=()=>{idx=(idx+1)%list.length;showItem();};
+$('zin').onclick=()=>{z=Math.min(5,z*1.4);natural();};$('zout').onclick=()=>{z=Math.max(1,z/1.4);natural();};$('zfit').onclick=()=>{z=1;natural();};
+addEventListener('resize',()=>{if(!$('ov').hidden)natural();});
+document.addEventListener('keydown',e=>{if($('ov').hidden)return;if(e.key==='Escape')closeOv();if(e.key==='ArrowRight')$('ovnext').click();if(e.key==='ArrowLeft')$('ovprev').click();});
+})();
+</script>
+
+<script>
+(function(){
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const $=id=>document.getElementById(id);
+const intro=$('top'),scene=$('scene'),sky=$('sky'),fore=$('fore'),g=sky.getContext('2d'),fg=fore.getContext('2d');
+const elev=$('elevw'),iDay=$('elevDay'),iNight=$('elevNight'),title=$('title'),cue=$('cue'),cap=$('caption');
+let W=0,H=0,DPR=1;
+const far=document.createElement('canvas'),fc=far.getContext('2d'),near=document.createElement('canvas'),nc=near.getContext('2d');
+function size(){DPR=Math.min(devicePixelRatio||1,1.5);W=scene.clientWidth;H=scene.clientHeight;
+  [sky,fore,far,near].forEach(c=>{c.width=Math.round(W*DPR);c.height=Math.round(H*DPR);c.getContext('2d').setTransform(DPR,0,0,DPR,0,0);});
+  stars=Array.from({length:Math.round(W*H/2600)},()=>({x:rnd()*W,y:rnd()*H*.62,r:.4+rnd()*1.1,t:rnd()*6.28,s:.6+rnd()*1.8}));}
+
+/* ---------- value-noise clouds: soft cumulus with lit tops and shaded bases ---------- */
+let seed=7;const rnd=()=>{seed=(seed*16807)%2147483647;return (seed-1)/2147483646;};
+const P=new Float32Array(512*512).map(()=>rnd());
+const fade=t=>t*t*(3-2*t);
+function vn(x,y){const xi=Math.floor(x),yi=Math.floor(y),xf=x-xi,yf=y-yi,a=P[((yi&511)*512+(xi&511))],b=P[((yi&511)*512+((xi+1)&511))],c=P[(((yi+1)&511)*512+(xi&511))],d=P[(((yi+1)&511)*512+((xi+1)&511))];
+  const u=fade(xf),v=fade(yf);return a+(b-a)*u+(c-a)*v+(a-b-c+d)*u*v;}
+function fbm(x,y){let s=0,a=.5,f=1;for(let i=0;i<5;i++){s+=a*vn(x*f,y*f);f*=2.03;a*=.5;}return s;}
+function cloud(k,wide){const w=wide?560:420,h=wide?200:230,c=document.createElement('canvas');c.width=w;c.height=h;const x=c.getContext('2d'),im=x.createImageData(w,h),d=im.data,ox=k*37.1,oy=k*11.7;
+  for(let j=0;j<h;j++)for(let i=0;i<w;i++){const u=i/w,v=j/h;
+    const ex=(u-.5)/.47,ey=v<.62?(v-.62)/.55:(v-.62)/.2;const e=1-ex*ex-ey*ey;
+    const n=fbm(u*5+ox,v*3.2+oy);const dd=n*1.15+e*.85-.82;if(dd<=0)continue;
+    const a=Math.min(1,dd/.28);const lit=1-v*.38-(1-n)*.18;const L=Math.max(.45,Math.min(1,lit));
+    const p=(j*w+i)*4;d[p]=255*L;d[p+1]=255*L;d[p+2]=Math.min(255,262*L);d[p+3]=255*a*a*(3-2*a);}
+  x.putImageData(im,0,0);return c;}
+const CS=[0,1,2,3,4,5].map(k=>cloud(k,k%2===0));
+const farC=[],nearC=[];
+for(let i=0;i<15;i++)farC.push({x:rnd()*1.3-.15,y:.05+rnd()*.42,d:.25+rnd()*.55,s:.32+rnd()*.5,v:.003+rnd()*.007,k:i%6});
+for(let i=0;i<7;i++)nearC.push({x:rnd()*1.2-.1,y:.25+rnd()*.55,d:1+rnd()*.8,s:1.1+rnd()*.9,v:.006+rnd()*.008,k:i%6,side:i%2?1:-1});
+let stars=[];size();
+const birds=Array.from({length:7},(_,i)=>({x:-.1-i*.035-rnd()*.03,y:.3+rnd()*.06+(i%2)*.02,ph:rnd()*6}));
+
+/* ---------- time-of-day keyframes (hour of the viewer's day) ---------- */
+const N={sky:['#050916','#0d1530','#252842'],tint:'#58658c',ta:.65,ca:.4,stars:1,dw:0,nw:1,bg:'#0a0b14',gold:'#cfb18b',skyc:'#a5b5d9',f1:'#262a5a',f2:'#3a2838',f3:'#10283f',name:'Night'};
+const K=[[0,N],[5.2,N],
+ [6.0,{sky:['#1b2347','#575a87','#e09f87'],tint:'#e8a08c',ta:.5,ca:.65,stars:.3,dw:.15,nw:.55,bg:'#121220',gold:'#e6b496',skyc:'#c6c8e8',f1:'#4a3a78',f2:'#8a4a46',f3:'#1f3a5a',name:'Dawn'}],
+ [6.8,{sky:['#4a69a6','#d5a58e','#f7c897'],tint:'#ffd0a6',ta:.45,ca:.85,stars:0,dw:.55,nw:.1,bg:'#14141f',gold:'#efc39a',skyc:'#d0e0ec',f1:'#4b4a8a',f2:'#a8603e',f3:'#2a4a68',name:'Sunrise'}],
+ [9,{sky:['#3a78c8','#8cbce8','#dcecf8'],tint:'#ffffff',ta:0,ca:.95,stars:0,dw:1,nw:0,bg:'#0f1620',gold:'#e2c7a0',skyc:'#bfe0ee',f1:'#1f5a7a',f2:'#5a6a4a',f3:'#2a4a7a',name:'Morning'}],
+ [12.5,{sky:['#2a6cd0','#76ade9','#d6e8f8'],tint:'#ffffff',ta:0,ca:1,stars:0,dw:1,nw:0,bg:'#0e1520',gold:'#dfc6a2',skyc:'#bfe2f2',f1:'#1d5f86',f2:'#4c6a58',f3:'#2a4f86',name:'Midday'}],
+ [15.5,{sky:['#3d74c2','#9cc0e6','#efe2cc'],tint:'#fff0dc',ta:.25,ca:.95,stars:0,dw:.8,nw:0,bg:'#11141f',gold:'#e0bf96',skyc:'#c4dbe6',f1:'#3a4f8a',f2:'#7a5a3a',f3:'#1f4a66',name:'Afternoon'}],
+ [17.4,{sky:['#8da5cb','#a9b6cf','#ebcfba'],tint:'#ffd4b8',ta:.5,ca:.85,stars:0,dw:0,nw:0,bg:'#121019',gold:'#d9b58e',skyc:'#bccfd6',f1:'#3f3570',f2:'#7a4632',f3:'#1f4253',name:'Golden hour'}],
+ [18.2,{sky:['#283664','#5d6793','#cc917c'],tint:'#c79a9c',ta:.55,ca:.65,stars:.35,dw:0,nw:.5,bg:'#100f1a',gold:'#d6ad86',skyc:'#b0bfe2',f1:'#36306a',f2:'#5a3234',f3:'#1a3550',name:'Blue hour'}],
+ [19.3,N],[24,N]];
+const hx=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16)),lerp=(a,b,t)=>a+(b-a)*t;
+const mixc=(a,b,t)=>{const A=hx(a),B=hx(b);return '#'+A.map((v,i)=>Math.round(lerp(v,B[i],t)).toString(16).padStart(2,'0')).join('');};
+function phase(h){h=((h%24)+24)%24;let i=0;while(i<K.length-2&&h>K[i+1][0])i++;const [h0,a]=K[i],[h1,b]=K[i+1];const t=fade(Math.min(1,Math.max(0,(h-h0)/(h1-h0||1))));
+  const o={};for(const k in a){const va=a[k],vb=b[k];o[k]=Array.isArray(va)?va.map((c,j)=>mixc(c,vb[j],t)):typeof va==='number'?lerp(va,vb,t):typeof va==='string'&&va[0]==='#'?mixc(va,vb,t):(t<.5?va:vb);}return o;}
+const SUNRISE=6.2,SUNSET=17.95;
+function bodies(h){const out={};const f=(h-SUNRISE)/(SUNSET-SUNRISE);if(f>-.04&&f<1.04){out.sun={f,x:.1+.8*f,alt:Math.sin(Math.max(0,Math.min(1,f))*Math.PI)};}
+  let m=(h-18.3+24)%24/12;if(m<1.02){out.moon={x:.12+.76*m,alt:Math.sin(Math.min(1,m)*Math.PI)};}return out;}
+
+/* ---------- live clock + manual preview ---------- */
+const clkR=$('clkR'),clkLabel=$('clkLabel'),clkPhase=$('clkPhase');
+let live=true,target=nowH(),hour=target,lastSite='',ui3d=false;
+function nowH(){const d=new Date();return d.getHours()+d.getMinutes()/60+d.getSeconds()/3600;}
+function fmt(h){h=((h%24)+24)%24;let hh=Math.floor(h),mm=Math.round((h-hh)*60);if(mm===60){hh=(hh+1)%24;mm=0;}const ap=hh<12?'am':'pm';const h12=hh%12||12;return h12+':'+String(mm).padStart(2,'0')+' '+ap;}
+function setTarget(h,isLive){live=isLive;target=h;if(reduce||!isLive&&Math.abs(h-hour)>12)hour=h;
+  document.querySelectorAll('[data-h]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.h==='live'?String(live):String(!live&&Math.abs(+b.dataset.h-h)<.01)));}
+document.querySelectorAll('[data-h]').forEach(b=>b.addEventListener('click',()=>{if(b.dataset.h==='live')setTarget(nowH(),true);else setTarget(+b.dataset.h,false);kick();}));
+clkR.addEventListener('input',()=>{setTarget(+clkR.value,false);hour=target;kick();});
+setInterval(()=>{if(live){target=nowH();kick();}},30000);
+function applySite(ph){const key=ph.bg+ph.gold+ph.f1;if(key===lastSite)return;lastSite=key;const r=document.documentElement.style;
+  r.setProperty('--bg',ph.bg);r.setProperty('--gold',ph.gold);r.setProperty('--sky',ph.skyc);r.setProperty('--teal',ph.f1);r.setProperty('--amber',ph.f2);r.setProperty('--indigo',ph.f3);r.setProperty('--bg2',mixc(ph.bg,ph.f1,.45));}
+
+const sm=(a,b,x)=>{const t=Math.min(1,Math.max(0,(x-a)/(b-a)));return t*t*(3-2*t);};
+let p=0,mx=0,my=0,tmx=0,tmy=0,last=performance.now(),running=false;
+function progress(){const r=intro.getBoundingClientRect();p=Math.min(1,Math.max(0,-r.top/Math.max(1,intro.offsetHeight-scene.clientHeight)));}
+function tintLayer(ctx,col,amt){if(amt<=.01)return;ctx.save();ctx.globalCompositeOperation='source-atop';ctx.globalAlpha=amt;ctx.fillStyle=col;ctx.fillRect(0,0,W,H);ctx.restore();}
+
+function draw(now){const dt=Math.min(.05,(now-last)/1000);last=now;mx+=(tmx-mx)*.05;my+=(tmy-my)*.05;
+  if(Math.abs(target-hour)>.002)hour+=(target-hour)*Math.min(1,dt*3.2);else hour=target;
+  const ph=phase(hour),B=bodies(hour);applySite(ph);
+  clkLabel.textContent=(live?'Live · ':'Preview · ')+fmt(hour);clkPhase.textContent=ph.name;if(document.activeElement!==clkR)clkR.value=(((hour%24)+24)%24).toFixed(2);
+  const hor=H*(.64+.06*p);
+  // sky
+  const gr=g.createLinearGradient(0,0,0,H);gr.addColorStop(0,ph.sky[0]);gr.addColorStop(.5,ph.sky[1]);gr.addColorStop(.86,ph.sky[2]);gr.addColorStop(1,ph.sky[2]);g.fillStyle=gr;g.fillRect(0,0,W,H);
+  // stars
+  if(ph.stars>.02){stars.forEach(s=>{const tw=.55+.45*Math.sin(now/1000*s.s+s.t);g.globalAlpha=ph.stars*tw*(1-s.y/(H*.7));g.fillStyle='#fff';g.beginPath();g.arc(s.x+mx*-4,s.y-p*H*.12,s.r,0,7);g.fill();});g.globalAlpha=1;}
+  // moon
+  if(B.moon&&ph.stars>.05){const m=B.moon,x=W*m.x+mx*-6,y=hor-m.alt*H*.5-p*H*.05,R=Math.min(W,H)*.032;
+    g.globalAlpha=Math.min(1,ph.stars*1.2);const hg=g.createRadialGradient(x,y,0,x,y,R*8);hg.addColorStop(0,'rgba(220,230,255,.35)');hg.addColorStop(1,'rgba(220,230,255,0)');g.fillStyle=hg;g.fillRect(x-R*8,y-R*8,R*16,R*16);
+    const mg=g.createRadialGradient(x-R*.3,y-R*.3,R*.1,x,y,R);mg.addColorStop(0,'#fbfbf4');mg.addColorStop(1,'#cfd3dc');g.fillStyle=mg;g.beginPath();g.arc(x,y,R,0,7);g.fill();
+    g.fillStyle='rgba(150,155,170,.28)';[[.3,-.2,.22],[-.25,.25,.16],[.1,.4,.12]].forEach(([a,b,c])=>{g.beginPath();g.arc(x+a*R,y+b*R,c*R,0,7);g.fill();});g.globalAlpha=1;}
+  // sun
+  let sx=-1,sy=-1,sunA=0;
+  if(B.sun){const s=B.sun;sx=W*s.x+mx*-10;sy=hor-s.alt*H*.56+p*H*.06;sunA=Math.min(1,Math.max(0,s.alt*6+.15));const low=1-Math.min(1,s.alt*1.6);
+    const R=Math.min(W,H)*(.035+.02*low);
+    const halo=g.createRadialGradient(sx,sy,0,sx,sy,R*(10+8*low));halo.addColorStop(0,`rgba(255,${246-50*low|0},${220-110*low|0},${.6*sunA})`);halo.addColorStop(.22,`rgba(255,${232-60*low|0},${180-90*low|0},${.22*sunA})`);halo.addColorStop(1,'rgba(255,220,170,0)');
+    g.fillStyle=halo;g.fillRect(0,0,W,H);
+    if(!reduce){g.save();g.globalCompositeOperation='lighter';for(let i=0;i<12;i++){const a=now/14000+i*Math.PI/6;g.fillStyle=`rgba(255,240,210,${.02*sunA})`;g.beginPath();g.moveTo(sx,sy);g.arc(sx,sy,R*16,a,a+.06);g.closePath();g.fill();}g.restore();}
+    const core=g.createRadialGradient(sx,sy,0,sx,sy,R);core.addColorStop(0,'#fffef8');core.addColorStop(.75,`rgb(255,${246-40*low|0},${222-100*low|0})`);core.addColorStop(1,'rgba(255,230,180,0)');
+    g.globalAlpha=sunA;g.fillStyle=core;g.beginPath();g.arc(sx,sy,R,0,7);g.fill();g.globalAlpha=1;}
+  // horizon haze
+  const hz=g.createLinearGradient(0,hor-H*.25,0,hor+H*.1);hz.addColorStop(0,'rgba(255,255,255,0)');hz.addColorStop(1,ph.sky[2]+'aa');g.fillStyle=hz;g.fillRect(0,hor-H*.25,W,H*.35);
+  // far clouds, lit by the hour
+  fc.clearRect(0,0,W,H);
+  farC.forEach(c=>{if(!reduce)c.x+=c.v*dt*(1+c.d);if(c.x>1.3)c.x=-.35;const spr=CS[c.k],w=W*.4*c.s*(1+p*.3),h=w*spr.height/spr.width;
+    const x=c.x*W+mx*c.d*-24-w/2,y=(c.y-p*(.5+c.d*.6))*H+my*c.d*-10;if(y+h<0)return;fc.globalAlpha=(.5+c.d*.5)*(1-sm(.6,.95,p)*.85);fc.drawImage(spr,x,y,w,h);});
+  fc.globalAlpha=1;tintLayer(fc,ph.tint,ph.ta);
+  if(sx>0&&sunA>.05){fc.save();fc.globalCompositeOperation='source-atop';const rim=fc.createRadialGradient(sx,sy,0,sx,sy,Math.max(W,H)*.45);rim.addColorStop(0,`rgba(255,236,200,${.55*sunA})`);rim.addColorStop(1,'rgba(255,236,200,0)');fc.fillStyle=rim;fc.fillRect(0,0,W,H);fc.restore();}
+  g.globalAlpha=ph.ca;g.drawImage(far,0,0,W,H);g.globalAlpha=1;
+  // birds in daylight
+  if(!reduce&&B.sun&&sunA>.3){g.strokeStyle='rgba(30,35,45,.55)';g.lineWidth=1.3;birds.forEach((b,i)=>{b.x+=dt*.018;if(b.x>1.15)b.x=-.15-i*.03;const x=b.x*W,y=(b.y-p*.35)*H+Math.sin(now/900+b.ph)*4,f=Math.sin(now/180+b.ph)*3,s=5;
+    g.beginPath();g.moveTo(x-s,y-f*.6);g.quadraticCurveTo(x-s*.4,y-2-f,x,y);g.quadraticCurveTo(x+s*.4,y-2-f,x+s,y-f*.6);g.stroke();});}
+  // near clouds: part and fly past as we descend
+  nc.clearRect(0,0,W,H);const part=sm(.02,.45,p);
+  nearC.forEach(c=>{if(!reduce)c.x+=c.v*dt;if(c.x>1.3)c.x=-.4;const spr=CS[c.k],w=W*.75*c.s*(1+part*1.6),h=w*spr.height/spr.width;
+    const x=(c.x+c.side*part*.6)*W+mx*c.d*-40-w/2,y=(c.y-part*(.5+c.d*.4))*H-h/2+my*c.d*-16;nc.globalAlpha=.9*(1-part);if(nc.globalAlpha>.01)nc.drawImage(spr,x,y,w,h);});
+  nc.globalAlpha=1;tintLayer(nc,ph.tint,ph.ta);
+  fg.clearRect(0,0,W,H);fg.globalAlpha=Math.min(1,ph.ca+.15);fg.drawImage(near,0,0,W,H);fg.globalAlpha=1;
+  // lens flare toward the centre while the sun is up
+  if(sx>0&&sunA>.2&&p<.7){fg.save();fg.globalCompositeOperation='lighter';const cx=W/2,cy=H/2;[[.4,22,'255,220,170'],[.7,10,'190,220,255'],[1.15,34,'255,200,160'],[1.5,14,'200,255,230']].forEach(([k,r,c])=>{const x=sx+(cx-sx)*k,y=sy+(cy-sy)*k;
+    const fl=fg.createRadialGradient(x,y,0,x,y,r*2);fl.addColorStop(0,`rgba(${c},${.12*sunA*(1-p)})`);fl.addColorStop(1,`rgba(${c},0)`);fg.fillStyle=fl;fg.beginPath();fg.arc(x,y,r*2,0,7);fg.fill();});fg.restore();}
+  // the elevation rises into place in the light of the hour
+  const t=sm(.18,.88,p);elev.style.opacity=sm(.12,.42,p).toFixed(3);
+  elev.style.transform=`translate3d(${(mx*-8).toFixed(1)}px,${((1-t)*55).toFixed(2)}vh,0) scale(${(1.12-.12*t).toFixed(4)})`;
+  iDay.style.opacity=ph.dw.toFixed(3);iNight.style.opacity=ph.nw.toFixed(3);
+  title.style.opacity=(1-sm(.04,.3,p)).toFixed(3);title.style.transform=`translate(-50%,calc(-50% - ${(p*160).toFixed(1)}px))`;
+  cue.style.opacity=(1-sm(0,.08,p)).toFixed(3);
+  const cp=sm(.86,.98,p);cap.style.opacity=cp.toFixed(3);cap.style.transform=`translateY(${((1-cp)*24).toFixed(1)}px)`;cap.style.pointerEvents=cp>.5?'auto':'none';
+  $('capTime').textContent=ph.name.toLowerCase();
+}
+let pend=false;function kick(){if(!running&&!pend){pend=true;requestAnimationFrame(n=>{pend=false;progress();draw(n);});}}
+function loop(now){if(!running)return;progress();draw(now);requestAnimationFrame(loop);}
+new IntersectionObserver(es=>{const v=es[0].isIntersecting;if(v&&!running){running=true;last=performance.now();requestAnimationFrame(loop);}if(!v)running=false;}).observe(scene);
+addEventListener('resize',()=>{size();kick();});
+addEventListener('scroll',()=>{if(!running)kick();},{passive:true});
+addEventListener('pointermove',e=>{tmx=e.clientX/innerWidth*2-1;tmy=e.clientY/innerHeight*2-1;},{passive:true});
+setTarget(target,true);progress();draw(performance.now());
+// the 3D models open in matching light
+addEventListener('load',()=>{const h=((nowH()%24)+24)%24;if(h>=17.3||h<6.3){const b=$('t-dusk');if(b)b.click();}});
+
+/* glass sheen, card tilt, reveals, progress rail */
+document.addEventListener('pointermove',e=>{const el=e.target.closest&&e.target.closest('.lit');if(!el)return;const r=el.getBoundingClientRect();
+  el.style.setProperty('--mx',(e.clientX-r.left)+'px');el.style.setProperty('--my',(e.clientY-r.top)+'px');},{passive:true});
+document.querySelectorAll('.chhead,.detail,.step,.notice,.two>div,.tblwrap').forEach(el=>el.classList.add('lit'));
+if(!reduce&&matchMedia('(hover:hover)').matches){
+  document.addEventListener('pointermove',e=>{const c=e.target.closest&&e.target.closest('.opt,.plan');if(!c)return;const r=c.getBoundingClientRect();
+    const x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;c.style.transform=`rotateY(${(x*3).toFixed(2)}deg) rotateX(${(-y*3).toFixed(2)}deg)`;
+    c.classList.add('lit');c.style.setProperty('--mx',(e.clientX-r.left)+'px');c.style.setProperty('--my',(e.clientY-r.top)+'px');},{passive:true});
+  document.addEventListener('pointerout',e=>{const c=e.target.closest&&e.target.closest('.opt,.plan');if(c&&!c.contains(e.relatedTarget))c.style.transform='';});
+}
+document.querySelectorAll('section.ch .chhead,.grid9,.detail,.plans,.steps,.ab,.stage').forEach(el=>el.classList.add('rv'));
+const io=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){en.target.classList.add('on');io.unobserve(en.target);}}),{rootMargin:'0px 0px -8% 0px'});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+const rail=[...document.querySelectorAll('.rail a')];
+const ro=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting)rail.forEach(a=>a.setAttribute('aria-current',a.getAttribute('href')==='#'+en.target.id));}),{rootMargin:'-45% 0px -50% 0px'});
+rail.forEach(a=>{const el=document.getElementById(a.getAttribute('href').slice(1));if(el)ro.observe(el);});
+$('go3d').addEventListener('click',()=>{window.__setOpt&&window.__setOpt('01');});
+})();
+
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+
+(function(){
+const stage=document.getElementById('stage');
+if(!window.THREE){document.getElementById('load').textContent='3D library failed to load. Reload the page to try again.';return;}
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---------- renderer & scene ---------- */
+const renderer=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.shadowMap.enabled=true; renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+renderer.outputEncoding=THREE.sRGBEncoding; renderer.toneMapping=THREE.ACESFilmicToneMapping; renderer.toneMappingExposure=1.0;
+stage.prepend(renderer.domElement);
+const scene=new THREE.Scene();
+const pmrem=new THREE.PMREMGenerator(renderer);
+
+function skyTex(top,mid,bot){
+  const c=document.createElement('canvas');c.width=512;c.height=256;const g=c.getContext('2d');
+  const gr=g.createLinearGradient(0,0,0,256);gr.addColorStop(0,top);gr.addColorStop(.48,mid);gr.addColorStop(.52,bot);gr.addColorStop(1,'#3a3a36');
+  g.fillStyle=gr;g.fillRect(0,0,512,256);
+  const t=new THREE.CanvasTexture(c);t.mapping=THREE.EquirectangularReflectionMapping;t.encoding=THREE.sRGBEncoding;return t;
+}
+const skies={day:skyTex('#6f9fcf','#d6e4ee','#c9c6bb'),dusk:skyTex('#1d2440','#c98a6e','#5b4a44')};
+const envs={day:pmrem.fromEquirectangular(skies.day).texture,dusk:pmrem.fromEquirectangular(skies.dusk).texture};
+
+/* ---------- procedural textures ---------- */
+function canvasTex(w,h,draw,rep){const c=document.createElement('canvas');c.width=w;c.height=h;draw(c.getContext('2d'),w,h);
+  const t=new THREE.CanvasTexture(c);t.encoding=THREE.sRGBEncoding;t.wrapS=t.wrapT=THREE.RepeatWrapping;if(rep)t.repeat.set(rep[0],rep[1]);t.anisotropy=4;return t;}
+function rnd(s){return function(){s=(s*16807)%2147483647;return (s-1)/2147483646;};}
+const R=rnd(7);
+const stoneTex=canvasTex(512,512,(g,w,h)=>{g.fillStyle='#c8ae88';g.fillRect(0,0,w,h);
+  const rows=8;for(let r=0;r<rows;r++){let x=(r%2)*-64;const y=r*h/rows;
+    while(x<w){const bw=96+R()*80;const l=0.9+R()*0.18;g.fillStyle=`rgb(${200*l|0},${174*l|0},${136*l|0})`;g.fillRect(x+2,y+2,bw-3,h/rows-3);x+=bw;}
+  }
+  for(let i=0;i<3000;i++){g.fillStyle=`rgba(90,70,40,${R()*0.08})`;g.fillRect(R()*w,R()*h,2,2);}
+});
+const plasterTex=canvasTex(256,256,(g,w,h)=>{g.fillStyle='#eeece6';g.fillRect(0,0,w,h);for(let i=0;i<4000;i++){g.fillStyle=`rgba(0,0,0,${R()*0.035})`;g.fillRect(R()*w,R()*h,1.5,1.5);}});
+const timberTex=canvasTex(256,256,(g,w,h)=>{for(let x=0;x<w;x+=16){const l=0.85+R()*0.25;g.fillStyle=`rgb(${155*l|0},${107*l|0},${69*l|0})`;g.fillRect(x,0,15,h);g.fillStyle='rgba(40,25,10,.5)';g.fillRect(x+15,0,1,h);}});
+const paveTex=canvasTex(256,256,(g,w,h)=>{g.fillStyle='#b9b4a8';g.fillRect(0,0,w,h);g.strokeStyle='rgba(80,75,65,.35)';g.lineWidth=2;
+  for(let x=0;x<=w;x+=64){g.beginPath();g.moveTo(x,0);g.lineTo(x,h);g.stroke();}for(let y=0;y<=h;y+=32){g.beginPath();g.moveTo(0,y);g.lineTo(w,y);g.stroke();}});
+const grassTex=canvasTex(256,256,(g,w,h)=>{g.fillStyle='#6f8a4c';g.fillRect(0,0,w,h);for(let i=0;i<5000;i++){g.fillStyle=R()>.5?'rgba(40,70,20,.25)':'rgba(150,170,90,.2)';g.fillRect(R()*w,R()*h,2,3);}});
+const roadTex=canvasTex(512,64,(g,w,h)=>{g.fillStyle='#3c3d3d';g.fillRect(0,0,w,h);for(let i=0;i<2000;i++){g.fillStyle=`rgba(255,255,255,${R()*0.05})`;g.fillRect(R()*w,R()*h,1,1);}
+  g.fillStyle='#d8d4c4';for(let x=0;x<w;x+=64)g.fillRect(x,h/2-2,34,4);},[6,1]);
+// perforated screen: ripple dots, larger holes near the top
+function screenAlpha(cols,rows){return canvasTex(1024,Math.round(1024*rows/cols),(g,w,h)=>{g.fillStyle='#fff';g.fillRect(0,0,w,h);g.fillStyle='#000';
+  const nx=cols*5,ny=rows*5,sx=w/nx,sy=h/ny;
+  for(let j=0;j<ny;j++)for(let i=0;i<nx;i++){const u=i/nx,v=j/ny;
+    const f=0.5+0.5*Math.sin(u*9+Math.sin(v*5)*2.2)*Math.cos(v*4-u*3);
+    const r=Math.max(0,(0.12+0.3*f*(1-v*0.55)))*sx;if(r<0.6)continue;
+    g.beginPath();g.arc((i+.5+(j%2)*.5)*sx,(j+.5)*sy,r,0,Math.PI*2);g.fill();}
+});}
+const meshTex=canvasTex(64,64,(g,w,h)=>{g.fillStyle='#000';g.fillRect(0,0,w,h);g.strokeStyle='#fff';g.lineWidth=3;g.beginPath();g.moveTo(0,0);g.lineTo(w,h);g.moveTo(w,0);g.lineTo(0,h);g.stroke();},[40,6]);
+
+function signTex(){const c=document.createElement('canvas');c.width=2048;c.height=160;const g=c.getContext('2d');
+  g.clearRect(0,0,2048,160);g.fillStyle='#2b2118';g.font='800 112px Archivo, Arial Black, sans-serif';g.textAlign='center';g.textBaseline='middle';
+  if(g.letterSpacing!==undefined)g.letterSpacing='28px';g.fillText('EDGE  CLUB HOUSE',1024,84);
+  const t=new THREE.CanvasTexture(c);t.encoding=THREE.sRGBEncoding;t.anisotropy=8;t.wrapS=THREE.RepeatWrapping;t.repeat.x=-1;t.offset.x=1;return t;}
+
+/* ---------- materials ---------- */
+const M={
+  plaster:new THREE.MeshStandardMaterial({map:plasterTex,roughness:.92}),
+  band:new THREE.MeshStandardMaterial({color:0xf4f2ee,roughness:.85}),
+  stone:new THREE.MeshStandardMaterial({map:stoneTex,roughness:.8}),
+  granite:new THREE.MeshStandardMaterial({color:0x34322f,roughness:.45,metalness:.1}),
+  bronze:new THREE.MeshStandardMaterial({color:0x7d5a3a,roughness:.38,metalness:.75}),
+  mull:new THREE.MeshStandardMaterial({color:0x4a3a2c,roughness:.4,metalness:.6}),
+  glass:new THREE.MeshStandardMaterial({color:0x2c414b,roughness:.06,metalness:.9,emissive:0xffc68a,emissiveIntensity:0}),
+  glass2:new THREE.MeshStandardMaterial({color:0x34495a,roughness:.08,metalness:.85,emissive:0xffd9a8,emissiveIntensity:0}),
+  timber:new THREE.MeshStandardMaterial({map:timberTex,roughness:.7}),
+  green:new THREE.MeshStandardMaterial({color:0x4d7536,roughness:.95}),
+  green2:new THREE.MeshStandardMaterial({color:0x6a8f40,roughness:.95}),
+  trunk:new THREE.MeshStandardMaterial({color:0x5a4634,roughness:.9}),
+  pave:new THREE.MeshStandardMaterial({map:paveTex,roughness:.9}),
+  grass:new THREE.MeshStandardMaterial({map:grassTex,roughness:1}),
+  road:new THREE.MeshStandardMaterial({map:roadTex,roughness:.95}),
+  court:new THREE.MeshStandardMaterial({color:0x3f6e8c,roughness:.8}),
+  rail:new THREE.MeshStandardMaterial({color:0xa9c3c8,roughness:.05,metalness:.3,transparent:true,opacity:.35}),
+  soffitLight:new THREE.MeshStandardMaterial({color:0xf4efe6,emissive:0xffe2b8,emissiveIntensity:0,roughness:.8}),
+  person:new THREE.MeshStandardMaterial({color:0x50504c,roughness:.9}),
+  person2:new THREE.MeshStandardMaterial({color:0x8a3d2e,roughness:.9}),
+  fence:new THREE.MeshStandardMaterial({color:0x2a2a2a,alphaMap:meshTex,alphaTest:.5,side:THREE.DoubleSide,roughness:.6,metalness:.5}),
+  sign:new THREE.MeshStandardMaterial({map:signTex(),transparent:true,side:THREE.DoubleSide,roughness:.4,metalness:.6})
+};
+
+/* ---------- helpers: coordinates in metres; x east, y up, z south (front facade at z=0 faces the road) ---------- */
+let root;const siteG=new THREE.Group(),bldA=new THREE.Group(),bld1=new THREE.Group();scene.add(siteG,bldA,bld1);root=siteG;
+function box(x0,x1,y0,y1,z0,z1,m,cast=true){
+  const g=new THREE.BoxGeometry(Math.abs(x1-x0),Math.abs(y1-y0),Math.abs(z1-z0));
+  const me=new THREE.Mesh(g,m);me.position.set((x0+x1)/2,(y0+y1)/2,(z0+z1)/2);me.castShadow=cast;me.receiveShadow=true;
+  if(m.map&&m!==M.road){ // world-scale UVs for tiled maps
+    const uv=g.attributes.uv,p=g.attributes.position,n=g.attributes.normal;
+    for(let i=0;i<uv.count;i++){const px=p.getX(i)+me.position.x,py=p.getY(i)+me.position.y,pz=p.getZ(i)+me.position.z;
+      const ax=Math.abs(n.getX(i)),ay=Math.abs(n.getY(i));let u,v;
+      if(ax>.5){u=pz;v=py;}else if(ay>.5){u=px;v=pz;}else{u=px;v=py;}
+      const s=m===M.stone?1/4.8:m===M.timber?1/1.6:1/3;uv.setXY(i,u*s,v*s);}
+  }
+  root.add(me);return me;
+}
+// curtain wall facing -z or +z: glass + bronze mullions
+function curtZ(x0,x1,y0,y1,z,bay,o={}){
+  const gm=o.glass||M.glass,mm=o.mull||M.mull;box(x0,x1,y0,y1,z-.01,z+.01,gm,false);
+  const n=Math.max(1,Math.round((x1-x0)/bay)),b=(x1-x0)/n,d=o.side==='back'?1:-1;
+  for(let i=0;i<=n;i++){const x=x0+i*b;box(x-.04,x+.04,y0,y1,z,z+d*.14,mm,false);}
+  box(x0,x1,y0,y0+.08,z,z+d*.14,mm,false);box(x0,x1,y1-.08,y1,z,z+d*.14,mm,false);
+  if(o.transom)o.transom.forEach(t=>box(x0,x1,t-.04,t+.04,z,z+d*.14,mm,false));
+}
+function curtX(z0,z1,y0,y1,x,bay,o={}){
+  const gm=o.glass||M.glass,mm=o.mull||M.mull;box(x-.01,x+.01,y0,y1,z0,z1,gm,false);
+  const n=Math.max(1,Math.round((z1-z0)/bay)),b=(z1-z0)/n,d=o.side==='west'?-1:1;
+  for(let i=0;i<=n;i++){const z=z0+i*b;box(x,x+d*.14,y0,y1,z-.04,z+.04,mm,false);}
+  box(x,x+d*.14,y0,y0+.08,z0,z1,mm,false);box(x,x+d*.14,y1-.08,y1,z0,z1,mm,false);
+}
+// projecting framed window, facing -z (front) or +z (back)
+function frameWinZ(cx,w,y0,y1,z,dir=-1,depth=.55){
+  const t=.12,zo=z+dir*depth;
+  box(cx-w/2,cx+w/2,y1-t,y1,z,zo,M.mull);box(cx-w/2,cx+w/2,y0,y0+t,z,zo,M.mull);
+  box(cx-w/2,cx-w/2+t,y0,y1,z,zo,M.mull);box(cx+w/2-t,cx+w/2,y0,y1,z,zo,M.mull);
+  box(cx-w/2+t,cx+w/2-t,y0+t,y1-t,z+dir*.02,z+dir*.04,M.glass2,false);
+}
+function frameWinX(cz,w,y0,y1,x,dir=1,depth=.55){
+  const t=.12,xo=x+dir*depth,a=Math.min(x,xo),b=Math.max(x,xo);
+  box(a,b,y1-t,y1,cz-w/2,cz+w/2,M.mull);box(a,b,y0,y0+t,cz-w/2,cz+w/2,M.mull);
+  box(a,b,y0,y1,cz-w/2,cz-w/2+t,M.mull);box(a,b,y0,y1,cz+w/2-t,cz+w/2,M.mull);
+  box(x+dir*.02,x+dir*.04,y0+t,y1-t,cz-w/2+t,cz+w/2-t,M.glass2,false);
+}
+function tree(x,z,s=1,y=0){
+  box(x-.12*s,x+.12*s,y,y+2.6*s,z-.12*s,z+.12*s,M.trunk);
+  const k=[[0,3.6,0,1.7],[.8,3.2,.3,1.2],[-.7,3.3,-.4,1.25],[.2,4.4,-.2,1.1]];
+  k.forEach(([dx,dy,dz,r],i)=>{const m=new THREE.Mesh(new THREE.IcosahedronGeometry(r*s,1),i%2?M.green:M.green2);
+    m.position.set(x+dx*s,y+dy*s,z+dz*s);m.castShadow=true;m.receiveShadow=true;root.add(m);});
+}
+function shrub(x,z,r=.6,y=0){const m=new THREE.Mesh(new THREE.IcosahedronGeometry(r,1),M.green);m.scale.y=.7;m.position.set(x,y+r*.5,z);m.castShadow=true;root.add(m);}
+function person(x,z,h=1.72,alt){const m=alt?M.person2:M.person;
+  const b=new THREE.Mesh(new THREE.CylinderGeometry(.17,.2,h*.82,10),m);b.position.set(x,h*.41,z);b.castShadow=true;root.add(b);
+  const hd=new THREE.Mesh(new THREE.SphereGeometry(.12,12,10),M.person);hd.position.set(x,h*.82+.13,z);hd.castShadow=true;root.add(hd);}
+
+/* ---------- levels ---------- */
+const GL=0,G=.6,F1=4.6,F2=8.2,F3=11.8,T=14.99,P=16.2;
+const W=49; // overall frontage
+const ZL=13,ZC=17.6,ZR=21; // depths: left wing, core, right wing
+const XL=20,XC=35.5; // zone breaks
+function band(x0,x1,y,z0=-.35,z1=.7,h=.42){box(x0,x1,y-h,y+.06,z0,z1,M.band);}
+
+/* ---------- site ---------- */
+box(-40,90,-.02,0,-60,70,M.grass,false).castShadow=false;
+box(-6,55,0,.03,-10,0,M.pave,false);
+box(-40,90,0,.02,-19,-10,M.road,false);
+box(-40,90,0,.12,-10.2,-10,M.band,false); // kerb
+box(-6,-1,0,.03,0,ZR+4,M.pave,false); box(50,55,0,.03,0,ZR+4,M.pave,false); // 5 m driveways at sides
+[-4,6.5,15].forEach((x,i)=>tree(x,-7.5,1.05-i*.05));[42,52].forEach(x=>tree(x,-7.5,1.1));
+tree(-4,8,1.15);tree(-4,18,1);tree(53,10,1.1);tree(53,24,1.05);tree(10,24,1.2);tree(30,27,1.1);
+for(let x=1;x<19;x+=1.6)shrub(x,-1.2,.55+R()*.2);for(let x=37;x<48.5;x+=1.6)shrub(x,-1.2,.55+R()*.2);
+person(26.3,-5.2);person(27.1,-5.6,1.62,true);person(33.5,-3.2,1.75);person(8,-4.5,1.68,true);person(45,-6,1.7);
+
+root=bldA;
+/* ---------- plinth & entrance steps ---------- */
+box(-.3,XL,0,G,-.3,ZL+.3,M.granite);box(XL,XC,0,G,-.3,ZC+.3,M.granite);box(XC,W+.3,0,G,-.3,ZR+.3,M.granite);
+for(let s=0;s<3;s++)box(24.5,32.5,0,G-s*.2,-.3-(3-s)*.4,-.3,M.granite);
+
+/* ---------- LEFT WING (x 0–20): white frame, open loggia at west end ---------- */
+box(0,XL,G,F1,.9,ZL,M.plaster);                      // GF body (shop frontage)
+curtZ(0,XL,G,F1-.42,.9,2.5,{transom:[3.2]});          // GF storefront under 1.2 m overhang
+box(4.8,XL,F1,F2,.5,ZL,M.plaster);box(4.8,XL,F2,F3,.5,ZL,M.plaster);box(0,XL,F3,T,.5,ZL,M.plaster);
+curtZ(4.8,XL,F1,F2-.42,.5,2.5);                       // party hall
+curtZ(4.8,XL,F2,F3-.42,.5,2.5,{glass:M.glass2});      // indoor games
+for(let x=4.8;x<=XL+.01;x+=2.5)box(x-.12,x+.12,F2,F3-.42,-.35,.5,M.band); // SF white fins
+curtZ(0,XL,F3,T-.42,.5,2.5);                          // gym
+for(let k=0;k<3;k++)box(0,XL,F3+1.2+k*.55,F3+1.28+k*.55,-.75,-.2,M.timber); // gym sunshade louvres
+[F1,F2,F3,T].forEach(y=>band(-.35,XL,y));
+box(-.35,.35,F1,T,-.35,1.0,M.band);box(-.35,.35,F1,T,ZL-1,ZL,M.band); // west frame legs
+box(-.35,.2,F1,F1+1.0,1,ZL-1,M.plaster); // loggia side parapet
+// loggia: open first-floor dining under the gym, two storeys tall
+box(0,4.8,F3-.6,F3,0,ZL,M.timber,false);      // timber soffit
+box(.2,4.6,F1+.06,F1+.8,-.25,.35,M.plaster);shrub(1.2,0,.5,F1+.6);shrub(2.6,0,.55,F1+.6);shrub(3.9,0,.5,F1+.6);
+tree(2.4,6.5,.62,F1);
+for(let z=3;z<ZL;z+=4.5)box(.2,4.6,F1+.06,F1+.8,z,z+.6,M.plaster);
+box(4.8,4.9,F1,F3,.5,ZL,M.glass,false);
+// terrace party lawn
+box(.4,XL,T,T+.08,.4,ZL-.4,M.green2,false);
+box(-.35,XL,T,P,-.35,-.25,M.rail,false);box(-.35,-.25,T,P,-.35,ZL,M.rail,false);box(-.35,XL,T,P,ZL-.1,ZL,M.rail,false);
+box(-.35,XL,P-.06,P,-.4,-.2,M.mull,false);
+tree(4,6,.7,T);tree(14,5,.65,T);
+// west & rear faces
+curtX(1,ZL-1,F3,T-.42,-.01,2.4,{side:'west'});
+[3.5,9.5].forEach(z=>frameWinX(z,2.6,1.4,3.8,-.01,-1,.45));
+[3,8.5,14,17.5].forEach(x=>{frameWinZ(x,2.4,1.4,3.8,ZL,1,.4);frameWinZ(x,2.4,F1+.8,F2-.9,ZL,1,.4);frameWinZ(x,2.4,F2+.8,F3-.9,ZL,1,.4);});
+curtZ(1,XL-1,F3,T-.42,ZL,2.5,{side:'back'});
+
+/* ---------- CORE (x 20–35.5): sandstone portal ---------- */
+box(XL,XC,G,F2,.7,ZC,M.plaster);box(XL,29,F2,F3,.5,ZC,M.plaster);box(29,XC,F2,F3,5.4,ZC,M.plaster);box(XL,XC,F3,T,.5,ZC,M.plaster);
+box(XL,XC,T,18.4,5.4,ZC,M.plaster);                   // terrace amenities
+box(27,33.5,18.4,20.6,8.5,15.5,M.plaster);            // stair & lift headroom
+box(XL,XC,18.4,18.7,5.2,ZC+.2,M.band);
+curtZ(21.5,XC-1.5,T+.3,18,5.4,2,{glass:M.glass2});
+// portal frame
+box(XL,XL+.9,G,P,-.6,.7,M.stone);box(XC-.9,XC,G,P,-.6,.7,M.stone);box(XL,XC,T-.2,P,-.6,.7,M.stone);
+// sign on head beam
+const sg=new THREE.Mesh(new THREE.PlaneGeometry(12,.94),M.sign);sg.position.set((XL+XC)/2,(T-.2+P)/2,-.615);sg.rotation.y=Math.PI;root.add(sg);
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{M.sign.map=signTex();M.sign.needsUpdate=true;render();});
+// double-height reception glazing
+curtZ(XL+.9,XC-.9,G,F2-.1,.7,1.7,{transom:[F1]});
+box(26.6,31.4,G,3.6,.55,.6,M.bronze,false);           // door surround
+box(XL+.9,XC-.9,F2-.42,F2,-.2,.7,M.band);
+// canopy
+box(23.2,33.8,4.0,4.38,-4.6,.6,M.band);box(23.2,33.8,3.98,4.0,-4.6,.6,M.soffitLight,false);
+[24.6,32.4].forEach(x=>{const c=new THREE.Mesh(new THREE.CylinderGeometry(.14,.14,3.4,16),M.bronze);c.position.set(x,G+1.7,-4.0);c.castShadow=true;root.add(c);});
+// second floor: multipurpose hall + recessed meditation lawn
+curtZ(XL+.9,29,F2,F3-.42,.5,2);
+box(29,XC-.9,F2,F2+.3,.0,5.4,M.green2,false);box(29,XC-.9,F2,F2+.9,-.2,.3,M.stone);
+shrub(30.5,.2,.5,F2+.8);shrub(32.2,.2,.55,F2+.8);shrub(33.6,.2,.45,F2+.8);tree(32,3,.55,F2+.3);
+curtZ(29,XC-.9,F2,F3-.42,5.4,1.6,{glass:M.glass2});
+box(29,XC-.9,F3-.42,F3,0,5.4,M.timber,false);
+// third floor: spa + office
+curtZ(XL+.9,XC-.9,F3,T-.2,.5,1.7);
+band(XL+.9,XC-.9,F3,-.2,.7,.42);
+// BBQ deck pergola on terrace front
+for(let x=29.2;x<XC-1;x+=.5)box(x,x+.12,18.1,18.3,0,5.4,M.timber);
+[29.3,XC-1.1].forEach(x=>[.4,5].forEach(z=>box(x-.1,x+.1,P,18.1,z-.1,z+.1,M.mull)));
+// core side & rear
+[2,4.5].forEach((dz,i)=>{frameWinX(ZL+dz,1.2,F1+.8,F2-.6,XL,-1,.35);frameWinX(ZL+dz,1.2,F2+.8,F3-.6,XL,-1,.35);frameWinX(ZL+dz,1.2,F3+.6,T-.6,XL,-1,.35);});
+box(24,25.6,G+1,T-.6,ZC,ZC+.05,M.glass,false);for(let y=F1;y<T;y+=3.6)box(24,25.6,y-.2,y,ZC,ZC+.3,M.band);
+[28,31.5].forEach(x=>{frameWinZ(x,2.2,F1+.8,F2-.8,ZC,1,.4);frameWinZ(x,2.2,F2+.8,F3-.8,ZC,1,.4);frameWinZ(x,2.2,F3+.6,T-.7,ZC,1,.4);});
+curtZ(27,33,G,F1-.5,ZC,1.5,{side:'back'});
+
+/* ---------- RIGHT WING (x 35.5–49): banquet + guest rooms + bronze-wrapped sports hall ---------- */
+box(XC,W,G,F1,.9,ZR,M.plaster);box(XC,W,F1,F2,.5,ZR,M.plaster);box(XC,W,F2,T,.6,ZR,M.glass2);
+curtZ(XC,W,G,F1-.42,.9,2.25);
+for(let x=XC+.4;x<W;x+=.75)box(x-.05,x+.05,G,F1-.42,.15,.9,M.bronze);   // banquet fins
+curtX(1,ZR-.5,G,F1-.42,W,2.4);
+for(let z=1.4;z<ZR;z+=.75)box(W,W+.7,G,F1-.42,z-.05,z+.05,M.bronze);
+band(XC,W+.35,F1);box(W-.7,W+.35,F1-.42,F1+.06,-.35,ZR,M.band);
+// FF: framed windows to front (laundry) and east (four guest bedrooms)
+[38.3,42.3,46.3].forEach(x=>frameWinZ(x,2.6,F1+.7,F2-.8,.5,-1,.55));
+[2.6,7.9,13.2,18.5].forEach(z=>frameWinX(z,3.0,F1+.6,F2-.7,W,1,.6));
+box(XC,W+.35,F2-.42,F2+.06,-.35,ZR,M.band); box(W-.7,W+.35,F2-.42,F2+.06,-.35,ZR,M.band);
+// sports hall screen: front + east, floating 0.9 m off the glass
+const sA=screenAlpha(13.5,7.8),sB=screenAlpha(21,7.8);
+const scrF=new THREE.MeshStandardMaterial({color:0x8a6440,metalness:.75,roughness:.42,alphaMap:sA,alphaTest:.5,side:THREE.DoubleSide});
+const scrE=scrF.clone();scrE.alphaMap=sB;
+const pf=new THREE.Mesh(new THREE.PlaneGeometry(W+.35-XC,T+.4-F2-.2),scrF);pf.position.set((XC+W+.35)/2,(F2+.2+T+.4)/2,-.4);pf.castShadow=true;root.add(pf);
+const pe=new THREE.Mesh(new THREE.PlaneGeometry(ZR+.4,T+.4-F2-.2),scrE);pe.rotation.y=Math.PI/2;pe.position.set(W+.4,(F2+.2+T+.4)/2,(ZR-.4)/2+.2);pe.castShadow=true;root.add(pe);
+box(XC,W+.4,T+.4,P,-.45,ZR+.1,M.band);                // crown band / parapet
+box(XC,XC+.25,F2,P,-.45,.6,M.band);
+// terrace pickleball courts with mesh fence
+box(XC+.6,W-.4,T,T+.05,1,ZR-1,M.court,false);
+const fh=2.8,fy=P;
+[[XC+.5,W-.3,1,1],[XC+.5,W-.3,ZR-1,ZR-1]].forEach(([a,b,z])=>{const f=new THREE.Mesh(new THREE.PlaneGeometry(b-a,fh),M.fence);f.position.set((a+b)/2,fy+fh/2,z);root.add(f);});
+[[XC+.5],[W-.3]].forEach(([x])=>{const f=new THREE.Mesh(new THREE.PlaneGeometry(ZR-2,fh),M.fence);f.rotation.y=Math.PI/2;f.position.set(x,fy+fh/2,ZR/2);root.add(f);});
+for(let x=XC+.5;x<=W-.2;x+=3.25){box(x-.05,x+.05,fy,fy+fh,.95,1.05,M.mull);box(x-.05,x+.05,fy,fy+fh,ZR-1.05,ZR-.95,M.mull);}
+// rear
+curtZ(XC+1,W-1,G,F1-.5,ZR,2.2,{side:'back'});
+[38,42.3,46.6].forEach(x=>frameWinZ(x,2.6,F1+.7,F2-.8,ZR,1,.45));
+
+/* ================= OPTION 01 · Original Luxury ================= */
+root=bld1;
+const limeTex=canvasTex(512,512,(g,w,h)=>{g.fillStyle='#d6c7ae';g.fillRect(0,0,w,h);
+  for(let r=0;r<4;r++)for(let c=0;c<2;c++){const l=.94+R()*.1;g.fillStyle=`rgb(${214*l|0},${199*l|0},${174*l|0})`;g.fillRect(c*256+2,r*128+2,252,124);}
+  for(let i=0;i<5000;i++){g.fillStyle=`rgba(120,95,60,${R()*.07})`;g.fillRect(R()*w,R()*h,2,1.5);}});
+const facetTex=canvasTex(512,512,(g,w,h)=>{g.fillStyle='#e4ded2';g.fillRect(0,0,w,h);
+  for(let i=0;i<260;i++){const x=R()*w,y=R()*h,s=20+R()*46;const l=.82+R()*.26;g.fillStyle=`rgb(${226*l|0},${220*l|0},${208*l|0})`;
+    g.beginPath();g.moveTo(x,y);g.lineTo(x+s,y+s*.3*R());g.lineTo(x+s*.7,y+s);g.lineTo(x-s*.2,y+s*.6);g.closePath();g.fill();}
+  for(let i=0;i<1500;i++){g.fillStyle=`rgba(60,50,40,${R()*.12})`;g.fillRect(R()*w,R()*h,1.5,1.5);}});
+const M1={
+  lime:new THREE.MeshStandardMaterial({map:limeTex,roughness:.85}),
+  facet:new THREE.MeshStandardMaterial({map:facetTex,roughness:.95}),
+  batten:new THREE.MeshStandardMaterial({map:timberTex,roughness:.6,emissive:0xff9d4d,emissiveIntensity:0}),
+  soffit:new THREE.MeshStandardMaterial({map:timberTex,roughness:.65}),
+  frame:new THREE.MeshStandardMaterial({color:0x3a3835,roughness:.5,metalness:.45}),
+  champ:new THREE.MeshStandardMaterial({color:0xb59c73,roughness:.35,metalness:.8}),
+  glass:new THREE.MeshStandardMaterial({color:0x3e5658,roughness:.05,metalness:.75,emissive:0xffcf96,emissiveIntensity:0}),
+  glow:new THREE.MeshStandardMaterial({color:0x5a4a3a,roughness:.6,emissive:0xffb46a,emissiveIntensity:0}),
+  strip:new THREE.MeshStandardMaterial({color:0xfff3df,emissive:0xffe2b8,emissiveIntensity:.2}),
+  pink:new THREE.MeshStandardMaterial({color:0xc4688a,roughness:.95}),
+  vine:new THREE.MeshStandardMaterial({color:0x4a6b33,roughness:1,side:THREE.DoubleSide})
+};
+const c1={mull:M1.champ,glass:M1.glass};
+function palm(x,z,h=4,y=0){box(x-.09,x+.09,y,y+h,z-.09,z+.09,M.trunk);
+  for(let i=0;i<7;i++){const f=new THREE.Mesh(new THREE.BoxGeometry(2,.04,.42),i%2?M.green:M.green2);const a=i/7*Math.PI*2;
+    f.position.set(x+Math.cos(a)*.85,y+h-.25,z+Math.sin(a)*.85);f.rotation.y=-a;f.rotation.z=-.42;f.castShadow=true;root.add(f);}}
+function flowerTree(x,z,s,y){tree(x,z,s,y);[[.6,3.9,.5],[-.6,4.2,-.2],[.1,4.8,.3]].forEach(([a,b,c])=>{const m=new THREE.Mesh(new THREE.IcosahedronGeometry(.55*s,0),M1.pink);m.position.set(x+a*s,y+b*s,z+c*s);root.add(m);});}
+function strips(x0,x1,y,z0,z1,step,alongX){if(alongX){for(let z=z0+step/2;z<z1;z+=step)box(x0+.3,x1-.3,y-.03,y,z-.03,z+.03,M1.strip,false);}
+  else{for(let x=x0+step/2;x<x1;x+=step)box(x-.03,x+.03,y-.03,y,z0+.3,z1-.3,M1.strip,false);}}
+
+// plinth & drop-off
+box(-.3,XL,0,G,-.3,ZL+.3,M.granite);box(XL,XC,0,G,-.3,ZC+.3,M.granite);box(XC,W+.3,0,G,-.3,ZR+.3,M.granite);
+for(let s=0;s<3;s++)box(23.5,32.5,0,G-s*.2,-.3-(3-s)*.4,-.3,M.granite);
+{const isl=new THREE.Mesh(new THREE.CylinderGeometry(2.3,2.3,.4,40),M1.lime);isl.position.set(29.5,.2,-7.4);isl.receiveShadow=true;root.add(isl);
+ const top=new THREE.Mesh(new THREE.CylinderGeometry(2.1,2.1,.1,40),M.green2);top.position.set(29.5,.42,-7.4);root.add(top);
+ tree(29.5,-7.4,.95,.4);for(let a=0;a<6.28;a+=.9)shrub(29.5+Math.cos(a)*1.5,-7.4+Math.sin(a)*1.5,.4,.4);}
+
+// LEFT WING: timber-batten box with charcoal frame over a glazed ground floor
+box(0,XL,G,F1,1.5,ZL,M.plaster);curtZ(0,XL-.6,G,F1-.95,1.5,2.4,c1);curtX(2,ZL-.5,G,F1-.95,-.01,2.4,Object.assign({side:'west'},c1));
+[1.2,7.4,13.6].forEach(x=>box(x-.4,x+.4,G,F1-.95,-1.6,-.8,M1.lime));
+box(0,XL,F1,T,.3,ZL,M1.glow);                                       // lit interior behind battens
+box(-.6,XL,F1-.95,F1,-2.2,ZL,M1.frame);box(-.6,XL,T-.15,T+.75,-2.2,ZL,M1.frame); // bottom & top of frame
+box(-.6,-.1,F1,T-.15,-2.2,-1.6,M1.frame);box(-.6,-.1,F1,T-.15,ZL-.6,ZL,M1.frame);box(XL-.6,XL,F1,T-.15,-2.2,-1.6,M1.frame);
+for(let x=-.2;x<XL-.6;x+=.32)box(x,x+.09,F1,T-.15,-1.95,-1.7,M1.batten);
+for(let z=-1.6;z<ZL-.6;z+=.32)box(-.45,-.2,F1,T-.15,z,z+.09,M1.batten);
+[F2,F3].forEach(y=>{box(-.1,XL-.6,y-.06,y+.06,-2.05,-1.6,M1.frame);box(-.5,-.15,y-.06,y+.06,-1.6,ZL-.6,M1.frame);});
+box(0,XL,F1-1,F1-.95,-2.2,1.5,M1.soffit,false);strips(0,XL,F1-1,-2.2,1.5,2.4,false);
+// left terrace
+box(.4,XL-.4,T+.75,T+.8,.4,ZL-.4,M.green2,false);
+box(-.6,XL,T+.75,T+1.85,-2.2,-2.1,M.rail,false);palm(3,1.5,3.2,T+.75);palm(10,2,3.6,T+.75);tree(16,6,.6,T+.75);
+for(let x=.5;x<XL-1;x+=1.5)shrub(x,-1.4,.5,T+.75);
+
+// CORE: double-height atrium, deep timber canopy, textured stone wall, pergola
+box(XL,XC,G,T,1.0,ZC,M.plaster);
+curtZ(XL+.4,33.4,G,F2,1.0,1.5,Object.assign({transom:[F1+1.2]},c1));
+box(21,23,G,F1-1,-.2,1.0,M1.facet);                                  // stone pier beside entry
+box(XL-.6,33.4,4.35,4.95,-6.2,1.0,M1.frame);box(XL-.6,33.4,4.3,4.35,-6.2,1.0,M1.soffit,false);strips(XL-.6,33.4,4.3,-6.2,1.0,2.3,false);
+[22.6,31.6].forEach(x=>{const c=new THREE.Mesh(new THREE.CylinderGeometry(.13,.13,3.7,16),M1.frame);c.position.set(x,G+1.85,-5.7);c.castShadow=true;root.add(c);});
+// planted terrace on the canopy roof
+box(XL,33.4,4.95,5.5,-6.1,-5.6,M1.lime);for(let x=20.5;x<33;x+=1.3)shrub(x,-5.4,.45,5.2);flowerTree(24.5,-3,.62,4.95);flowerTree(30.5,-2.5,.55,4.95);
+box(XL,33.4,F2-.4,F2+.6,-1.2,1.0,M1.lime);for(let x=20.6;x<33;x+=1.2)shrub(x,-.6,.42,F2+.5);
+curtZ(XL+.4,33.4,F2+.6,T,1.0,1.5,Object.assign({transom:[F3]},c1));
+box(XL,33.4,F3-.18,F3+.08,-.2,1.0,M1.champ);
+box(33.4,36.4,G,T+1.9,-1.0,2.0,M1.facet);                            // textured stone feature wall
+box(XL,33.4,T,T+1.1,-.2,1.0,M1.lime);
+box(XL,XC,T,18.2,5.4,ZC,M.plaster);curtZ(21,33,T+.2,18,5.4,1.6,c1);box(26,33,18.2,20.4,8.5,15.5,M.plaster);
+for(let x=XL+.6;x<33.2;x+=.45)box(x,x+.12,18.25,18.5,-.6,6.2,M1.soffit);
+[[21,-.4],[33,-.4],[21,5.9],[33,5.9]].forEach(([x,z])=>box(x-.12,x+.12,T+1.1,18.25,z-.12,z+.12,M1.frame));
+box(XL+.4,33.4,18.1,18.25,-.6,-.4,M1.frame);box(XL+.4,33.4,18.1,18.25,6,6.2,M1.frame);
+palm(22,3,2.8,T+1.1);palm(31.8,3.2,3,T+1.1);
+// side & rear of core
+[2,4.5].forEach(dz=>{[F1+.8,F2+.8,F3+.6].forEach(y=>frameWinX(ZL+dz,1.2,y,y+2.2,XL,-1,.35));});
+curtZ(26,32,G,T-.6,ZC,1.5,Object.assign({side:'back'},c1));
+
+// RIGHT WING: limestone frame around a large glazed box, timber fins, hanging greenery
+box(36.4,W,G,F1,1.6,ZR,M.plaster);curtZ(36.4,W,G,F1-.6,1.6,2.2,c1);
+for(let x=37.6;x<W;x+=3.2)box(x-.3,x+.3,G,F1-.6,.9,1.6,M1.lime);
+box(36.4,W+.3,F1-.6,F1+.6,-.9,ZR,M1.lime);for(let x=37;x<W;x+=1.25)shrub(x,-.5,.45,F1+.55);
+box(36.4,W,F1+.6,T,.4,ZR,M1.glow);
+curtZ(37.4,48.2,F1+.6,T,.4,1.35,Object.assign({transom:[F2]},c1));
+box(36.4,37.4,F1+.6,T+1.3,-.9,1.2,M1.lime);box(48.2,W+.3,F1+.6,T+1.3,-.9,1.2,M1.lime);box(36.4,W+.3,T,T+1.3,-.9,ZR,M1.lime);
+for(let x=37.6;x<41.4;x+=.42)box(x,x+.12,F1+.6,T,-.55,.35,M1.batten);
+box(37.4,48.2,F2-.15,F2+.15,-.3,.4,M1.champ);
+for(let i=0;i<46;i++){const x=36.6+i*.27+R()*.1,len=.5+R()*2.2;box(x,x+.18,T+1.25-len,T+1.25,-.97,-.92,M1.vine,false);}
+for(let x=37;x<W;x+=1.4)shrub(x,-.55,.45,T+1.2);
+// east face: stone piers with glazing bands
+curtX(1.5,ZR-.5,G,F1-.6,W,2.4,c1);
+for(let z=.8;z<ZR;z+=5.3)box(W,W+.35,F1+.6,T,z,z+1,M1.lime);
+[[1.8,6.1],[7.1,11.4],[12.4,16.7],[17.7,ZR-.4]].forEach(([a,b])=>{curtX(a,b,F1+.6,F2-.5,W+.02,1.4,c1);curtX(a,b,F2+.3,T-.3,W+.02,1.4,c1);box(W,W+.5,F2-.5,F2+.3,a,b,M1.lime);});
+// terrace courts, fence and pergola lounge
+box(XC+1.2,W-.4,T+1.3,T+1.35,1,ZR-1,M.court,false);
+[[XC+1.1,W-.3,1],[XC+1.1,W-.3,ZR-1]].forEach(([a,b,z])=>{const f=new THREE.Mesh(new THREE.PlaneGeometry(b-a,2.6),M.fence);f.position.set((a+b)/2,T+1.3+1.3,z);root.add(f);});
+[XC+1.1,W-.3].forEach(x=>{const f=new THREE.Mesh(new THREE.PlaneGeometry(ZR-2,2.6),M.fence);f.rotation.y=Math.PI/2;f.position.set(x,T+2.6,ZR/2);root.add(f);});
+// left wing rear and right wing rear
+curtZ(1,XL-1,G,F1-1,ZL,2.4,Object.assign({side:'back'},c1));[F1,F2,F3].forEach(y=>{curtZ(1,XL-1,y+.4,y+3.1,ZL+.01,2.4,Object.assign({side:'back'},c1));box(0,XL,y-.3,y+.4,ZL,ZL+.6,M1.lime);});
+curtZ(37,W-1,G,F1-.6,ZR,2.2,Object.assign({side:'back'},c1));[F1,F2].forEach(y=>{curtZ(37,W-1,y+.6,y+3.2,ZR+.01,2.2,Object.assign({side:'back'},c1));box(36.4,W,y-.2,y+.6,ZR,ZR+.6,M1.lime);});
+bld1.visible=false;
+root=siteG;
+
+/* ---------- lighting ---------- */
+const hemi=new THREE.HemisphereLight(0xdfe9f2,0x6b6656,.55);scene.add(hemi);
+const sun=new THREE.DirectionalLight(0xfff1dc,2.2);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);
+Object.assign(sun.shadow.camera,{left:-45,right:45,top:45,bottom:-45,near:1,far:200});sun.shadow.bias=-.0004;sun.shadow.normalBias=.03;
+scene.add(sun);scene.add(sun.target);sun.target.position.set(24,6,8);
+const lamps=[];[[24.6,-4],[32.4,-4],[28.5,-2]].forEach(([x,z])=>{const l=new THREE.PointLight(0xffd6a0,0,14,2);l.position.set(x,3.7,z);scene.add(l);lamps.push(l);});
+const screenGlow=new THREE.PointLight(0xffb36b,0,22,2);screenGlow.position.set(42,11.5,1.5);scene.add(screenGlow);
+const screenGlow2=new THREE.PointLight(0xffb36b,0,22,2);screenGlow2.position.set(47.5,11.5,11);scene.add(screenGlow2);
+
+let curOpt='A',curTime='day';
+function setTime(t){curTime=t;const A=curOpt==='A';
+  const d=t==='day';scene.background=skies[t];scene.environment=envs[t];
+  if(d){sun.position.set(-26,46,-40).add(sun.target.position);sun.color.set(0xfff1dc);sun.intensity=2.2;hemi.intensity=.55;hemi.color.set(0xdfe9f2);renderer.toneMappingExposure=1;}
+  else{sun.position.set(60,14,-30).add(sun.target.position);sun.color.set(0xff9a5c);sun.intensity=.55;hemi.intensity=.18;hemi.color.set(0x6f7cae);renderer.toneMappingExposure=1.15;}
+  M.glass.emissiveIntensity=d?0:.55;M.glass2.emissiveIntensity=d?0:.85;M.soffitLight.emissiveIntensity=d?0:1.4;
+  M.glass.roughness=d?.06:.2;M.glass2.roughness=d?.08:.25;
+  lamps.forEach(l=>l.intensity=d?0:1.6);screenGlow.intensity=screenGlow2.intensity=(d||!A)?0:3.2;
+  M1.glass.emissiveIntensity=d?0:.75;M1.glow.emissiveIntensity=d?.05:.9;M1.batten.emissiveIntensity=d?0:.22;M1.strip.emissiveIntensity=d?.3:3;M1.glass.roughness=d?.05:.22;
+  scrF.emissive=scrE.emissive=new THREE.Color(0x2a1406);scrF.emissiveIntensity=scrE.emissiveIntensity=d?0:1;
+  render();
+}
+
+/* ---------- cameras & views ---------- */
+const persp=new THREE.PerspectiveCamera(38,1,.3,600);
+const ortho=new THREE.OrthographicCamera(-1,1,1,-1,.1,600);
+let cam=persp,controls=null,curView='front';
+const C=new THREE.Vector3(24.5,9,10);
+const V={
+  front:{o:true,label:'North elevation',dir:[0,0,-1],tgt:[24.5,10.2,0],span:[58,25],lv:true},
+  south:{o:true,label:'South elevation',dir:[0,0,1],tgt:[24.5,10.2,10],span:[58,25],lv:true},
+  east:{o:true,label:'East elevation',dir:[1,0,0],tgt:[49,10.2,10],span:[34,25],lv:true},
+  west:{o:true,label:'West elevation',dir:[-1,0,0],tgt:[0,10.2,8],span:[30,25],lv:true},
+  nw:{label:'North-west corner',pos:[-30,9,-46],tgt:[20,9,6],fov:36},
+  ne:{label:'North-east corner',pos:[86,11,-40],tgt:[30,9,6],fov:36},
+  entry:{label:'Entrance, eye level',pos:[17,1.65,-17],tgt:[29,8.5,0],fov:62},
+  aerial:{label:'Aerial',pos:[-38,58,-58],tgt:[24,6,10],fov:34}
+};
+function size(){const w=stage.clientWidth,h=stage.clientHeight;renderer.setSize(w,h,false);return [w,h];}
+function fitOrtho(v){const [w,h]=size();const a=w/h;let sw=v.span[0],sh=v.span[1];if(sw/sh>a)sh=sw/a;else sw=sh*a;
+  ortho.left=-sw/2;ortho.right=sw/2;ortho.top=sh/2;ortho.bottom=-sh/2;ortho.zoom=1;ortho.updateProjectionMatrix();}
+function makeControls(c,t){if(controls)controls.dispose();controls=new THREE.OrbitControls(c,renderer.domElement);
+  controls.target.copy(t);controls.enableDamping=!reduce;controls.dampingFactor=.08;controls.maxPolarAngle=Math.PI*.5;controls.minDistance=8;controls.maxDistance=220;
+  controls.addEventListener('change',render);controls.update();}
+let anim=null;
+function go(name){
+  const v=V[name];curView=name;document.getElementById('vlabel').textContent=v.label;
+  document.querySelectorAll('[data-v]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===name));
+  const [w,h]=size();
+  if(v.o){cam=ortho;fitOrtho(v);const t=new THREE.Vector3(...v.tgt);const d=new THREE.Vector3(...v.dir);
+    ortho.position.copy(t).addScaledVector(d,120);ortho.lookAt(t);makeControls(ortho,t);anim=null;render();}
+  else{const wasO=cam===ortho;cam=persp;persp.aspect=w/h;
+    const toP=new THREE.Vector3(...v.pos),toT=new THREE.Vector3(...v.tgt);
+    // pull back on tall/narrow screens so the whole facade fits
+    if(w/h<1.2){const k=1.2/(w/h);toP.sub(toT).multiplyScalar(Math.min(k,1.9)).add(toT);}
+    if(!controls||wasO||reduce){persp.fov=v.fov;persp.updateProjectionMatrix();persp.position.copy(toP);makeControls(persp,toT);anim=null;render();return;}
+    anim={t0:performance.now(),fp:persp.position.clone(),ft:controls.target.clone(),ff:persp.fov,tp:toP,tt:toT,tf:v.fov};tick();}
+}
+function tick(){if(!anim)return;let k=Math.min(1,(performance.now()-anim.t0)/900);const e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;
+  persp.position.lerpVectors(anim.fp,anim.tp,e);controls.target.lerpVectors(anim.ft,anim.tt,e);persp.fov=anim.ff+(anim.tf-anim.ff)*e;persp.updateProjectionMatrix();
+  controls.update();render();if(k<1)requestAnimationFrame(tick);else anim=null;}
+
+/* level markers on orthographic elevations */
+const levelsEl=document.getElementById('levels');
+const LV=[[GL,'±0.00 GL'],[G,'+0.60 GFL'],[F1,'+4.60 FFL'],[F2,'+8.20 SFL'],[F3,'+11.80 TFL'],[T,'+14.99 TERRACE'],[18.4,'+18.40']];
+const lvEls=LV.map(([y,t])=>{const d=document.createElement('div');d.className='lv';d.innerHTML='<span>'+t+'</span>';levelsEl.appendChild(d);return d;});
+const tmp=new THREE.Vector3();
+function updateLevels(){const v=V[curView];levelsEl.hidden=!(v&&v.o&&cam===ortho);if(levelsEl.hidden)return;
+  const h=stage.clientHeight;LV.forEach(([y],i)=>{tmp.set(controls.target.x,y,controls.target.z).project(cam);lvEls[i].style.top=((1-tmp.y)/2*h)+'px';});}
+
+let pending=false;
+function render(){if(pending)return;pending=true;requestAnimationFrame(()=>{pending=false;if(controls&&controls.enableDamping)controls.update();renderer.render(scene,cam);updateLevels();});}
+
+document.getElementById('views').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+  if(b.dataset.v)go(b.dataset.v);
+  if(b.dataset.t){document.querySelectorAll('[data-t]').forEach(x=>x.setAttribute('aria-pressed',x===b));setTime(b.dataset.t);}});
+new ResizeObserver(()=>{const [w,h]=size();if(cam===persp){persp.aspect=w/h;persp.updateProjectionMatrix();}else fitOrtho(V[curView]);render();}).observe(stage);
+// damping keeps moving after release; keep rendering while the pointer is active
+let spin=0;renderer.domElement.addEventListener('pointerup',()=>{spin=performance.now();(function d(){if(performance.now()-spin<900){render();requestAnimationFrame(d);}})();});
+
+function setOpt(k){curOpt=k;bldA.visible=k==='A';bld1.visible=k==='01';
+  document.querySelectorAll('[data-o]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.o===k));
+  document.querySelectorAll('[data-for]').forEach(el=>el.hidden=el.dataset.for!==k);
+  document.getElementById('optname').textContent=k==='A'?'Option A':'Option 01';document.getElementById('optsub').textContent=k==='A'?'Sandstone portal':'Original Luxury';setTime(curTime);}
+document.getElementById('opts').addEventListener('click',e=>{const b=e.target.closest('[data-o]');if(b)setOpt(b.dataset.o);});
+window.__setOpt=setOpt;setTime('day');go('front');
+document.getElementById('load').remove();
+})();
+
+</script>
+
+</body>
+</html>
