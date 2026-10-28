@@ -301,11 +301,53 @@ footer{font-size:12px;color:var(--muted);padding:6px 6px 0}
 .vrow .vb{height:9px;border-radius:5px}
 .vrow .vv{font-variant-numeric:tabular-nums;font-weight:600;text-align:right;white-space:nowrap}
 .vrow small{display:block;color:var(--muted);font-size:11.5px;font-weight:400}
+
+/* master layout */
+.mbar{display:flex}
+.mbtn{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:14px;align-items:center;width:100%;text-align:left;padding:16px 20px;border-radius:20px;border:1px solid var(--gline);background:linear-gradient(110deg,rgba(10,132,255,.16),rgba(20,184,166,.14));-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);box-shadow:var(--gshadow);cursor:pointer;color:var(--ink)}
+.mbtn b{display:block;font-size:17px;font-weight:800;letter-spacing:-.01em}
+.mbtn small{display:block;font-size:12.5px;color:var(--muted);font-weight:500}
+.mico{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:var(--accent);color:#fff;font-size:22px}
+.marr{font-size:26px;color:var(--accent);transition:transform .25s}
+.mbtn[aria-pressed="true"] .marr{transform:rotate(90deg)}
+.mchips{display:flex;flex-wrap:wrap;gap:6px}
+.mchip{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:4px 10px;border-radius:99px;border:1px solid var(--gline);background:var(--glass2);color:var(--ink);cursor:pointer}
+.mchip i{width:10px;height:10px;border-radius:3px;display:inline-block}
+.mchip[aria-pressed="true"]{background:var(--accent);color:#fff;border-color:transparent}
+.mp{fill:transparent;stroke:transparent;stroke-width:6;cursor:pointer;transition:fill .2s,opacity .2s}
+.mp:hover{fill:rgba(255,204,0,.35);stroke:#b38f00}
+.mp.hl{fill:rgba(255,204,0,.42);stroke:#9a7200}
+.mp.dim{fill:rgba(255,255,255,.72)}
+.mp.sel{fill:rgba(255,204,0,.65);stroke:#5c4400;stroke-width:9}
+.mclub{fill:rgba(10,132,255,.08);stroke:#0a84ff;stroke-width:8;stroke-dasharray:24 14;cursor:pointer}
+.mclub:hover,.mclub.sel{fill:rgba(10,132,255,.25)}
+.mlab{font-family:var(--body);font-weight:800;font-size:44px;fill:#0a4fb0;paint-order:stroke;stroke:#fff;stroke-width:8px;pointer-events:none}
+.mtable tbody tr{cursor:pointer}
+.mtable td i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:8px;vertical-align:-1px}
+.mthumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px;margin-top:12px}
+.mthumb{display:grid;gap:4px;border:1px solid var(--gline);background:var(--glass2);border-radius:12px;padding:6px;cursor:pointer;font:inherit;font-size:11.5px;color:var(--ink);text-align:left}
+.mthumb img{width:100%;aspect-ratio:1/1;object-fit:contain;background:#fff;border-radius:8px}
+.mthumb:hover{border-color:var(--accent)}
+.vplan{display:block;width:100%;border:1px solid var(--gline);border-radius:14px;background:#fff;cursor:zoom-in;padding:0;overflow:hidden}
+.vplan img{display:block;width:100%;height:auto}
+.ftab{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:10px 0}
+.ftab div{background:var(--glass2);border:1px solid var(--gline);border-radius:12px;padding:8px 10px}
+.ftab b{display:block;font-size:17px;font-weight:800;font-variant-numeric:tabular-nums}
+.ftab span{font-size:11px;color:var(--muted)}
+.pchips{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.pchips button{font-size:11.5px;padding:2px 8px;border-radius:8px;font-weight:600}
+.pchips button.cur{background:var(--accent);color:#fff;border-color:transparent}
+.sheetmodal{position:fixed;inset:0;z-index:50;background:rgba(6,11,24,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);display:grid;place-items:center;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.smbox{width:min(1400px,100%);height:min(92vh,1000px);display:grid;grid-template-rows:auto 1fr;background:var(--glass);-webkit-backdrop-filter:blur(26px);backdrop-filter:blur(26px);border:1px solid var(--gline);border-radius:22px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.35)}
+.smhead{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--line2)}
+.smbody{position:relative;min-height:0}
+.smbody .mapbox{height:100%;min-height:0}
 </style>
 
 
 </head>
 <body>
+<div class="sheetmodal" id="sheetModal" hidden><div class="smbox"><div class="smhead"><b id="smTitle"></b><span class="sep" style="flex:1"></span><button id="smClose" aria-label="Close">Close ✕</button></div><div id="smBody" class="smbody"></div></div></div>
 <div class="aurora" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
 <div class="wrap">
   <header class="tb">
@@ -376,6 +418,38 @@ footer{font-size:12px;color:var(--muted);padding:6px 6px 0}
     <div class="sec"><span class="k">Step 2</span><h2>Existing layout</h2><span class="hint">Sheet 03: EDGE as it stands today, before the extension.</span></div>
     <div class="tiles"><div class="tile"><b style="color:var(--ank)">107</b><span>Plots, numbered 01–107</span></div><div class="tile"><b>+ 1</b><span>Club house</span></div><div class="tile"><b>29,251</b><span>Sq.yd of plots</span></div><div class="tile"><b>13 Ac 10 Gts</b><span>Existing layout area · 64,130 sq.yd</span></div><div class="tile"><b>250–418</b><span>Plot sizes in sq.yd</span></div></div>
 
+    <div class="mbar">
+      <button class="mbtn" id="mOpen" aria-pressed="false"><span class="mico">▦</span><span><b>Master layout of the existing layout</b><small>Tap any plot to see its villa type and floor plan · sheets 001–023</small></span><span class="marr">›</span></button>
+    </div>
+    <div id="masterView" hidden style="display:grid;gap:18px">
+      <div class="tiles" id="mTiles"></div>
+      <div class="view">
+        <div class="panel">
+          <div class="tools">
+            <span class="hint">Villa type</span>
+            <div class="mchips" id="mChips"></div>
+          </div>
+          <div class="mapbox" id="mapM" style="height:min(74vh,780px)">
+            <svg id="svgM" viewBox="0 0 4681 3312" role="img" aria-label="Sheet 001: master layout of the existing layout with clickable plots">
+              <image class="base" href="m/m001.webp" x="0" y="0" width="4681" height="3312"/>
+              <g id="gM"></g>
+            </svg>
+            <div class="zoom"><button data-z="in" aria-label="Zoom in">+</button><button data-z="out" aria-label="Zoom out">−</button><button data-z="fit" aria-label="Fit drawing" style="font-size:12px">fit</button></div>
+          </div>
+        </div>
+        <aside class="side"><div class="panel" id="mDetail"></div></aside>
+      </div>
+      <div class="panel pad">
+        <h3>All villa types</h3>
+        <p class="hint" style="margin:0 0 10px">Tap a type to highlight its plots on the master layout.</p>
+        <div class="tablewrap"><table class="mtable"><thead><tr><th>Type</th><th class="num">Plots</th><th class="num">Ground</th><th class="num">First</th><th class="num">Second</th><th class="num">Total sft</th><th class="num">Sft / sq.yd</th><th>Sheet</th></tr></thead><tbody id="mTypes"></tbody></table></div>
+      </div>
+      <div class="grid2">
+        <div class="panel pad"><h3>Area statement · sheet 001</h3><div class="stmt" id="mArea"></div></div>
+        <div class="panel pad"><h3>Club house · sheets 019–023</h3><div class="stmt" id="mClub"></div><div class="mthumbs" id="mClubThumbs"></div></div>
+      </div>
+    </div>
+    <div id="siteView" style="display:grid;gap:18px">
     <div class="panel">
       <div class="tools"><span class="hint">Sheet 03: the EDGE layout as it stands, beside IQON West.</span></div>
       <div class="mapbox" id="map3" style="height:min(64vh,640px)">
@@ -392,6 +466,7 @@ footer{font-size:12px;color:var(--muted);padding:6px 6px 0}
       <div class="note"><b>Teegla Vaagu &amp; canal</b><span>The stream on IQON West's north edge, with the canal along its east edge.</span></div>
       <div class="note"><b>Entry from the west</b><span>A 12 m road comes up from the Chevella–Sangareddy existing road. It crosses the nala on a culvert into EDGE.</span></div>
       <div class="note"><b>Site-B strip</b><span>Plots 01–04 sit in a row along the nala, between EDGE and IQON West, next to the green zone.</span></div>
+    </div>
     </div>
   </section>
 
@@ -820,6 +895,91 @@ function simUpdate(){
 }
 document.querySelectorAll('.tgl').forEach(t=>t.addEventListener('change',()=>{t.checked?acq.add(t.dataset.k):acq.delete(t.dataset.k);simUpdate()}));
 simUpdate();
+
+// ---------- master layout (sheets 001–023)
+(async function(){
+  let M; try{ M=await (await fetch('m/master.json')).json(); }catch(e){ return; }
+  const T=Object.fromEntries(M.types.map(t=>[t.k,t])), byP=Object.fromEntries(M.plots.map(p=>[p.n,p]));
+  const tName=t=>`${t.size} sq.yd · ${t.facing}${t.owner?' · owner plot':''}`;
+  const sqm2yd=v=>v*1.19599, sqm2gt=v=>v/101.17;
+  // open / close
+  const ob=document.getElementById('mOpen'), mv=document.getElementById('masterView'), sv=document.getElementById('siteView');
+  let pzM=null;
+  function setMaster(on){ob.setAttribute('aria-pressed',on);mv.hidden=!on;sv.hidden=on;ob.querySelector('b').textContent=on?'Back to site context (sheet 03)':'Master layout of the existing layout';
+    if(on&&!pzM) pzM=panzoom(document.getElementById('mapM'),document.getElementById('svgM'),4681,3312);}
+  ob.addEventListener('click',()=>setMaster(ob.getAttribute('aria-pressed')!=='true'));
+  // tiles
+  const A=Object.fromEntries(M.area), Dv=Object.fromEntries(M.division);
+  document.getElementById('mTiles').innerHTML=[
+    [fmt(Math.round(A['Net site area']))+' sq.m','Net site area · '+acg(Math.round(sqm2gt(A['Net site area'])))],
+    ['107','Plots · '+fmt(Math.round(Dv['Plotted area (107 plots)']))+' sq.m'],
+    [M.types.length+' types','Villa designs, 250–418 sq.yd'],
+    [fmt(M.clubArea[7][1])+' sft','Club house, grand total']
+  ].map(([b,t])=>`<div class="tile"><b>${b}</b><span>${t}</span></div>`).join('');
+  // area statement
+  const row=(l,v,b)=>`<div${b?' class="tot"':''}><span>${l}</span><span>${fmt(v.toFixed?v.toFixed(2):v)} sq.m</span><span>${fmt(Math.round(sqm2yd(v)))} sq.yd</span></div>`;
+  document.getElementById('mArea').innerHTML=M.area.map(([l,v])=>row(l,v,l==='Net site area')).join('')+'<div><span style="font-weight:700;padding-top:6px">Net site area division</span><span></span><span></span></div>'+M.division.map(([l,v])=>row(l,v)).join('')+'<p class="caveat" style="margin-top:10px">Roads are the balance of the net site area; the sheet masks that figure.</p>';
+  document.getElementById('mClub').innerHTML=M.clubArea.map(([l,v])=>`<div${/total/i.test(l)?' class="tot"':''}><span>${l}</span><span>${fmt(v)} sft</span><span></span></div>`).join('');
+  const thumb=(k,l)=>`<button class="mthumb" data-sheet="${k}"><img src="m/t${k}.webp" alt="Sheet ${k} thumbnail" loading="lazy"><span><b>${k}</b> · ${l}</span></button>`;
+  document.getElementById('mClubThumbs').innerHTML=M.clubSheets.map(([k,l])=>thumb(k,l)).join('');
+  // sheet modal
+  const modal=document.getElementById('sheetModal');
+  function openSheet(k,title){
+    const [w,h]=M.dims[k]; document.getElementById('smTitle').textContent=title||('Sheet '+k);
+    document.getElementById('smBody').innerHTML=`<div class="mapbox" id="mapS"><svg id="svgS" viewBox="0 0 ${w} ${h}" role="img" aria-label="${title||'Sheet '+k}"><image href="m/m${k}.webp" x="0" y="0" width="${w}" height="${h}"/></svg><div class="zoom"><button data-z="in" aria-label="Zoom in">+</button><button data-z="out" aria-label="Zoom out">−</button><button data-z="fit" aria-label="Fit drawing" style="font-size:12px">fit</button></div></div>`;
+    modal.hidden=false; panzoom(document.getElementById('mapS'),document.getElementById('svgS'),w,h);
+  }
+  document.getElementById('smClose').addEventListener('click',()=>{modal.hidden=true});
+  modal.addEventListener('click',e=>{if(e.target===modal)modal.hidden=true});
+  addEventListener('keydown',e=>{if(e.key==='Escape')modal.hidden=true});
+  document.addEventListener('click',e=>{const b=e.target.closest('[data-sheet]');if(b){openSheet(b.dataset.sheet,b.dataset.title||('Sheet '+b.dataset.sheet))}});
+  // plots
+  const g=document.getElementById('gM'), shapes={};
+  M.plots.forEach(p=>{
+    const sh=el('polygon',{points:p.q.map(q=>q.join(',')).join(' '),class:'mp',tabindex:0,'aria-label':`Plot ${p.n}`},g);
+    el('title',{},sh).textContent=`Plot ${String(p.n).padStart(2,'0')} · ${p.s||'?'} sq.yd${p.t?' · '+tName(T[p.t]):''}`;
+    sh.addEventListener('click',()=>selPlot(p.n)); sh.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();selPlot(p.n)}});
+    shapes[p.n]=sh;
+  });
+  const [cx0,cy0,cx1,cy1]=M.club;
+  const cr=el('rect',{x:cx0,y:cy0,width:cx1-cx0,height:cy1-cy0,rx:20,class:'mclub',tabindex:0,'aria-label':'Club house'},g);
+  el('title',{},cr).textContent='Club house'; const lt=el('text',{x:(cx0+cx1)/2,y:cy0-22,'text-anchor':'middle',class:'mlab'},g); lt.textContent='CLUB HOUSE';
+  cr.addEventListener('click',selClub);
+  // type chips + table
+  let fT=null;
+  const chips=document.getElementById('mChips');
+  chips.innerHTML=`<button class="mchip" data-t="" aria-pressed="true">All</button>`+M.types.map(t=>`<button class="mchip" data-t="${t.k}" aria-pressed="false"><i style="background:${t.color}"></i>${t.size} ${t.facing.split(' ').map(w=>w[0]).join('')}</button>`).join('');
+  chips.querySelectorAll('.mchip').forEach(c=>c.addEventListener('click',()=>filterType(c.dataset.t||null)));
+  function filterType(k){fT=k;chips.querySelectorAll('.mchip').forEach(c=>c.setAttribute('aria-pressed',(c.dataset.t||null)===k));
+    M.plots.forEach(p=>{shapes[p.n].classList.toggle('hl',!!k&&p.t===k);shapes[p.n].classList.toggle('dim',!!k&&p.t!==k)});
+    if(k) showType(k);}
+  document.getElementById('mTypes').innerHTML=M.types.map(t=>`<tr data-k="${t.k}"><td><i style="background:${t.color}"></i><b>${tName(t)}</b></td><td class="num">${t.plots.length}</td><td class="num">${fmt(t.gf)}</td><td class="num">${fmt(t.ff)}</td><td class="num">${fmt(t.sf)}</td><td class="num"><b>${fmt(t.tot)}</b></td><td class="num">${t.psyd}</td><td>${t.k}${t.alt?' · '+t.alt:''}</td></tr>`).join('');
+  document.querySelectorAll('#mTypes tr').forEach(tr=>tr.addEventListener('click',()=>{filterType(tr.dataset.k);document.getElementById('mapM').scrollIntoView({behavior:'smooth',block:'center'})}));
+  const det=document.getElementById('mDetail');
+  function typeBlock(t,cur){
+    return `<div class="ftab"><div><b>${fmt(t.gf)}</b><span>Ground sft</span></div><div><b>${fmt(t.ff)}</b><span>First sft</span></div><div><b>${fmt(t.sf)}</b><span>Second sft</span></div><div><b>${fmt(t.tot)}</b><span>Total sft</span></div></div>
+      <dl class="kv"><dt>Site</dt><dd>${t.size} sq.yd · ${t.sqm} sq.m</dd><dt>Built-up ratio</dt><dd>${t.psyd} sft per sq.yd</dd><dt>On the layout</dt><dd>${t.plots.length} plot${t.plots.length>1?'s':''}</dd><dt>Sheet lists</dt><dd>${t.sheetNos} nos · plots ${t.sheetPlots}</dd></dl>
+      <div class="pchips">${t.plots.map(n=>`<button data-p="${n}" class="${n===cur?'cur':''}">${String(n).padStart(2,'0')}</button>`).join('')}</div>
+      <p class="hint" style="margin:12px 0 6px">Floor plan · sheet ${t.k}${t.alt?' (also sheet '+t.alt+')':''}. Tap to open and zoom.</p>
+      <button class="vplan" data-sheet="${t.k}" data-title="${tName(t)} · sheet ${t.k}"><img src="m/t${t.k}.webp" alt="Floor plan sheet ${t.k}"></button>
+      ${t.alt?`<div class="mthumbs">${thumb(t.alt,'alternate sheet')}</div>`:''}`;
+  }
+  function wire(){det.querySelectorAll('.pchips button').forEach(b=>b.addEventListener('click',()=>selPlot(+b.dataset.p,true)))}
+  function clearSel(){Object.values(shapes).forEach(s=>s.classList.remove('sel'));cr.classList.remove('sel')}
+  function selPlot(n,fly){
+    const p=byP[n]; if(!p) return; clearSel(); shapes[n].classList.add('sel');
+    const t=p.t&&T[p.t];
+    det.innerHTML=`<div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap"><span class="big" style="color:${t?t.color:'var(--muted)'}">${String(n).padStart(2,'0')}</span><span class="hint">Plot · ${p.s||'?'} sq.yd on sheet 001</span></div>
+      ${t?`<h3 style="margin:10px 0 0">${tName(t)}</h3>${typeBlock(t,n)}`:`<p class="caveat" style="margin-top:10px">No villa plan for this plot in sheets 002–018.</p>`}`;
+    wire();
+    if(fly&&pzM){const xs=p.q.map(q=>q[0]),ys=p.q.map(q=>q[1]);pzM.focus((Math.min(...xs)+Math.max(...xs))/2,(Math.min(...ys)+Math.max(...ys))/2,1400)}
+  }
+  function showType(k){const t=T[k];clearSel();
+    det.innerHTML=`<div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap"><i style="width:16px;height:16px;border-radius:4px;background:${t.color};display:inline-block"></i><h3 style="margin:0">${tName(t)}</h3></div>${typeBlock(t)}`;wire()}
+  function selClub(){clearSel();cr.classList.add('sel');
+    det.innerHTML=`<h3>Club house</h3><p class="hint" style="margin:0 0 8px">Basement + 4 floors + terrace amenities.</p><div class="stmt">${M.clubArea.map(([l,v])=>`<div${/total/i.test(l)?' class="tot"':''}><span>${l}</span><span>${fmt(v)} sft</span><span></span></div>`).join('')}</div><div class="mthumbs">${M.clubSheets.map(([k,l])=>thumb(k,l)).join('')}</div>`}
+  det.innerHTML=`<h3>Master layout</h3><p class="hint" style="margin:0 0 10px">Tap any plot to see its villa type, floor areas and floor plan. Tap the club house for its plans. Use the type chips to light up every plot of one type.</p><div class="legend">${M.types.map(t=>`<div><i style="background:${t.color}"></i>${tName(t)} · ${t.plots.length}</div>`).join('')}</div>`;
+})();
 // ---------- routing
 const views=['overview','existing','ext','plots','land'];
 const ind=document.getElementById('ind');
