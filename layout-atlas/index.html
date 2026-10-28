@@ -1,0 +1,836 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>EDGE Layout Atlas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0;font-size:14px}
+img{max-width:100%}
+[hidden]{display:none!important}
+
+/* Layout: iOS-style glass — a cool aurora backdrop, frosted cards floating on it, a sticky segmented control for views, drawings inside rounded glass frames */
+:root{
+  --bg:#e7eef9; --orb1:#7cc8ff; --orb2:#a99cff; --orb3:#5fe0d0; --orb4:#9fb8ff;
+  --glass:rgba(255,255,255,.58); --glass2:rgba(255,255,255,.38); --gline:rgba(255,255,255,.75); --gshadow:0 10px 40px rgba(31,60,120,.14),0 1px 0 rgba(255,255,255,.6) inset;
+  --ink:#0d1a2b; --muted:#56667d; --line:rgba(13,26,43,.10); --line2:rgba(13,26,43,.06);
+  --ank:#14b8a6; --ank-soft:rgba(20,184,166,.16); --oth:#f43f6e; --oth-soft:rgba(244,63,110,.14); --new:#6366f1; --new-soft:rgba(99,102,241,.16);
+  --p1:#f43f6e; --p2:#0a84ff; --p3:#a855f7; --accent:#0a84ff; --hl:#ffcc00;
+  --display:-apple-system,BlinkMacSystemFont,"SF Pro Display","Manrope",system-ui,sans-serif;
+  --body:-apple-system,BlinkMacSystemFont,"SF Pro Text","Manrope",system-ui,sans-serif;
+  --mono:"SF Mono","IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --r:22px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#060b18; --orb1:#1d4ed8; --orb2:#6d28d9; --orb3:#0f766e; --orb4:#1e3a8a;
+  --glass:rgba(20,28,48,.55); --glass2:rgba(30,40,66,.42); --gline:rgba(255,255,255,.12); --gshadow:0 12px 44px rgba(0,0,0,.45),0 1px 0 rgba(255,255,255,.08) inset;
+  --ink:#ebf2ff; --muted:#9db0cc; --line:rgba(255,255,255,.12); --line2:rgba(255,255,255,.07);
+  --ank:#2dd4bf; --ank-soft:rgba(45,212,191,.18); --oth:#fb7196; --oth-soft:rgba(251,113,150,.16); --new:#818cf8; --new-soft:rgba(129,140,248,.18);
+  --p1:#fb7196; --p2:#4aa3ff; --p3:#c084fc; --accent:#4aa3ff; --hl:#ffd60a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#060b18; --orb1:#1d4ed8; --orb2:#6d28d9; --orb3:#0f766e; --orb4:#1e3a8a;
+  --glass:rgba(20,28,48,.55); --glass2:rgba(30,40,66,.42); --gline:rgba(255,255,255,.12); --gshadow:0 12px 44px rgba(0,0,0,.45),0 1px 0 rgba(255,255,255,.08) inset;
+  --ink:#ebf2ff; --muted:#9db0cc; --line:rgba(255,255,255,.12); --line2:rgba(255,255,255,.07);
+  --ank:#2dd4bf; --ank-soft:rgba(45,212,191,.18); --oth:#fb7196; --oth-soft:rgba(251,113,150,.16); --new:#818cf8; --new-soft:rgba(129,140,248,.18);
+  --p1:#fb7196; --p2:#4aa3ff; --p3:#c084fc; --accent:#4aa3ff; --hl:#ffd60a; color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{background:var(--bg)}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;min-height:100vh;position:relative;overflow-x:hidden}
+.aurora{position:fixed;inset:-20vmax;z-index:0;pointer-events:none;filter:blur(70px) saturate(1.2);opacity:.9}
+.aurora i{position:absolute;border-radius:50%;width:55vmax;height:55vmax;opacity:.55;animation:drift 26s ease-in-out infinite alternate}
+.aurora i:nth-child(1){background:var(--orb1);left:5%;top:0}
+.aurora i:nth-child(2){background:var(--orb2);right:0;top:15%;animation-duration:32s}
+.aurora i:nth-child(3){background:var(--orb3);left:25%;bottom:-5%;animation-duration:38s}
+.aurora i:nth-child(4){background:var(--orb4);right:20%;bottom:10%;width:35vmax;height:35vmax;animation-duration:22s}
+@keyframes drift{to{transform:translate(6vmax,-4vmax) scale(1.12)}}
+.wrap{position:relative;z-index:1;max-width:1440px;margin:0 auto;padding-block:22px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:18px}
+.glass,.panel,.flow,.note,.sheetcard,nav.tabs{background:var(--glass);-webkit-backdrop-filter:blur(26px) saturate(1.6);backdrop-filter:blur(26px) saturate(1.6);border:1px solid var(--gline);box-shadow:var(--gshadow);border-radius:var(--r)}
+header.tb{display:grid;grid-template-columns:1fr auto;gap:14px 24px;align-items:end;padding:4px 6px 0}
+.eyebrow{font-size:13px;font-weight:600;color:var(--accent);letter-spacing:.01em}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(34px,5.4vw,58px);line-height:1.02;margin:4px 0 0;letter-spacing:-.035em;text-wrap:balance}
+h1 span{background:linear-gradient(100deg,var(--accent),var(--new) 45%,var(--ank));-webkit-background-clip:text;background-clip:text;color:transparent}
+.tbmeta{font-size:12.5px;color:var(--muted);display:grid;grid-template-columns:auto auto;gap:3px 14px;padding:12px 16px;border-radius:16px;background:var(--glass2);border:1px solid var(--gline);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px)}
+.tbmeta b{color:var(--ink);font-weight:600}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+nav.tabs{position:sticky;top:calc(env(safe-area-inset-top,0px) + 8px);z-index:5;display:flex;gap:2px;padding:4px;border-radius:16px;overflow-x:auto;scrollbar-width:none;justify-self:start;max-width:100%}
+nav.tabs::-webkit-scrollbar{display:none}
+nav.tabs .ind{position:absolute;top:4px;bottom:4px;left:0;width:0;border-radius:12px;background:var(--glass);box-shadow:0 3px 10px rgba(0,0,0,.12),0 0 0 .5px var(--line);transition:transform .38s cubic-bezier(.3,1.3,.5,1),width .38s cubic-bezier(.3,1.3,.5,1);z-index:0}
+nav.tabs a{position:relative;z-index:1;font-size:14px;font-weight:600;text-decoration:none;color:var(--muted);padding:8px 16px;border-radius:12px;white-space:nowrap;transition:color .2s}
+nav.tabs a:hover{color:var(--ink)}
+nav.tabs a[aria-current="page"]{color:var(--ink)}
+nav.tabs a .no{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;font-size:11px;font-weight:800;margin-right:7px;background:var(--line2);color:var(--muted);vertical-align:1px}
+nav.tabs a .no:empty{display:none}
+nav.tabs a[aria-current="page"] .no{background:var(--accent);color:#fff}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+.tile{padding:14px 16px;border-radius:18px;background:var(--glass);-webkit-backdrop-filter:blur(26px) saturate(1.6);backdrop-filter:blur(26px) saturate(1.6);border:1px solid var(--gline);box-shadow:var(--gshadow);display:grid;gap:2px;min-width:0}
+.tile b{font-family:var(--display);font-size:24px;font-weight:800;letter-spacing:-.03em;line-height:1.15;font-variant-numeric:tabular-nums}
+.tile span{font-size:12.5px;color:var(--muted)}
+a{color:var(--accent)}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h2{font-family:var(--display);font-weight:800;font-size:22px;margin:0;letter-spacing:-.02em}
+.view{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:18px;align-items:start}
+@media (max-width:1000px){.view{grid-template-columns:minmax(0,1fr)}}
+.panel{min-width:0;overflow:hidden}
+.pad{padding:18px 20px}
+section[id^="v-"]:not([hidden]){animation:rise .45s cubic-bezier(.2,.8,.2,1)}
+@keyframes rise{from{transform:translateY(8px)}to{transform:none}}
+/* story */
+.flow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;overflow:hidden}
+@media (max-width:860px){.flow{grid-template-columns:minmax(0,1fr)}}
+.stage{padding:20px 22px;display:grid;gap:8px;align-content:start;min-width:0;position:relative;transition:background .25s}
+.stage+.stage{border-left:1px solid var(--line2)}
+@media (max-width:860px){.stage+.stage{border-left:0;border-top:1px solid var(--line2)}}
+.stage:hover{background:var(--glass2)}
+.stage .tag{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.stage .num{font-family:var(--display);font-weight:800;font-size:60px;line-height:.95;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.stage .num small{font-size:17px;font-weight:600;letter-spacing:0;color:var(--muted)}
+.stage p{margin:0;font-size:14px;color:var(--muted);max-width:44ch}
+.stage .src{justify-self:start;font-size:11.5px;font-weight:600;color:var(--accent);background:var(--glass2);border:1px solid var(--gline);padding:2px 10px;border-radius:99px}
+.s1 .num{color:var(--ank)} .s2 .num{color:var(--new)} .s3 .num{color:var(--oth)}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px}
+@media (max-width:900px){.grid2{grid-template-columns:minmax(0,1fr)}}
+.stmt{display:grid;font-size:14px}
+.stmt div{display:grid;grid-template-columns:1fr auto auto;gap:4px 16px;padding:9px 0;border-bottom:1px solid var(--line2);font-variant-numeric:tabular-nums}
+.stmt div span:nth-child(2),.stmt div span:nth-child(3){text-align:right;font-size:13px}
+.stmt div span:nth-child(3){color:var(--muted)}
+.stmt .tot{font-weight:700;border-bottom:0}
+.unitbar{display:flex;height:34px;font-size:12px;font-weight:600;color:#fff;margin:8px 0;border-radius:12px;overflow:hidden;gap:2px}
+.unitbar div{display:flex;align-items:center;justify-content:center;overflow:hidden;white-space:nowrap;transition:width .6s cubic-bezier(.2,.8,.2,1)}
+.prio{display:grid;gap:12px}
+.prow{display:grid;grid-template-columns:56px minmax(0,1fr) auto;gap:10px;align-items:center;font-size:13.5px}
+.prow .bars{display:grid;gap:4px;min-width:0}
+.prow .b{height:10px;border-radius:6px}
+.prow .pill{justify-self:start}
+.prow .meta{font-size:12.5px;text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.sybars{display:grid;gap:5px;font-size:12.5px;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));column-gap:28px}
+.syb{display:grid;grid-template-columns:44px minmax(0,1fr) 34px;gap:8px;align-items:center;cursor:pointer;border:0;background:none;color:var(--ink);padding:3px 6px;text-align:left;font:inherit;border-radius:8px;transition:background .2s}
+.syb:hover{background:var(--glass2)}
+.syb .track{display:flex;height:12px;border-radius:6px;overflow:hidden;gap:1px}
+.syb .track i{display:block;height:100%}
+.legendrow{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--muted)}
+.legendrow i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+/* simulator */
+.sim{display:grid;grid-template-columns:auto minmax(0,1fr);gap:22px;align-items:center}
+@media (max-width:700px){.sim{grid-template-columns:minmax(0,1fr)}}
+.rings{display:flex;gap:18px;flex-wrap:wrap}
+.ring{position:relative;width:150px;height:150px}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:13;stroke-linecap:round}
+.ring .trk{stroke:var(--line)}
+.ring .val{transition:stroke-dashoffset .8s cubic-bezier(.2,.8,.2,1)}
+.ring .lbl{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
+.ring .lbl b{font-family:var(--display);font-size:32px;font-weight:800;letter-spacing:-.03em;font-variant-numeric:tabular-nums;line-height:1}
+.ring .lbl span{font-size:11.5px;color:var(--muted)}
+.switches{display:grid;gap:8px}
+.sw{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 12px;border-radius:14px;background:var(--glass2);border:1px solid var(--gline);cursor:pointer;transition:transform .15s,background .2s}
+.sw:hover{transform:translateY(-1px)}
+.sw .t{font-weight:600;font-size:14px}
+.sw .d{font-size:12.5px;color:var(--muted)}
+.sw .meta{font-size:12.5px;text-align:right;font-variant-numeric:tabular-nums;color:var(--muted)}
+.tgl{appearance:none;-webkit-appearance:none;width:51px;height:31px;border-radius:99px;background:var(--line);position:relative;cursor:pointer;transition:background .25s;margin:0;flex:none}
+.tgl::after{content:"";position:absolute;top:2px;left:2px;width:27px;height:27px;border-radius:50%;background:#fff;box-shadow:0 3px 8px rgba(0,0,0,.2);transition:transform .3s cubic-bezier(.3,1.4,.5,1)}
+.tgl:checked{background:var(--ank)}
+.tgl:checked::after{transform:translateX(20px)}
+/* controls */
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:12px 14px;border-bottom:1px solid var(--line2)}
+.tools .sep{flex:1}
+button,.chip,select{font:inherit;font-size:13px;font-weight:600;border:1px solid var(--gline);background:var(--glass2);color:var(--ink);padding:6px 12px;border-radius:99px;cursor:pointer;transition:background .2s,transform .15s}
+button:hover,.chip:hover{transform:translateY(-1px)}
+.chip[aria-pressed="true"]{background:var(--accent);color:#fff;border-color:transparent}
+.seg{display:inline-flex;padding:3px;border-radius:12px;background:var(--line2);gap:2px}
+.seg .chip{border-radius:9px;border:0;background:transparent;padding:5px 11px}
+.seg .chip[aria-pressed="true"]{background:var(--glass);color:var(--ink);box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.mapbox{position:relative;height:min(74vh,760px);min-height:380px;overflow:hidden;background:#fff;touch-action:none;cursor:grab}
+.mapbox.drag{cursor:grabbing}
+.mapbox svg{width:100%;height:100%;display:block}
+.dim .base{opacity:.4}
+.zoom{position:absolute;right:max(12px,env(safe-area-inset-right,0px));bottom:12px;display:grid;gap:0;border-radius:14px;overflow:hidden;background:rgba(255,255,255,.6);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.8);box-shadow:0 6px 20px rgba(20,40,80,.18)}
+.zoom button{width:40px;height:38px;padding:0;font-size:18px;border:0;border-radius:0;background:transparent;color:#0d1a2b;box-shadow:none}
+.zoom button+button{border-top:1px solid rgba(13,26,43,.1)}
+.maplegend{position:absolute;left:12px;bottom:12px;background:rgba(255,255,255,.62);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.85);box-shadow:0 6px 20px rgba(20,40,80,.16);padding:8px 12px;font-size:12px;display:grid;gap:3px;max-width:calc(100% - 90px);border-radius:14px;color:#0d1a2b}
+.maplegend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+input[type="search"]{font:inherit;font-size:13px;padding:6px 12px;border:1px solid var(--gline);border-radius:99px;width:140px;background:var(--glass2);color:var(--ink)}
+.side{display:grid;gap:14px}
+.side .panel{padding:16px 18px}
+.side h3,.panel h3{font-family:var(--display);font-weight:700;font-size:17px;letter-spacing:-.01em;margin:0 0 8px}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:5px 14px;font-size:13.5px;margin:0}
+.kv dt{color:var(--muted)} .kv dd{margin:0;font-variant-numeric:tabular-nums}
+.big{font-family:var(--display);font-weight:800;font-size:46px;line-height:1;letter-spacing:-.04em}
+.legend{display:grid;gap:6px;font-size:13px}
+.legend i{display:inline-block;width:14px;height:10px;margin-right:8px;vertical-align:-1px;border-radius:3px}
+.hint{font-size:12.5px;color:var(--muted)}
+.hist{display:grid;gap:3px;font-size:12px}
+.hist button{display:grid;grid-template-columns:76px 1fr 28px;gap:8px;align-items:center;border:0;padding:3px 4px;background:none;text-align:left;border-radius:6px;font-weight:500}
+.hist .bar{height:10px;background:var(--ank);border-radius:5px}
+.hist button[aria-pressed="true"] .bar{background:var(--hl)}
+.hist button.dimmed{opacity:.45}
+/* svg overlays — literal colours because they sit on the white drawing in both themes */
+.pl{cursor:pointer;stroke-width:1.5;stroke-linejoin:round;transition:fill .35s,opacity .3s}
+.pl.E{fill:rgba(20,184,166,0);stroke:rgba(0,0,0,0)}
+.pl.N{fill:rgba(99,102,241,0);stroke:rgba(0,0,0,0)}
+.m-both .pl.N{fill:rgba(99,102,241,.42);stroke:#3730a3}
+.m-both .pl.E{fill:rgba(20,184,166,.28);stroke:#0f766e}
+.m-exist .pl.N{fill:rgba(255,255,255,.9);stroke:#cfd6e2}
+.m-exist .pl.E{fill:rgba(20,184,166,.38);stroke:#0f766e}
+.m-prio .pl.E{fill:rgba(20,184,166,.6);stroke:#0f766e}
+.m-prio .pl.N.t-clear,.m-prio .pl.N.ready{fill:rgba(45,212,191,.55)!important;stroke:#0f766e!important}
+.m-prio .pl.N.t-P1{fill:rgba(244,63,110,.6);stroke:#9f1239}
+.m-prio .pl.N.t-P2{fill:rgba(10,132,255,.55);stroke:#0b4f99}
+.m-prio .pl.N.t-P3{fill:rgba(168,85,247,.55);stroke:#6b21a8}
+.pl:hover{stroke:#b38f00!important;stroke-width:3}
+.pl.match{fill:rgba(255,204,0,.65)!important;stroke:#9a7200!important}
+.pl.faded{opacity:.25}
+.pl.sel{fill:rgba(255,204,0,.8)!important;stroke:#5c4400!important;stroke-width:3.5}
+.sylab{font-family:var(--display);font-weight:800;font-size:38px;paint-order:stroke;stroke:#fff;stroke-width:6px;cursor:pointer}
+.oslab{font-family:var(--body);font-weight:700;font-size:15px;fill:#0f5b52;paint-order:stroke;stroke:#fff;stroke-width:4px}
+/* tables */
+.tablewrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13.5px;font-variant-numeric:tabular-nums}
+th,td{padding:9px 12px;border-bottom:1px solid var(--line2);text-align:left;white-space:nowrap}
+th{font-size:11.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+th.num,td.num{text-align:right}
+thead tr.grp th{border-bottom:0;padding-bottom:0;color:var(--ink)}
+tbody tr{cursor:pointer;transition:background .15s}
+tbody tr:hover{background:var(--glass2)}
+tbody tr.sel{background:var(--ank-soft)}
+tfoot td{font-weight:700;border-top:1px solid var(--line)}
+.sbar{display:flex;height:8px;width:120px;background:var(--line2);border-radius:4px;overflow:hidden}
+.sbar .a{background:var(--ank)} .sbar .o{background:var(--oth)}
+.pill{display:inline-block;font-size:11px;font-weight:700;padding:2px 9px;border-radius:99px;color:#fff}
+.pill.P1{background:var(--p1)} .pill.P2{background:var(--p2)} .pill.P3{background:var(--p3)}
+.pill.none{background:transparent;color:var(--muted);border:1px solid var(--line)}
+.pill.full{background:var(--ank)}
+.holders{display:grid;gap:2px;font-size:13px;margin-top:8px}
+.holders div{display:grid;grid-template-columns:1fr auto;gap:8px;padding:6px 0;border-bottom:1px solid var(--line2)}
+.holders .who{min-width:0}
+.holders .who small{display:block;color:var(--muted);font-size:11.5px}
+.holders .g{font-size:12.5px;font-variant-numeric:tabular-nums}
+.holders .ank .who{color:var(--ank);font-weight:600}
+.holders .xh{opacity:.45}
+.holders .xh .g{text-decoration:line-through}
+.totbar{display:flex;height:24px;margin:8px 0 6px;font-size:11.5px;font-weight:600;color:#fff;border-radius:8px;overflow:hidden;gap:2px}
+.totbar div{display:flex;align-items:center;padding-left:8px;overflow:hidden;white-space:nowrap}
+.notes{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.note{padding:14px 16px;display:grid;gap:4px;min-width:0;align-content:start;border-radius:18px;transition:transform .2s}
+.note:hover{transform:translateY(-2px)}
+.note b{font-family:var(--display);font-size:15.5px;font-weight:700}
+.note span{font-size:13.5px;color:var(--muted)}
+.sheets{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.sheetcard{display:grid;grid-template-rows:auto 1fr;overflow:hidden;transition:transform .25s}
+.sheetcard:hover{transform:translateY(-3px)}
+.sheetcard .th{aspect-ratio:3370/2384;max-width:100%;background:#fff center/contain no-repeat}
+.sheetcard .bd{padding:14px 16px;display:grid;gap:6px;align-content:start}
+.sheetcard .bd b{font-family:var(--display);font-size:17px;font-weight:700}
+.sheetcard .bd .fn{font-size:12px;font-weight:600;color:var(--accent)}
+.sheetcard .bd p{margin:0;font-size:13.5px;color:var(--muted)}
+.caveat{font-size:12.5px;color:var(--muted);border-left:2px solid var(--line);padding-left:10px;margin:0}
+footer{font-size:12px;color:var(--muted);padding:6px 6px 0}
+@media (max-width:560px){header.tb{grid-template-columns:1fr}.mapbox{height:62vh}.stage .num{font-size:48px}.ring{width:130px;height:130px}}
+@media (prefers-reduced-motion:reduce){*,*::after{transition:none!important;animation:none!important}}
+
+/* land sketch */
+.sec{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;padding:6px 4px 0}
+.sec .k{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);background:var(--glass2);border:1px solid var(--gline);padding:3px 10px;border-radius:99px}
+.sec h2{font-size:clamp(22px,3vw,30px)}
+.landhero{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:1000px){.landhero{grid-template-columns:minmax(0,1fr)}}
+.sketchwrap{position:sticky;top:calc(env(safe-area-inset-top,0px) + 70px);padding:8px}
+@media (max-width:1000px){.sketchwrap{position:relative;top:0}}
+.sketch{width:100%;height:auto;display:block;max-width:100%}
+.sketch .par{fill:var(--oth-soft);stroke:var(--oth);stroke-width:2;cursor:pointer;transition:fill .25s,stroke-width .2s}
+.sketch .par:hover{stroke-width:3.5}
+.sketch .newring{fill:rgba(245,158,11,.10);stroke:#f59e0b;stroke-width:5;stroke-dasharray:14 9;pointer-events:none;animation:ants 1.6s linear infinite}
+@keyframes ants{to{stroke-dashoffset:-46}}
+.sketch .nbadge{cursor:pointer}
+.sketch .nbadge rect{fill:#f59e0b}
+.sketch .nbadge text{font-family:var(--body);font-weight:800;font-size:28px;fill:#2b1700}
+.newstrip{margin:4px 12px 0;padding:12px 14px;border-radius:16px;background:rgba(245,158,11,.10);border:1px solid rgba(245,158,11,.45);display:grid;gap:8px}
+.nshead{margin:0;font-size:13px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:8px}
+.nsdot{width:10px;height:10px;border-radius:50%;background:#f59e0b;box-shadow:0 0 0 4px rgba(245,158,11,.25)}
+.nsrow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+@media (max-width:700px){.nsrow{grid-template-columns:minmax(0,1fr)}}
+.nsitem{display:grid;gap:2px;text-align:left;padding:8px 10px;border-radius:12px;background:var(--glass);border:1px solid var(--gline);font-weight:500;min-width:0}
+.nsitem b{font-size:13px;color:#b45309}
+.nsitem span{font-size:12px;color:var(--muted);line-height:1.35}
+.nsitem.on{outline:2px solid #f59e0b}
+.sketch .par.on{fill:rgba(255,204,0,.28);stroke:var(--hl);stroke-width:4}
+.sketch .held{fill:url(#hatch);stroke:var(--ank);stroke-width:2.2;pointer-events:none}
+.sketch .oth{fill:var(--line2);stroke:var(--muted);stroke-width:1.2;stroke-dasharray:6 5;cursor:help}
+.sketch .road{fill:var(--line);stroke:none}
+.sketch .slab{font-family:var(--display);font-weight:800;font-size:40px;fill:var(--ink);pointer-events:none;paint-order:stroke;stroke:var(--glass);stroke-width:5px}
+.sketch .spct{font-family:var(--body);font-weight:700;font-size:21px;pointer-events:none;paint-order:stroke;stroke:var(--glass);stroke-width:4px}
+.sketch .ptag{font-family:var(--body);font-weight:800;font-size:16px;fill:#fff;pointer-events:none}
+.sklegend{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:12.5px;color:var(--muted);padding:6px 12px 12px}
+.sklegend i{display:inline-block;width:16px;height:11px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.landside{display:grid;gap:14px}
+.bigsplit{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.bigsplit div{padding:12px 14px;border-radius:16px;background:var(--glass2);border:1px solid var(--gline)}
+.bigsplit b{display:block;font-family:var(--display);font-size:26px;font-weight:800;letter-spacing:-.03em;line-height:1.1}
+.bigsplit span{font-size:12px;color:var(--muted)}
+.sylist{display:grid;gap:3px;max-height:420px;overflow:auto;padding-right:4px}
+.syl{display:grid;grid-template-columns:72px minmax(0,1fr) 88px;gap:10px;align-items:center;border:0;background:none;padding:5px 8px;border-radius:10px;font:inherit;font-size:12.5px;color:var(--ink);text-align:left;cursor:pointer;font-weight:500}
+.syl:hover,.syl.on{background:var(--glass2)}
+.syl.on{outline:1.5px solid var(--hl)}
+.syl .tr{display:flex;height:9px;border-radius:5px;overflow:hidden;background:var(--line2)}
+.syl .tr i{display:block}
+.syl .r{text-align:right;font-variant-numeric:tabular-nums;color:var(--muted)}
+.laybox{margin:12px 0 14px;padding:12px 14px;border-radius:14px;background:var(--glass2);border:1px solid var(--gline);display:grid;gap:6px}
+.lbh{margin:0;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.lbrow{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:12px;align-items:baseline;font-size:13.5px;font-variant-numeric:tabular-nums}
+.lbrow b{font-weight:700}
+.lbrow em{font-style:normal;color:var(--muted);font-size:12.5px;min-width:96px;text-align:right}
+.lbrow.tot{border-top:1px solid var(--line);padding-top:6px}
+.lbrow:first-of-type b{color:var(--ank)}
+.bigbtn{display:grid;gap:2px;text-align:left;padding:12px 14px;border-radius:16px;background:var(--glass2);border:1px solid var(--gline);cursor:pointer;font:inherit;color:var(--ink);transition:transform .15s,box-shadow .2s}
+.bigbtn b{display:block;font-family:var(--display);font-size:26px;font-weight:800;letter-spacing:-.03em;line-height:1.1}
+.bigbtn span{font-size:12px;color:var(--muted)}
+.bigbtn em{font-style:normal;font-size:12px;font-weight:700;color:var(--accent);margin-top:4px}
+.bigbtn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(30,60,120,.14)}
+.bigbtn[aria-pressed="true"]{box-shadow:0 0 0 2px var(--accent) inset}
+.sketch.v-col g.dimv .par,.sketch.v-tc g.dimv .par{opacity:.18}
+.sketch.v-col .held.dimv,.sketch.v-tc .held.dimv{opacity:.18}
+.sketch.v-tc .held{opacity:.25}
+.sketch.v-col g:not(.dimv) .par{fill:rgba(20,184,166,.18);stroke:var(--ank);stroke-width:3}
+.sketch.v-tc g:not(.dimv) .par{fill:rgba(244,63,110,.30);stroke:var(--oth);stroke-width:3}
+.vrow{display:grid;grid-template-columns:72px minmax(0,1fr) auto;gap:10px;align-items:center;border:0;background:none;padding:6px 8px;border-radius:10px;font:inherit;font-size:13px;color:var(--ink);text-align:left;cursor:pointer}
+.vrow:hover{background:var(--glass2)}
+.vrow .vb{height:9px;border-radius:5px}
+.vrow .vv{font-variant-numeric:tabular-nums;font-weight:600;text-align:right;white-space:nowrap}
+.vrow small{display:block;color:var(--muted);font-size:11.5px;font-weight:400}
+</style>
+
+
+</head>
+<body>
+<div class="aurora" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+<div class="wrap">
+  <header class="tb">
+    <div>
+      <div class="eyebrow">Ankura Homes · Singapur village · beside IQON West</div>
+      <h1>EDGE <span>Layout Atlas</span></h1>
+    </div>
+    <div class="tbmeta">
+      <span>Existing layout</span><b>Sheet 03</b>
+      <span>Extension</span><b>Sheet 05</b>
+      <span>Land &amp; scope</span><b>Sheets 06, 02</b>
+      <span>Units</span><b>Sq.yd · Ac-Gts (40 Gts = 1 Ac)</b>
+    </div>
+  </header>
+
+  <nav class="tabs" aria-label="Views"><span class="ind" id="ind"></span>
+    <a href="#overview"><span class="no">1</span>Land</a>
+    <a href="#existing"><span class="no">2</span>Existing layout</a>
+    <a href="#ext"><span class="no">3</span>Extension</a>
+    <a href="#plots"><span class="no">4</span>Acquisition plan</a>
+    <a href="#land"><span class="no"></span>Drawings</a>
+  </nav>
+
+  <!-- 1. LAND -->
+  <section id="v-overview" style="display:grid;gap:18px">
+    <div class="sec"><span class="k">Step 1</span><h2>Land: collected and still to collect</h2><span class="hint">Sheet 06 (updated land sheet), Singapur and Fathepur villages. Tap a survey number on the sketch or in the list.</span></div>
+    <div class="landhero">
+      <div class="panel sketchwrap">
+        <svg class="sketch" id="sketch" viewBox="1150 800 1640 1190" role="img" aria-label="Survey parcels with the part Ankura Homes holds hatched">
+          <defs><pattern id="hatch" patternUnits="userSpaceOnUse" width="14" height="14" patternTransform="rotate(45)"><rect width="14" height="14" fill="var(--ank-soft)"/><line x1="0" y1="0" x2="0" y2="14" stroke="var(--ank)" stroke-width="4"/></pattern></defs>
+          <g id="sk-oth"></g><g id="sk-par"></g><g id="sk-held"></g><g id="sk-lab"></g>
+        </svg>
+        <div class="sklegend"><span><i style="background:repeating-linear-gradient(45deg,var(--ank) 0 3px,var(--ank-soft) 3px 8px)"></i>Collected by Ankura Homes</span><span><i style="background:var(--oth-soft);border:1.5px solid var(--oth)"></i>Still with other holders</span><span><i style="background:var(--line2);border:1.5px dashed var(--muted)"></i>Unnumbered on the sheet</span><span>% = share collected, from the table</span></div>
+      </div>
+      <div class="landside">
+        <div class="panel pad" id="landsum"></div>
+        <div class="panel pad" id="landpick"></div>
+      </div>
+    </div>
+
+      <div class="panel">
+        <div class="tools">
+          <span class="hint">Full land schedule: every survey number with land and units, from sheets 06 and 02.</span>
+          <span class="sep"></span>
+          <label class="hint" for="sortby">Sort</label>
+          <select id="sortby">
+            <option value="pr">Priority tag</option>
+            <option value="sy">Survey no.</option>
+            <option value="oth">Land to acquire</option>
+            <option value="uo">Units waiting</option>
+          </select>
+        </div>
+        <div class="tablewrap">
+          <table>
+            <thead>
+              <tr class="grp"><th colspan="2"></th><th colspan="3" class="num">Land</th><th></th><th colspan="3" class="num">Units</th></tr>
+              <tr><th>Sy. no.</th><th>Tag</th><th class="num">Total</th><th class="num">Ankura</th><th class="num">To acquire</th><th>Share held</th><th class="num">Ankura part</th><th class="num">Others' part</th><th class="num">Total</th></tr>
+            </thead>
+            <tbody id="landrows"></tbody>
+            <tfoot id="landfoot"></tfoot>
+          </table>
+        </div>
+      </div>
+  </section>
+
+  <!-- 2. EXISTING -->
+  <section id="v-existing" hidden style="display:grid;gap:18px">
+    <div class="sec"><span class="k">Step 2</span><h2>Existing layout</h2><span class="hint">Sheet 03: EDGE as it stands today, before the extension.</span></div>
+    <div class="tiles"><div class="tile"><b style="color:var(--ank)">107</b><span>Plots, numbered 01–107</span></div><div class="tile"><b>+ 1</b><span>Club house</span></div><div class="tile"><b>29,251</b><span>Sq.yd of plots</span></div><div class="tile"><b>13 Ac 10 Gts</b><span>Existing layout area · 64,130 sq.yd</span></div><div class="tile"><b>250–418</b><span>Plot sizes in sq.yd</span></div></div>
+
+    <div class="panel">
+      <div class="tools"><span class="hint">Sheet 03: the EDGE layout as it stands, beside IQON West.</span></div>
+      <div class="mapbox" id="map3" style="height:min(64vh,640px)">
+        <svg id="svg3" viewBox="0 0 3370 2384" role="img" aria-label="Sheet 03: existing EDGE layout and IQON West project">
+          <image class="base" href="s03.webp" x="0" y="0" width="3370" height="2384"/>
+        </svg>
+        <div class="zoom"><button data-z="in" aria-label="Zoom in">+</button><button data-z="out" aria-label="Zoom out">−</button><button data-z="fit" aria-label="Fit drawing" style="font-size:12px">fit</button></div>
+      </div>
+    </div>
+    <div class="notes">
+      <div class="note"><b>EDGE project</b><span>Plots 01–107 with the club house, on Ac 13 – 10 Gts. Roads are 30 ft and 40 ft wide. Amenities and utilities blocks sit on the east edge.</span></div>
+      <div class="note"><b>IQON West project</b><span>The neighbouring layout to the east, labelled Phase-1 layout on sheet 05. It runs on 30 ft and 40 ft roads and fronts the 30 m existing / 90 m proposed road. Two pockets of Ankura balance land sit at its south end.</span></div>
+      <div class="note"><b>Nala</b><span>A natural drain runs south-west to north-east between EDGE and IQON West. A 9 m buffer on each side doubles as tot-lot green.</span></div>
+      <div class="note"><b>Teegla Vaagu &amp; canal</b><span>The stream on IQON West's north edge, with the canal along its east edge.</span></div>
+      <div class="note"><b>Entry from the west</b><span>A 12 m road comes up from the Chevella–Sangareddy existing road. It crosses the nala on a culvert into EDGE.</span></div>
+      <div class="note"><b>Site-B strip</b><span>Plots 01–04 sit in a row along the nala, between EDGE and IQON West, next to the green zone.</span></div>
+    </div>
+  </section>
+
+  <!-- 3. EXTENSION -->
+  <section id="v-ext" hidden style="display:grid;gap:18px">
+    <div class="sec"><span class="k">Step 3</span><h2>Extension</h2><span class="hint">Sheet 05: the new units laid out around the existing plots. Tap any plot.</span></div>
+    <div class="tiles"><div class="tile"><b style="color:var(--new)">+129</b><span>New units</span></div><div class="tile"><b>236</b><span>Total units + club house</span></div><div class="tile"><b>Ac 13 – 4.49 Gts</b><span>Land for the extension</span></div><div class="tile"><b>23,897 sq.yd</b><span>Open area · 18.91%</span></div><div class="tile"><b>2,316 sq.yd</b><span>Amenities</span></div></div>
+  <div class="view">
+    <div class="panel">
+      <div class="tools">
+        <div class="seg" role="group" aria-label="Show">
+          <button class="chip" data-mode="both" aria-pressed="true">Existing + extension</button>
+          <button class="chip" data-mode="exist" aria-pressed="false">Existing only</button>
+          <button class="chip" data-mode="prio" aria-pressed="false">By land priority</button>
+        </div>
+        <label for="q" class="hint">Find</label>
+        <input id="q" type="search" placeholder="42 or N012">
+        <span class="sep"></span>
+        <button class="chip" id="t-sy" aria-pressed="true">Survey nos.</button>
+        <button class="chip" id="t-os" aria-pressed="false">Open spaces</button>
+        <button class="chip" id="t-dim" aria-pressed="false">Fade drawing</button>
+      </div>
+      <div class="mapbox m-both" id="map1">
+        <svg id="svg1" viewBox="0 0 3370 2384" role="img" aria-label="Sheet 05: EDGE layout with existing and extension plots">
+          <image class="base" href="s05.webp" x="0" y="0" width="3370" height="2384"/>
+          <g transform="translate(320 380)">
+          <g id="g-os" hidden></g>
+          <g id="g-plots"></g>
+          <g id="g-sy"></g>
+          </g>
+        </svg>
+        <div class="maplegend" id="maplegend"></div>
+        <div class="zoom"><button data-z="in" aria-label="Zoom in">+</button><button data-z="out" aria-label="Zoom out">−</button><button data-z="fit" aria-label="Fit drawing" style="font-size:12px">fit</button></div>
+      </div>
+    </div>
+    <aside class="side">
+      <div class="panel">
+        <h3>Selected plot</h3>
+        <div id="plotdetail"></div>
+      </div>
+      <div class="panel">
+        <h3>Existing plot sizes</h3>
+        <p class="hint" style="margin:0 0 8px">Tap a size to find those plots.</p>
+        <div class="hist" id="hist"></div>
+      </div>
+      <div class="panel">
+        <h3>On the drawing</h3>
+        <div class="legend">
+          <div><i style="background:#2b7a4b"></i>Dark green, numbered: existing plots 01–107</div>
+          <div><i style="background:#8f2d3c"></i>Maroon, unnumbered: new units of the extension</div>
+          <div><i style="background:#9fdc8b"></i>Tot-lots, green zone and 9 m buffer</div>
+          <div><i style="background:#5d7fe0"></i>Nala, hatched blue</div>
+          <div><i style="background:#ff00ff"></i>Culverts at the entry/exit points</div>
+        </div>
+        <p class="caveat" style="margin-top:10px">New units carry working IDs (N001…) given here, since the sheet leaves them unnumbered. Their areas are measured from the outlines, not written on the sheet. 128 outlines are traced against the 129 the sheet states.</p>
+      </div>
+    </aside>
+  </div>
+      <div class="panel pad" style="max-width:760px">
+        <h3>Area statement (sheet 02)</h3>
+        <div class="stmt" id="stmt"></div>
+        <p class="caveat" style="margin-top:10px">As written on the sheet. Open area and amenities lie within the gross extent.</p>
+      </div>
+  </section>
+
+  <!-- 4. ACQUISITION -->
+  <section id="v-plots" hidden style="display:grid;gap:18px">
+    <div class="sec"><span class="k">Step 4</span><h2>Acquisition plan</h2><span class="hint">How the land still to collect decides which new units can go ahead. Units per survey number from sheet 02.</span></div>
+    <div class="tiles"><div class="tile"><b style="color:var(--ank)">121</b><span>Units on collected land</span></div><div class="tile"><b style="color:var(--oth)">115</b><span>Units waiting on land</span></div><div class="tile"><b id="t-need"></b><span>To collect inside the layout</span></div><div class="tile"><b>3</b><span>Priority groups P1–P3</span></div></div>
+    <div class="panel pad">
+      <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:12px"><h2>Acquisition simulator</h2><span class="hint">Mark land as acquired and watch units unlock. The Extension map follows these switches in its "By land priority" view.</span></div>
+      <div class="sim">
+        <div class="rings">
+          <div class="ring"><svg viewBox="0 0 120 120"><circle class="trk" cx="60" cy="60" r="52"/><circle class="val" id="ringU" cx="60" cy="60" r="52" stroke="var(--ank)"/></svg><div class="lbl"><b id="ringUt">121</b><span>of 236 units ready</span></div></div>
+          <div class="ring"><svg viewBox="0 0 120 120"><circle class="trk" cx="60" cy="60" r="52"/><circle class="val" id="ringL" cx="60" cy="60" r="52" stroke="var(--accent)"/></svg><div class="lbl"><b id="ringLt">50%</b><span>of land held</span></div></div>
+        </div>
+        <div class="switches" id="switches"></div>
+      </div>
+    </div>
+    <div class="grid2">
+      <div class="panel pad">
+        <h3>Where the 236 units stand</h3>
+        <div class="unitbar" id="unitbar"></div>
+        <div class="legendrow"><span><i style="background:var(--ank)"></i>Existing, Ankura land</span><span><i style="background:var(--new)"></i>New, Ankura land</span><span><i style="background:var(--accent)"></i>Unlocked in simulator</span><span><i style="background:var(--oth)"></i>New, needs land from others</span></div>
+        <h3 style="margin-top:18px">What each priority unlocks</h3>
+        <div class="prio" id="prio"></div>
+        <p class="caveat" style="margin-top:10px">Tags P1–P3 are written on sheets 06 and 02 without a key. Every tagged survey number still has land with others, so they read as acquisition priorities.</p>
+      </div>
+      <div class="panel pad">
+      <h3>Units per survey number (sheet 02)</h3>
+      <p class="hint" style="margin:0 0 10px">Bar length is units. Tap one to see its land.</p>
+      <div class="sybars" id="sybars"></div>
+      <div class="legendrow" style="margin-top:10px"><span><i style="background:var(--ank)"></i>Units on Ankura's part</span><span><i style="background:var(--oth)"></i>Units on others' part</span></div>
+    </div>
+    </div>
+  </section>
+
+  <!-- 5. DRAWINGS -->
+  <section id="v-land" hidden style="display:grid;gap:18px">
+    <div class="sec"><span class="k">Drawings</span><h2>The source sheets</h2><span class="hint">Sheets 06 and 02 in full, as drawn. Zoom in to read every table. Sheet 03 is under Existing layout and 05 under Extension.</span></div>
+      <div class="panel">
+        <div class="tools">
+          <div class="seg" role="group" aria-label="Sheet">
+            <button class="chip" data-sheet="1" aria-pressed="true">Sheet 06 · parcels</button>
+            <button class="chip" data-sheet="2" aria-pressed="false">Sheet 02 · parcels on layout</button>
+          </div>
+          <span class="hint">Tap a survey number or its table to see it on the land sketch.</span>
+          <span class="sep"></span>
+          <button class="chip" id="t-dim2" aria-pressed="false">Fade drawing</button>
+        </div>
+        <div class="mapbox" id="map2" style="height:min(72vh,720px)">
+          <svg id="svg2" viewBox="0 0 3370 2384" role="img" aria-label="Sheet 06: survey parcels with ownership tables">
+            <image class="base" href="s06.webp" x="0" y="0" width="3370" height="2384"/>
+            <g id="g-sur1"></g>
+          </svg>
+          <div class="zoom"><button data-z="in" aria-label="Zoom in">+</button><button data-z="out" aria-label="Zoom out">−</button><button data-z="fit" aria-label="Fit drawing" style="font-size:12px">fit</button></div>
+        </div>
+        <div class="mapbox" id="map2b" style="height:min(72vh,720px)" hidden>
+          <svg id="svg2b" viewBox="0 0 3370 2384" role="img" aria-label="Sheet 02: survey parcels over the extended layout with unit counts">
+            <image class="base" href="s02.webp" x="0" y="0" width="3370" height="2384"/>
+            <g id="g-sur2"></g>
+          </svg>
+          <div class="zoom"><button data-z="in" aria-label="Zoom in">+</button><button data-z="out" aria-label="Zoom out">−</button><button data-z="fit" aria-label="Fit drawing" style="font-size:12px">fit</button></div>
+        </div>
+      </div>
+
+    <div class="sheets">
+      <div class="sheetcard"><div class="th" style="background-image:url(s03.webp)"></div><div class="bd"><span class="fn">03.pdf · <a href="#existing">open</a></span><b>Existing layout</b><p>EDGE as it stands: plots 01–107 with sizes, next to IQON West, the nala, Teegla Vaagu, the canal and both approach roads.</p></div></div>
+      <div class="sheetcard"><div class="th" style="background-image:url(s05.webp)"></div><div class="bd"><span class="fn">05.pdf · <a href="#ext">open</a></span><b>Layout extension</b><p>The existing plots in dark green, with the new units of the extension in maroon around them. Shows all 17 tot-lot and 9 m buffer areas with their sq.yd.</p></div></div>
+      <div class="sheetcard"><div class="th" style="background-image:url(s06.webp)"></div><div class="bd"><span class="fn">06.pdf · <a href="#land">open</a></span><b>Land parcels (updated)</b><p>Replaces sheet 01. Singapur survey nos. 339–381 and Fathepur 22 &amp; 24 with Ankura's parts hatched. Each number has a table of part survey numbers, extent, holder, and title (sale deed or DAGPA), plus a P1–P3 tag.</p></div></div>
+      <div class="sheetcard"><div class="th" style="background-image:url(s02.webp)"></div><div class="bd"><span class="fn">02.pdf · <a href="#land" data-open2>open</a></span><b>Land vs extension</b><p>The same parcel tables over the extended layout, with units per survey number split by Ankura's part and others' part. Carries the area statement.</p></div></div>
+    </div>
+
+  </section>
+
+  <footer>Read from sheets 02, 03, 05 and 06 (06 replaces 01). Areas and counts as written on the sheets; totals summed here. 1 Gt = 121 sq.yd. Plot-to-survey assignment uses each plot's centre against the survey lines on sheet 02, so plots crossing a line may be counted under the neighbour.</footer>
+</div>
+
+<script>
+(async function(){
+let D;
+try{ D=await (await fetch('data.json')).json(); }catch(e){ document.querySelector('.wrap').insertAdjacentHTML('beforeend','<p>Could not load the plot data. Reload the page.</p>'); return; }
+const NS='http://www.w3.org/2000/svg';
+const fmt=n=>Number(n).toLocaleString('en-IN');
+const acg=g=>{g=Math.round(g*100)/100;const a=Math.floor(g/40),r=Math.round((g-a*40)*100)/100;return a?`${a} Ac ${r} Gts`:`${r} Gts`};
+const el=(t,a={},p)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e};
+const ST=D.statement, SV=D.survey, bySy=Object.fromEntries(SV.map(s=>[s.sy,s]));
+const tagOf=sy=>{const s=bySy[sy];if(!s)return 'clear';return s.pr||'clear'};
+
+// ---------- overview
+const exArea=D.plots.reduce((a,p)=>a+p.s,0);
+
+const inLay=SV.filter(s=>s.ua!==null);
+const needU=inLay.reduce((a,s)=>a+s.uo,0), ankU=inLay.reduce((a,s)=>a+s.ua,0);
+const needG=inLay.reduce((a,s)=>a+s.oth,0);
+
+document.getElementById('stmt').innerHTML=[
+  ['Total gross extent',fmt(ST.gross.toFixed(2)),ST.grossAc],
+  ['Document extent','',ST.doc],
+  ['Existing: 107 units + club house','',ST.existingAc],
+  ['New: 129 units','',ST.newAc],
+  ['Open area (9 m buffer + tot-lots)',fmt(ST.open.toFixed(2)),`${ST.openAc} · ${ST.openPct}`],
+  ['Amenities',fmt(ST.amen.toFixed(2)),ST.amenAc],
+].map(r=>`<div><span>${r[0]}</span><span>${r[1]?r[1]+' sq.yd':''}</span><span>${r[2]}</span></div>`).join('')+`<div class="tot"><span>Total units</span><span>236</span><span>+ club house</span></div>`;
+const newAnk=ankU-ST.existing;
+function drawUnits(freed){
+  const ub=[[ST.existing,'var(--ank)',`${ST.existing} existing`],[newAnk,'var(--new)',`${newAnk}`],[freed,'var(--accent)',freed?`${freed} unlocked`:''],[needU-freed,'var(--oth)',needU-freed?`${needU-freed} waiting`:'']];
+  document.getElementById('unitbar').innerHTML=ub.map(([n,c,l])=>`<div style="width:${n/236*100}%;background:${c}" title="${l}">${n/236>.05?l:''}</div>`).join('');
+}
+drawUnits(0);
+const P=['P1','P2','P3'].map(p=>{const ss=inLay.filter(s=>s.pr===p);return{p,u:ss.reduce((a,s)=>a+s.uo,0),g:ss.reduce((a,s)=>a+s.oth,0),list:ss.map(s=>s.sy)}});
+const maxU=Math.max(...P.map(x=>x.u)),maxG=Math.max(...P.map(x=>x.g));
+document.getElementById('prio').innerHTML=P.map(x=>`<div class="prow"><span class="pill ${x.p}">${x.p}</span><div class="bars"><div class="b" style="width:${x.u/maxU*100}%;background:var(--${x.p.toLowerCase()})" title="${x.u} units"></div><div class="b" style="width:${x.g/maxG*100}%;background:var(--${x.p.toLowerCase()});opacity:.35" title="${acg(x.g)}"></div><span class="hint">Sy. ${x.list.join(', ')}</span></div><span class="meta">${x.u} units<br>${acg(x.g)}</span></div>`).join('')
+ +`<div class="hint">Solid bar: units unlocked. Light bar: land to acquire. Sy. 341 and 339 (${acg(bySy['341'].oth+bySy['339'].oth)} with others) have no tag and no units; they sit outside the layout.</div>`;
+const maxT=Math.max(...inLay.map(s=>s.ua+s.uo));
+document.getElementById('sybars').innerHTML=[...inLay].sort((a,b)=>(b.ua+b.uo)-(a.ua+a.uo)).map(s=>`<button class="syb" data-sy="${s.sy}"><span>${s.sy}</span><span class="track" style="width:${Math.max(2,(s.ua+s.uo)/maxT*100)}%"><i style="width:${(s.ua+s.uo)?s.ua/(s.ua+s.uo)*100:0}%;background:var(--ank)"></i><i style="width:${(s.ua+s.uo)?s.uo/(s.ua+s.uo)*100:0}%;background:var(--oth)"></i></span><span>${s.ua+s.uo}</span></button>`).join('');
+document.querySelectorAll('.syb').forEach(b=>b.addEventListener('click',()=>selectSy(b.dataset.sy,false,true)));
+
+// ---------- pan / zoom
+function panzoom(box,svg,W,H){
+  let vb={x:0,y:0,w:W,h:H}; const ptrs=new Map(); let last=null,pinch=null;
+  const set=()=>svg.setAttribute('viewBox',`${vb.x} ${vb.y} ${vb.w} ${vb.h}`);
+  const clamp=()=>{vb.w=Math.min(Math.max(vb.w,W/16),W*1.2);vb.h=vb.w*H/W;vb.x=Math.min(Math.max(vb.x,-vb.w*.4),W-vb.w*.6);vb.y=Math.min(Math.max(vb.y,-vb.h*.4),H-vb.h*.6)};
+  const toSvg=(cx,cy)=>{const r=svg.getBoundingClientRect();const s=Math.max(vb.w/r.width,vb.h/r.height);const ox=(r.width*s-vb.w)/2,oy=(r.height*s-vb.h)/2;return{x:vb.x+(cx-r.left)*s-ox,y:vb.y+(cy-r.top)*s-oy,s}};
+  const zoomAt=(f,cx,cy)=>{const p=toSvg(cx,cy);const nw=vb.w*f,k=nw/vb.w;vb.x=p.x-(p.x-vb.x)*k;vb.y=p.y-(p.y-vb.y)*k;vb.w=nw;vb.h=nw*H/W;clamp();set()};
+  box.addEventListener('wheel',e=>{e.preventDefault();zoomAt(e.deltaY>0?1.15:1/1.15,e.clientX,e.clientY)},{passive:false});
+  box.addEventListener('pointerdown',e=>{if(e.target.closest('.zoom,.maplegend'))return;ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});last={x:e.clientX,y:e.clientY,moved:0,cap:false};box.classList.add('drag')});
+  box.addEventListener('pointermove',e=>{if(!ptrs.has(e.pointerId))return;ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
+    if(ptrs.size===2){const [a,b]=[...ptrs.values()];const d=Math.hypot(a.x-b.x,a.y-b.y);if(pinch)zoomAt(pinch/d,(a.x+b.x)/2,(a.y+b.y)/2);pinch=d;last.moved+=10;return}
+    if(!last.cap&&last.moved>4){try{box.setPointerCapture(e.pointerId)}catch(_){};last.cap=true}const s=toSvg(0,0).s;vb.x-=(e.clientX-last.x)*s;vb.y-=(e.clientY-last.y)*s;last.moved+=Math.abs(e.clientX-last.x)+Math.abs(e.clientY-last.y);last.x=e.clientX;last.y=e.clientY;clamp();set()});
+  const up=e=>{ptrs.delete(e.pointerId);if(ptrs.size<2)pinch=null;if(!ptrs.size)box.classList.remove('drag')};
+  box.addEventListener('pointerup',up);box.addEventListener('pointercancel',up);
+  box.addEventListener('click',e=>{if(last&&last.moved>6&&!e.target.closest('.zoom')){e.stopPropagation();e.preventDefault()}},true);
+  box.querySelectorAll('.zoom button').forEach(b=>b.addEventListener('click',()=>{const r=box.getBoundingClientRect();if(b.dataset.z==='fit'){vb={x:0,y:0,w:W,h:H};set();return}zoomAt(b.dataset.z==='in'?1/1.4:1.4,r.left+r.width/2,r.top+r.height/2)}));
+  return {focus(x,y,w){vb.w=w;vb.h=w*H/W;vb.x=x-vb.w/2;vb.y=y-vb.h/2;clamp();set()}};
+}
+const pz1=panzoom(document.getElementById('map1'),document.getElementById('svg1'),3370,2384);
+const pz2=panzoom(document.getElementById('map2'),document.getElementById('svg2'),3370,2384);
+const pz2b=panzoom(document.getElementById('map2b'),document.getElementById('svg2b'),3370,2384);
+panzoom(document.getElementById('map3'),document.getElementById('svg3'),3370,2384);
+
+// ---------- plots
+const gP=document.getElementById('g-plots'); const shapes={}; const all=[...D.plots,...D.new];
+const pad=n=>typeof n==='number'?String(n).padStart(2,'0'):n;
+all.forEach(p=>{
+  const t=tagOf(p.sy);
+  let sh;
+  if(p.pg) sh=el('polygon',{points:p.pg.map(q=>q.join(',')).join(' ')},gP);
+  else sh=el('rect',{x:p.x-21,y:p.y-29,width:42,height:58},gP);
+  sh.setAttribute('class',`pl ${p.k} t-${t}`); sh.setAttribute('tabindex','0');
+  sh.setAttribute('aria-label',p.k==='E'?`Existing plot ${pad(p.n)}, ${p.s} sq.yd`:`New unit ${p.n}, about ${p.s} sq.yd`);
+  el('title',{},sh).textContent=p.k==='E'?`Plot ${pad(p.n)} · ${p.s} sq.yd · Sy. ${p.sy}`:`New unit ${p.n} · ≈${p.s} sq.yd · Sy. ${p.sy}`;
+  sh.addEventListener('click',()=>selectPlot(p.n));
+  sh.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();selectPlot(p.n)}});
+  shapes[p.n]=sh;
+});
+const byN=Object.fromEntries(all.map(p=>[p.n,p]));
+function landLine(sy){
+  const s=bySy[sy]; if(!s) return '—';
+  if(s.oth===0) return `<span style="color:var(--ank)">Sy. ${sy} is fully held by Ankura</span>`;
+  return `Sy. ${sy}: Ankura holds ${acg(s.ank)}, others hold ${acg(s.oth)} ${s.pr?`<span class="pill ${s.pr}">${s.pr}</span>`:''}`;
+}
+function selectPlot(n,fly){
+  const p=byN[n]; if(!p) return;
+  Object.values(shapes).forEach(s=>s.classList.remove('sel')); shapes[n].classList.add('sel');
+  const E=p.k==='E';
+  document.getElementById('plotdetail').innerHTML=`
+    <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap"><span class="big" style="color:${E?'var(--ank)':'var(--new)'}">${pad(p.n)}</span><span class="hint">${E?'Existing plot · sheet 03':'New unit · extension, sheet 05'}</span></div>
+    <dl class="kv" style="margin-top:10px">
+      <dt>Area</dt><dd>${E?'':'≈ '}${fmt(p.s)} sq.yd · ${fmt(Math.round(p.s*9))} sq.ft${E?'':' <span class="hint">(measured)</span>'}</dd>
+      <dt>Guntas</dt><dd>${(p.s/121).toFixed(2)} Gts</dd>
+      <dt>Survey no.</dt><dd><a href="#overview" data-sy="${p.sy}">${p.sy}</a></dd>
+      <dt>Land</dt><dd>${landLine(p.sy)}</dd>
+    </dl>
+    ${!E&&bySy[p.sy]&&bySy[p.sy].oth>0?`<p class="caveat" style="margin-top:10px">Sy. ${p.sy} carries ${bySy[p.sy].uo} unit${bySy[p.sy].uo===1?'':'s'} on others' part per sheet 02. This unit may be one of them.</p>`:''}`;
+  document.querySelector('#plotdetail a[data-sy]')?.addEventListener('click',e=>{e.preventDefault();selectSy(p.sy,false,true)});
+  if(fly) pz1.focus(p.x+320,p.y+380,700);
+}
+document.getElementById('q').addEventListener('input',e=>{let v=e.target.value.trim().toUpperCase();if(/^\d+$/.test(v)&&byN[+v])return selectPlot(+v,true);if(/^N\d+$/.test(v)){v='N'+v.slice(1).padStart(3,'0');if(byN[v])selectPlot(v,true)}});
+
+// modes
+const map1=document.getElementById('map1'), lg=document.getElementById('maplegend');
+const legends={
+  both:'<div><i style="background:rgba(20,184,166,.6)"></i>Existing 107</div><div><i style="background:rgba(99,102,241,.6)"></i>New 128 traced (129 on sheet)</div>',
+  exist:'<div><i style="background:rgba(20,184,166,.6)"></i>Existing layout, sheet 03</div>',
+  prio:'<div><i style="background:rgba(20,184,166,.8)"></i>Existing</div><div><i style="background:rgba(45,212,191,.7)"></i>New, ready (fully held or acquired in simulator)</div><div><i style="background:rgba(244,63,110,.7)"></i>New, P1 survey no.</div><div><i style="background:rgba(10,132,255,.65)"></i>New, P2</div><div><i style="background:rgba(168,85,247,.65)"></i>New, P3</div>'
+};
+function setMode(m){map1.classList.remove('m-both','m-exist','m-prio');map1.classList.add('m-'+m);lg.innerHTML=legends[m];document.querySelectorAll('[data-mode]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.mode===m))}
+document.querySelectorAll('[data-mode]').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.mode)));
+setMode('both');
+
+// size histogram (existing)
+let sizeSel=null; const counts={}; D.plots.forEach(p=>counts[p.s]=(counts[p.s]||0)+1);
+const hist=document.getElementById('hist'),maxC=Math.max(...Object.values(counts));
+Object.keys(counts).map(Number).sort((a,b)=>a-b).forEach(s=>{const b=document.createElement('button');b.dataset.s=s;b.setAttribute('aria-pressed','false');b.innerHTML=`<span>${s} sq.yd</span><span class="bar" style="width:${Math.max(4,counts[s]/maxC*100)}%"></span><span>${counts[s]}</span>`;b.addEventListener('click',()=>{sizeSel=sizeSel===s?null:s;applySize()});hist.appendChild(b)});
+function applySize(){
+  hist.querySelectorAll('button').forEach(b=>{const on=+b.dataset.s===sizeSel;b.setAttribute('aria-pressed',on);b.classList.toggle('dimmed',sizeSel!==null&&!on)});
+  D.plots.forEach(p=>{shapes[p.n].classList.toggle('match',sizeSel!==null&&p.s===sizeSel);shapes[p.n].classList.toggle('faded',sizeSel!==null&&p.s!==sizeSel)});
+}
+// survey labels on layout
+const gS=document.getElementById('g-sy');
+SV.filter(s=>s.lay).forEach(s=>{const t=el('text',{x:s.lay[0],y:s.lay[1]+14,'text-anchor':'middle',class:'sylab',fill:s.oth===0?'#1f6b3d':'#c0262d'},gS);t.textContent=s.sy;el('title',{},t).textContent=`Sy. ${s.sy}: Ankura ${acg(s.ank)}, others ${acg(s.oth)}`;t.addEventListener('click',()=>selectSy(s.sy,false,true))});
+const gO=document.getElementById('g-os');
+D.opens.forEach(o=>{const t=el('text',{x:o.x,y:o.y,'text-anchor':'middle',class:'oslab'},gO);t.textContent=fmt(o.a)+' sq.yd';el('title',{},t).textContent=o.k});
+const tog=(id,fn)=>{const b=document.getElementById(id);b.addEventListener('click',()=>{const on=b.getAttribute('aria-pressed')!=='true';b.setAttribute('aria-pressed',on);fn(on)})};
+tog('t-sy',on=>gS.hidden=!on); tog('t-os',on=>gO.hidden=!on);
+tog('t-dim',on=>map1.classList.toggle('dim',on));
+tog('t-dim2',on=>{document.getElementById('map2').classList.toggle('dim',on);document.getElementById('map2b').classList.toggle('dim',on)});
+document.getElementById('plotdetail').innerHTML='<p class="hint" style="margin:0">Tap a plot on the drawing, or type a number (42) or a new-unit ID (N012).</p>';
+
+// ---------- land
+let sheet=1;
+[[1,'g-sur1'],[2,'g-sur2']].forEach(([k,id])=>{const gU=document.getElementById(id);
+  SV.forEach(s=>{const o=s['s'+k];if(!o)return;const g=el('g',{style:'cursor:pointer'},gU);
+    if(o.lab) el('circle',{cx:o.lab[0],cy:o.lab[1],r:k===1?34:28,fill:'transparent',stroke:'transparent','stroke-width':5,class:'syc','data-sy':s.sy},g);
+    if(o.tab) el('rect',{x:o.tab[0]-4,y:o.tab[1]-6,width:260,height:30,rx:3,fill:'transparent',stroke:'transparent','stroke-width':4,class:'syc','data-sy':s.sy},g);
+    el('title',{},g).textContent=`Sy. ${s.sy}`;g.addEventListener('click',()=>selectSy(s.sy,true,true))})});
+document.querySelectorAll('[data-sheet]').forEach(b=>b.addEventListener('click',()=>{sheet=+b.dataset.sheet;document.querySelectorAll('[data-sheet]').forEach(x=>x.setAttribute('aria-pressed',x===b));document.getElementById('map2').hidden=sheet!==1;document.getElementById('map2b').hidden=sheet!==2}));
+const share=s=>s.ank/(s.ank+s.oth);
+let curSy=null;
+function renderRows(){
+  const by=document.getElementById('sortby').value, arr=[...SV], po={P1:1,P2:2,P3:3};
+  arr.sort((a,b)=>by==='sy'?parseInt(a.sy)-parseInt(b.sy):by==='pr'?((po[a.pr]||9)-(po[b.pr]||9))||b.oth-a.oth:by==='oth'?b.oth-a.oth:((b.uo??-1)-(a.uo??-1)));
+  const u=v=>v===null||v===undefined?'<span class="hint">—</span>':v;
+  document.getElementById('landrows').innerHTML=arr.map(s=>`<tr data-sy="${s.sy}"${s.sy===curSy?' class="sel"':''}><td><b>${s.sy}</b></td><td>${s.pr?`<span class="pill ${s.pr}">${s.pr}</span>`:(s.oth===0?'<span class="pill full">held</span>':'<span class="pill none">—</span>')}</td><td class="num">${acg(s.ank+s.oth)}</td><td class="num" style="color:var(--ank)">${s.ank?acg(s.ank):'—'}</td><td class="num" style="color:var(--oth)">${s.oth?acg(s.oth):'—'}</td><td><div class="sbar"><div class="a" style="width:${share(s)*100}%"></div><div class="o" style="width:${(1-share(s))*100}%"></div></div></td><td class="num">${u(s.ua)}</td><td class="num" style="color:var(--oth)">${u(s.uo)}</td><td class="num"><b>${s.ua===null?u(null):s.ua+s.uo}</b></td></tr>`).join('');
+  document.querySelectorAll('#landrows tr').forEach(tr=>tr.addEventListener('click',()=>{selectSy(tr.dataset.sy,true);document.getElementById('sketch').scrollIntoView({behavior:'smooth',block:'center'})}));
+}
+const TA=SV.reduce((a,s)=>a+s.ank,0),TO=SV.reduce((a,s)=>a+s.oth,0);
+document.getElementById('landfoot').innerHTML=`<tr><td>Total</td><td></td><td class="num">${acg(TA+TO)}</td><td class="num" style="color:var(--ank)">${acg(TA)}</td><td class="num" style="color:var(--oth)">${acg(TO)}</td><td></td><td class="num">${ankU}</td><td class="num" style="color:var(--oth)">${needU}</td><td class="num">${ankU+needU}</td></tr>`;
+function selectSy(sy,noFly,go){
+  if(go){location.hash='overview';setTimeout(()=>{window.pickSy&&window.pickSy(sy);document.getElementById('sketch').scrollIntoView({behavior:'smooth',block:'center'})},60)} else if(window.pickSy) window.pickSy(sy);
+  const s=bySy[sy]; if(!s) return; curSy=sy;
+  document.querySelectorAll('#landrows tr').forEach(tr=>tr.classList.toggle('sel',tr.dataset.sy===sy));
+  document.querySelectorAll('.syc').forEach(c=>{const on=c.dataset.sy===sy;c.setAttribute('stroke',on?'#f2b705':'transparent');c.setAttribute('fill',on?'rgba(242,183,5,.18)':'transparent')});
+  const o=s['s'+sheet]; if(o&&o.lab&&!noFly) (sheet===1?pz2:pz2b).focus(o.lab[0],o.lab[1],1100);
+  const t=s.ank+s.oth;
+  const units=s.ua===null?'<p class="caveat" style="margin:8px 0 0">Outside the layout. No units on it.</p>':
+    `<dl class="kv" style="margin:10px 0 6px"><dt>Units</dt><dd>${s.ua+s.uo} total · ${s.ua} on Ankura's part · <span style="color:var(--oth)">${s.uo} on others' part</span></dd><dt>To acquire</dt><dd>${s.oth?acg(s.oth)+' · '+fmt(s.oth*121)+' sq.yd':'Nothing, fully held'}</dd></dl>`;
+  const sdBox=document.getElementById('sydetail'); if(!sdBox) return;
+  sdBox.innerHTML=`
+    <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap"><span class="big">${s.sy}</span>${s.pr?`<span class="pill ${s.pr}">${s.pr}</span>`:''}<span class="hint">Singapur · ${acg(t)}</span></div>
+    <div class="totbar"><div style="background:var(--ank);width:${share(s)*100}%">${s.ank?acg(s.ank):''}</div><div style="background:var(--oth);width:${(1-share(s))*100}%">${s.oth?acg(s.oth):''}</div></div>
+    ${units}
+    <div class="holders">${s.holders.map(h=>`<div class="${h.a?'ank':''}${h.x?' xh':''}"><span class="who">${h.h}${h.t?' · '+h.t:''}<small>${h.p}${h.x?' · not counted':''}</small></span><span class="g">${h.g} Gts</span></div>`).join('')}</div>`;
+}
+document.getElementById('sortby').addEventListener('change',renderRows);
+renderRows();
+const deed=SV.flatMap(s=>s.holders).filter(h=>h.a);
+const sale=deed.filter(h=>h.t==='Sale deed').reduce((a,h)=>a+h.g,0), dagpa=deed.filter(h=>h.t==='DAGPA').reduce((a,h)=>a+h.g,0);
+const holderSet=new Set(SV.flatMap(s=>s.holders).filter(h=>!h.a&&!h.x).map(h=>h.h));
+const ltBox=document.getElementById('landtot'); if(ltBox) ltBox.innerHTML=`
+  <div class="totbar"><div style="background:var(--ank);width:${TA/(TA+TO)*100}%">Ankura ${(TA/(TA+TO)*100).toFixed(1)}%</div><div style="background:var(--oth);width:${TO/(TA+TO)*100}%">Others</div></div>
+  <dl class="kv"><dt>Total extent</dt><dd>${acg(TA+TO)} · ${fmt((TA+TO)*121)} sq.yd</dd>
+  <dt>Ankura holds</dt><dd>${acg(TA)}</dd>
+  <dt>by sale deed</dt><dd>${acg(sale)}</dd>
+  <dt>by DAGPA</dt><dd>${acg(dagpa)}</dd>
+  <dt>To acquire</dt><dd style="color:var(--oth)">${acg(TO)} from ${holderSet.size} holders</dd>
+  <dt>in the layout</dt><dd>${acg(needG)} · unlocks ${needU} units</dd>
+  <dt>Outside layout</dt><dd>Sy. 341 and 339: ${acg(bySy['341'].oth+bySy['339'].oth)} with others</dd>
+  <dt>Fully held</dt><dd>351, 354, 379</dd>
+  <dt>None held</dt><dd>339, 349, 350, 378, 381</dd><dt>Sy. 373</dt><dd>Drawn on sheet 06 with no table or extent</dd></dl>
+  <p class="caveat" style="margin-top:10px">Without Sy. 341 and 339 the tables add up to ${acg(TA+TO-bySy['341'].ank-bySy['341'].oth-bySy['339'].oth)}, close to the area statement’s gross extent of ${ST.grossAc}.</p>`;
+selectSy('358',true);
+
+
+
+// ---------- land sketch (overview)
+(function(){
+  const SK=D.sketch, gP=document.getElementById('sk-par'), gH=document.getElementById('sk-held'), gL=document.getElementById('sk-lab'), gO=document.getElementById('sk-oth');
+  const pts=p=>p.map(q=>q.join(',')).join(' ');
+  const parEls={};
+  SK.others.forEach(o=>{
+    (o.outline||[]).forEach(p=>{const e=el('polygon',{points:pts(p),class:o.k==='road'?'road':'oth'},gO);el('title',{},e).textContent=o.note});
+    (o.held||[]).forEach(p=>{const e=el('polygon',{points:pts(p),class:'held'},gH);});
+    if(o.k==='373'&&o.lab){const t=el('text',{x:o.lab[0],y:o.lab[1]+10,'text-anchor':'middle',class:'slab',style:'fill:var(--muted)'},gL);t.textContent='373'}
+  });
+  SK.parcels.forEach(p=>{
+    const s=bySy[p.sy], g=el('g',{tabindex:0,role:'button','aria-label':`Survey ${p.sy}`},gP);
+    p.outline.forEach(o=>el('polygon',{points:pts(o),class:'par','data-sy':p.sy},g));
+    el('title',{},g).textContent=`Sy. ${p.sy}: collected ${acg(s.ank)}, to collect ${acg(s.oth)}`;
+    g.addEventListener('click',()=>pickSy(p.sy)); g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();pickSy(p.sy)}});
+    p.held.forEach(o=>el('polygon',{points:pts(o),class:'held'},gH));
+    parEls[p.sy]=g;
+    const [x,y]=p.lab, pc=Math.round(share(s)*100);
+    const t=el('text',{x,y:y+6,'text-anchor':'middle',class:'slab'},gL); t.textContent=p.sy==='22&24'?'22 & 24':p.sy;
+    const t2=el('text',{x,y:y+32,'text-anchor':'middle',class:'spct',fill:pc===100?'var(--ank)':pc===0?'var(--oth)':'var(--ink)'},gL); t2.textContent=pc+'%';
+    if(s.pr){const c=el('g',{},gL);el('rect',{x:x+34,y:y-30,width:40,height:24,rx:12,fill:`var(--${s.pr.toLowerCase()})`},c);const tt=el('text',{x:x+54,y:y-12,'text-anchor':'middle',class:'ptag'},c);tt.textContent=s.pr}
+  });
+  const tot=TA+TO, outLay=bySy['341'];
+  document.getElementById('landsum').innerHTML=`
+    <h3>All ${SV.length} survey entries</h3>
+    <div class="bigsplit"><button class="bigbtn" data-view="col" aria-pressed="false"><b style="color:var(--ank)">${acg(TA)}</b><span>Collected · ${(TA/tot*100).toFixed(1)}% · ${fmt(TA*121)} sq.yd</span><em>Show on map ›</em></button><button class="bigbtn" data-view="tc" aria-pressed="false"><b style="color:var(--oth)">${acg(TO)}</b><span>To collect · ${(TO/tot*100).toFixed(1)}% · ${fmt(TO*121)} sq.yd</span><em>Show on map ›</em></button></div>
+    <div class="totbar" style="height:14px;margin:12px 0 10px"><div style="background:var(--ank);width:${TA/tot*100}%"></div><div style="background:var(--oth);width:${TO/tot*100}%"></div></div>
+    <div class="laybox">
+      <p class="lbh">Layout area · area statement, sheet 02</p>
+      <div class="lbrow"><span>Existing layout · 107 plots + club house</span><b>13 Ac 10 Gts</b><em>64,130 sq.yd</em></div>
+      <div class="lbrow"><span>Extension · 129 new units</span><b>13 Ac 4.49 Gts</b><em>63,463 sq.yd</em></div>
+      <div class="lbrow tot"><span>Total layout</span><b>26 Ac 14.49 Gts</b><em>127,593.90 sq.yd</em></div>
+    </div>
+    <dl class="kv"><dt>Land counted</dt><dd>${acg(tot)} · ${fmt(tot*121)} sq.yd</dd>
+    <dt>Collected by</dt><dd>sale deed ${acg(sale)} · DAGPA ${acg(dagpa)} · Sy. 21: 14 Gts, title not given</dd>
+    <dt>To collect from</dt><dd>${holderSet.size} holders</dd>
+    <dt>Fully collected</dt><dd>351, 354, 379, 22 &amp; 24 (Fathepur), 21 (approach road)</dd>
+    <dt>Not started</dt><dd>339, 349, 350, 378, 381</dd>
+    <dt>Outside layout</dt><dd>Sy. 341: ${acg(outLay.oth)} to collect · Sy. 339: ${acg(bySy['339'].oth)} to collect</dd></dl>`;
+  let pick=null;
+  function listHTML(){
+    const arr=[...SV].sort((a,b)=>b.oth-a.oth);
+    return `<h3>By survey number</h3><p class="hint" style="margin:0 0 8px">Sorted by land still to collect.</p><div class="sylist">${arr.map(s=>`<button class="syl${s.sy===pick?' on':''}" data-sy="${s.sy}"><span><b>${s.sy}</b>${s.pr?` <span class="pill ${s.pr}" style="font-size:9.5px;padding:0 5px">${s.pr}</span>`:''}</span><span class="tr"><i style="width:${share(s)*100}%;background:var(--ank)"></i><i style="width:${(1-share(s))*100}%;background:var(--oth)"></i></span><span class="r">${s.oth?acg(s.oth):'done'}</span></button>`).join('')}</div>`;
+  }
+  function pickSy(sy){
+    pick=sy; const s=bySy[sy]; if(!s) return;
+    if(typeof view!=='undefined'&&view){view=null;document.getElementById('sketch').classList.remove('v-col','v-tc');document.querySelectorAll('.bigbtn').forEach(b=>b.setAttribute('aria-pressed','false'));Object.values(parEls).forEach(g=>g.classList.remove('dimv'))}
+    Object.entries(parEls).forEach(([k,g])=>g.querySelectorAll('.par').forEach(p=>p.classList.toggle('on',k===sy)));
+    const box=document.getElementById('landpick');
+    box.innerHTML=`<div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap"><span class="big">${s.sy}</span>${s.pr?`<span class="pill ${s.pr}">${s.pr}</span>`:''}<span class="hint">${acg(s.ank+s.oth)} · ${Math.round(share(s)*100)}% collected</span><span class="sep" style="flex:1"></span><button id="lp-back">All survey nos.</button></div>
+      <div class="bigsplit" style="margin-top:10px"><div><b style="color:var(--ank);font-size:20px">${s.ank?acg(s.ank):'—'}</b><span>Collected</span></div><div><b style="color:var(--oth);font-size:20px">${s.oth?acg(s.oth):'—'}</b><span>To collect</span></div></div>
+      ${s.ua!==null&&s.ua!==undefined?`<p class="hint" style="margin:10px 0 0">Carries ${s.ua+s.uo} units: ${s.ua} on the collected part, ${s.uo} waiting on the rest.</p>`:'<p class="hint" style="margin:10px 0 0">No units on this survey number.</p>'}
+      ${sy==='21'?'<p class="caveat" style="margin-top:8px">The approach road strip from the Chevella–Sangareddy road up to the culvert near 357. Collected, and part of the existing layout’s 13 Ac 10 Gts. Not drawn as a survey number on sheet 06; traced here from the layout.</p>':''}${sy==='348'?'<p class="caveat" style="margin-top:8px">Sheet 06 marks 348/–/1 and 348/–/2 (2 Gts each) as Ankura’s by sale deed, but its total row still reads 46 Gts with others.</p>':''}${sy==='339'?'<p class="caveat" style="margin-top:8px">New on sheet 06, drawn in red with a vendor column. Only 339/–/2/3, 16 Gts from Gunda Sai Chandu, is counted as still to collect; the other rows are left out of the totals. On the map it is the area shaded blue on sheet 06, north-east of 351 by the stream, which measures about 14 Gts on the drawing.</p>':''}${sy==='22&24'?'<p class="caveat" style="margin-top:8px">New on sheet 06, in Fathepur village. Fully Ankura’s: the area shaded beige on sheet 06, east of 351 and 352, between 339 and the hatched piece.</p>':''}${sy==='341'?'<p class="caveat" style="margin-top:8px">Only 341/1/2, 21 Gts from Gunda Vijay Kumar, is counted as still to collect; the other rows with others are left out of the totals.</p>':''}${sy==='347'?'<p class="caveat" style="margin-top:8px">Sheet 06 shows no hatch inside this outline, though its table lists 1 Ac 14 Gts as collected.</p>':''}
+      <div class="holders">${s.holders.map(h=>`<div class="${h.a?'ank':''}${h.x?' xh':''}"><span class="who">${h.h}${h.t?' · '+h.t:''}<small>${h.p}${h.x?' · not counted':''}</small></span><span class="g">${h.g} Gts</span></div>`).join('')}</div>`;
+    document.getElementById('lp-back').addEventListener('click',()=>{pick=null;Object.values(parEls).forEach(g=>g.querySelectorAll('.par').forEach(p=>p.classList.remove('on')));renderList()});
+  }
+  function renderList(){const box=document.getElementById('landpick');box.innerHTML=listHTML();box.querySelectorAll('.syl').forEach(b=>b.addEventListener('click',()=>pickSy(b.dataset.sy)))}
+
+  let view=null;
+  function showView(v){
+    view=view===v?null:v;
+    const svg=document.getElementById('sketch');
+    svg.classList.remove('v-col','v-tc'); if(view) svg.classList.add('v-'+view);
+    document.querySelectorAll('.bigbtn').forEach(b=>b.setAttribute('aria-pressed',b.dataset.view===view));
+    Object.entries(parEls).forEach(([k,g])=>{const s=bySy[k];const on=view==='col'?s.ank>0:view==='tc'?s.oth>0:true;g.classList.toggle('dimv',!on);g.querySelectorAll('.par').forEach(p=>p.classList.remove('on'))});
+    if(!view){renderList();return}
+    const box=document.getElementById('landpick');
+    if(view==='col'){
+      const arr=SV.filter(s=>s.ank>0).sort((a,b)=>b.ank-a.ank), mx=arr[0].ank;
+      box.innerHTML=`<div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap"><h3 style="margin:0">Collected · ${acg(TA)}</h3><span class="sep" style="flex:1"></span><button id="lp-back">All survey nos.</button></div>
+        <p class="hint" style="margin:4px 0 8px">${arr.length} survey entries · sale deed ${acg(sale)} · DAGPA ${acg(dagpa)}. Tap one to open it.</p>
+        <div class="sylist">${arr.map(s=>{const sd=s.holders.filter(h=>h.a&&h.t==='Sale deed').reduce((a,h)=>a+h.g,0),dg=s.holders.filter(h=>h.a&&h.t==='DAGPA').reduce((a,h)=>a+h.g,0);return `<button class="vrow" data-sy="${s.sy}"><b>${s.sy==='22&24'?'22 &amp; 24':s.sy}</b><span class="vb" style="width:${Math.max(4,s.ank/mx*100)}%;background:var(--ank)"></span><span class="vv">${acg(s.ank)}<small>${[sd?'sale '+sd:'',dg?'DAGPA '+dg:'',(!sd&&!dg)?'title not given':''].filter(Boolean).join(' · ')}</small></span></button>`}).join('')}</div>`;
+    } else {
+      const arr=SV.filter(s=>s.oth>0).sort((a,b)=>b.oth-a.oth), mx=arr[0].oth;
+      box.innerHTML=`<div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap"><h3 style="margin:0">To collect · ${acg(TO)}</h3><span class="sep" style="flex:1"></span><button id="lp-back">All survey nos.</button></div>
+        <p class="hint" style="margin:4px 0 8px">${arr.length} survey entries · ${holderSet.size} holders. Tap one to see who holds it.</p>
+        <div class="sylist">${arr.map(s=>{const hs=new Set(s.holders.filter(h=>!h.a&&!h.x).map(h=>h.h));return `<button class="vrow" data-sy="${s.sy}"><b>${s.sy}${s.pr?` <span class="pill ${s.pr}" style="font-size:9.5px;padding:0 5px">${s.pr}</span>`:''}</b><span class="vb" style="width:${Math.max(4,s.oth/mx*100)}%;background:var(--oth)"></span><span class="vv">${acg(s.oth)}<small>${hs.size} holder${hs.size>1?'s':''}</small></span></button>`}).join('')}</div>`;
+    }
+    box.querySelectorAll('.vrow').forEach(b=>b.addEventListener('click',()=>pickSy(b.dataset.sy)));
+    document.getElementById('lp-back').addEventListener('click',()=>showView(view));
+  }
+  document.querySelectorAll('.bigbtn').forEach(b=>b.addEventListener('click',()=>showView(b.dataset.view)));
+  renderList(); window.pickSy=pickSy;
+})();
+document.getElementById('t-need').textContent=acg(needG);
+// ---------- acquisition simulator
+const acq=new Set(); const C2=2*Math.PI*52;
+['ringU','ringL'].forEach(id=>{const c=document.getElementById(id);c.style.strokeDasharray=C2;});
+const opts=[...P.map(x=>({k:x.p,t:`${x.p} survey numbers`,d:`Sy. ${x.list.join(', ')}`,u:x.u,g:x.g})),{k:'out',t:'Sy. 341 and 339',d:'Outside the layout · no units',u:0,g:bySy['341'].oth+bySy['339'].oth}];
+document.getElementById('switches').innerHTML=opts.map(o=>`<label class="sw" for="sw-${o.k}"><input type="checkbox" class="tgl" id="sw-${o.k}" data-k="${o.k}"><span><span class="t">${o.k.startsWith('P')?`<span class="pill ${o.k}">${o.k}</span> `:''}${o.t}</span><br><span class="d">${o.d}</span></span><span class="meta">+${o.u} units<br>${acg(o.g)}</span></label>`).join('');
+function simUpdate(){
+  let fu=0,fg=0; opts.forEach(o=>{if(acq.has(o.k)){fu+=o.u;fg+=o.g}});
+  const ready=ankU+fu, held=TA+fg, pct=held/(TA+TO);
+  document.getElementById('ringU').style.strokeDashoffset=C2*(1-ready/236);
+  document.getElementById('ringL').style.strokeDashoffset=C2*(1-pct);
+  document.getElementById('ringUt').textContent=ready;
+  document.getElementById('ringLt').textContent=Math.round(pct*100)+'%';
+  drawUnits(fu);
+  D.new.forEach(p=>shapes[p.n].classList.toggle('ready',acq.has(tagOf(p.sy))));
+}
+document.querySelectorAll('.tgl').forEach(t=>t.addEventListener('change',()=>{t.checked?acq.add(t.dataset.k):acq.delete(t.dataset.k);simUpdate()}));
+simUpdate();
+// ---------- routing
+const views=['overview','existing','ext','plots','land'];
+const ind=document.getElementById('ind');
+function moveInd(){const a=document.querySelector('nav.tabs a[aria-current="page"]');if(!a)return;ind.style.width=a.offsetWidth+'px';ind.style.transform=`translateX(${a.offsetLeft}px)`}
+function route(){const v=views.includes(location.hash.slice(1))?location.hash.slice(1):'overview';views.forEach(x=>document.getElementById('v-'+x).hidden=x!==v);document.querySelectorAll('nav.tabs a').forEach(a=>a.setAttribute('aria-current',a.getAttribute('href')==='#'+v?'page':'false'));moveInd()}
+addEventListener('hashchange',route); addEventListener('resize',moveInd); route();
+document.fonts&&document.fonts.ready.then(moveInd);
+document.querySelector('[data-open2]')?.addEventListener('click',()=>document.querySelector('[data-sheet="2"]').click());
+selectPlot(42);
+})();
+</script>
+
+</body>
+</html>
